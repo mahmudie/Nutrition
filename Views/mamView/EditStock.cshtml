@@ -1,0 +1,111 @@
+@model DataSystem.Models.TblFstock
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+<div class="modal fade" id="editStock" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Food stock report and balance</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" data-bind="submit:editstockRecord,visible:!sending()">
+                    <table class="table table-condensed table-responsive text-left dt-responsive">
+                        <tbody>
+                            <tr>
+                                <td><b>Food Item</b></td>
+                                <td colspan="3">
+                                    <input for="item" class="form-control" data-bind="textinput:sinStock.Item" readonly />
+                                </td>
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="4">Stock on hand</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="OpeningBalance"></label></td>
+                                <td>
+                                    <input asp-for="OpeningBalance" class="form-control text-center" data-bind="textinput:sinStock.OpeningBalance" />
+                                    <span asp-validation-for="OpeningBalance" class="text-danger" />
+                                </td>
+                                <td><label asp-for="QuantityReceived"></label></td>
+                                <td>
+                                    <input asp-for="QuantityReceived" class="form-control text-center" data-bind="textinput:sinStock.QuantityReceived" />
+                                    <span asp-validation-for="QuantityReceived" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="QuantityReferin"></label></td>
+                                <td>
+                                    <input asp-for="QuantityReferin" class="form-control text-center" data-bind="textinput:sinStock.QuantityReferin" />
+                                    <span asp-validation-for="QuantityReferin" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="4">Stock consumption/loses</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="QuantityDistributed"></label></td>
+                                <td>
+                                    <input asp-for="QuantityDistributed" class="form-control text-center" data-bind="textinput:sinStock.QuantityDistributed" />
+                                    <span asp-validation-for="QuantityDistributed" class="text-danger" />
+                                </td>
+                                <td><label asp-for="QuantityTransferred"></label></td>
+                                <td>
+                                    <input asp-for="QuantityTransferred" class="form-control text-center" data-bind="textinput:sinStock.QuantityTransferred" />
+                                    <span asp-validation-for="QuantityTransferred" class="text-danger"></span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Losses"></label></td>
+                                <td>
+                                    <input asp-for="Losses" class="form-control text-center" data-bind="textinput:sinStock.Losses" />
+                                    <span asp-validation-for="Losses" class="text-danger" />
+                                </td>
+                                <td><label asp-for="QuantityReturned"></label></td>
+                                <td>
+                                    <input asp-for="QuantityReturned" class="form-control text-center" data-bind="textinput:sinStock.QuantityReturned" />
+                                    <span asp-validation-for="QuantityReturned" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="ExpectedRecepients"></label></td>
+                                <td>
+                                    <input asp-for="ExpectedRecepients" class="form-control text-center" data-bind="textinput:sinStock.ExpectedRecepients" />
+                                    <span asp-validation-for="ExpectedRecepients" class="text-danger" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <input type="submit" value="Save" class="btn btn-success btn-sm" data-bind="visible:checkInputs" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </form>
+
+
+                <div class="progress" data-bind="visible: sending()">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                         role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100"
+                         style="width: 100%">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $.validator.unobtrusive.parse($('#editStock'));
+</script>

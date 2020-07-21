@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Survy Results";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <ejs-grid id="SurveyResultGrid" actionComplete="actionComplete" allowSorting="true" allowExcelExport="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search","ExcelExport" })" allowPaging="true">
+                <e-data-manager url="/SurInfo/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/SurInfo/Insert"
+                                updateUrl="/SurInfo/Update" removeUrl="/SurInfo/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="indResultId" isIdentity="true" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=false, number=true})"
+                                   textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="categoryId" headerText="Equity" validationRules="@(new { required=true, number=true})" textAlign="Left"
+                                   width="120" editType="dropdownedit" edit="@(new {create="CategoryCreate",read="CategoryRead",
+                                        write ="CategoryWrite",destroy="CategoryDestroy" })"></e-grid-column>
+                    <e-grid-column field="disaggregId" headerText="Disaggregation" validationRules="@(new { required=true, number=true})" textAlign="Left"
+                                   width="120" editType="dropdownedit" edit="@(new {create="DisaggregationCreate",
+                                   read="DisaggregationRead",write="DisaggregationWrite",destroy="DisaggregationDestroy" })"></e-grid-column>
+                    <e-grid-column field="themeId" headerText="Thematic Area" validationRules="@(new { required=true, number=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="indicatorName2" headerText="Indicator" validationRules="@(new { required=true})" textAlign="Left" width="150"></e-grid-column>
+                    <e-grid-column field="indicatorValue" headerText="Result" validationRules="@(new { required=true})" textAlign="Left" width="200"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+}
+<script>
+    var categoryElem;
+    var categoryObj;
+    var disaggregationElem;
+    var disaggregationObj;
+
+    var categoryData;
+    function CategoryCreate() {
+        categoryData = new ej.data.DataManager({
+            url: '/SurInfo/Categories',
+            adaptor: new ej.data.UrlAdaptor(),
+        });
+
+        categoryElem = document.createElement('input');
+        return categoryElem;
+    }
+    function CategoryRead() {
+        return categoryObj.value;
+    }
+    function CategoryDestroy() {
+        categoryObj.destroy();
+    }
+    function CategoryWrite(e) {
+        categoryObj = new ej.dropdowns.DropDownList({
+            dataSource: categoryData,
+            value: e.rowData.categoryId,
+
+            fields: { value: 'categoryId', text: 'categoryName' },
+            change: function () {
+                disaggregationObj.enabled = true;
+                //for filter of dissggregation based on categoryId
+                // This part seems not be working and filtering
+                var tempQuery = new ej.data.Query().where('CategoryId', 'equal', categoryObj.value);
+                disaggregationObj.query = tempQuery;
+                disaggregationObj.text = null;
+                disaggregationObj.dataBind();
+            },
+            placeholder: 'Select an item',
+            floatLabelType: 'Never'
+        });
+        categoryObj.appendTo(categoryElem);
+    }
+
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['indicatorName2'] : 'New';
+        }
+    };
+
+    var disaggregationData
+    function DisaggregationCreate() {
+        disaggregationData = new ej.data.DataManager({
+            url: '/SurInfo/Disaggregation',
+            adaptor: new ej.data.UrlAdaptor(),
+        });
+
+        disaggregationElem = document.createElement('input');
+        return disaggregationElem;
+    }
+    function DisaggregationRead() {
+        return disaggregationObj.value;
+    }
+    function DisaggregationDestroy() {
+        disaggregationObj.destroy();
+    }
+    function DisaggregationWrite(e) {
+        disaggregationObj = new ej.dropdowns.DropDownList({
+            value: e.rowData.disaggregId,
+            dataSource: disaggregationData,
+            fields: { value: 'disaggregId', text: 'disaggregation' },
+            enabled: false,
+            placeholder: 'Select an item',
+            floatLabelType: 'Never'
+        });
+        disaggregationObj.appendTo(disaggregationElem);
+    }
+</script>

@@ -1,0 +1,283 @@
+﻿@model DataSystem.Models.TblMam
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+<style>
+    .glowing {
+        border: 2px solid red;
+        border-radius: 7px;
+    }
+</style>
+
+<div class="modal" id="edit" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Management of Moderate Acute Malnutrition</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" data-bind="submit:editRecord,visible:!sending()">
+                <!-- ko if: dropdownText()==1 -->
+
+                    <table class="table table-condensed table-responsive text-left dt-responsive">
+                        <tbody>
+                            <tr>
+                                <th colspan="2"><b>Beneficiaries</b></th>
+                                <td colspan="4">
+                                    <input id="list" class="form-control" data-bind="textinput:reports.AgeGroup" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- ko if: tbegin()>0 -->
+                                <th colspan="2">Total at the begining of month</th>
+                                <td colspan="4">
+                                    <input asp-for="Totalbegin" class="form-control text-center" data-bind="textinput:reports.Totalbegin" readonly />
+                                    <span asp-validation-for="Totalbegin" class="text-danger" />
+                                </td>
+                                <!-- /ko -->
+                                <!-- ko if: tbegin()<=0 -->
+                                <th colspan="2">Total at the begining of month</th>
+                                <td colspan="4">
+                                    <input asp-for="Totalbegin" class="form-control text-center" data-bind="textinput:reports.Totalbegin" />
+                                    <span asp-validation-for="Totalbegin" class="text-danger" />
+                                </td>
+                                <!-- /ko -->
+
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="6">New Cases</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Zscore23"></label></td>
+                                <td>
+                                    <input asp-for="Zscore23" class="form-control text-center" data-bind="textinput:reports.Zscore23,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!=1}" />
+                                    <span asp-validation-for="Zscore23" class="text-danger" />
+                                </td>
+                                <td><label asp-for="Muac12"></label></td>
+                                <td>
+                                    <input asp-for="Muac12" class="form-control text-center" data-bind="textinput:reports.Muac12,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!=1}" />
+                                    <span asp-validation-for="Muac12" class="text-danger"></span>
+                                </td>
+                                <td><label asp-for="Muac23"></label></td>
+                                <td>
+                                    <input asp-for="Muac23" class="form-control text-center" data-bind="textinput:reports.Muac23,disable:dropdownText()==2" />
+                                    <span asp-validation-for="Muac23" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="TMale"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="TMale" class="form-control text-center" data-bind="textinput:reports.TMale,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!==1}" />
+                                    <span asp-validation-for="TMale" class="text-danger" />
+                                </td>
+                                <td><label asp-for="TFemale"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="TFemale" class="form-control text-center" data-bind="textinput:reports.Muac23,disable:dropdownText()==1,css: { glowing: checkInputs()==false&& dropdownText()!==1}" />
+                                    <span asp-validation-for="TFemale" class="text-danger" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th colspan="2"><label asp-for="ReferIn"></label></th>
+                                <td colspan="4">
+                                    <input asp-for="ReferIn" class="form-control text-center" data-bind="textinput:reports.ReferIn" />
+                                    <span asp-validation-for="ReferIn" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><label asp-for="Absents"></label></td>
+                                <td colspan="4">
+                                    <input asp-for="Absents" class="form-control text-center" data-bind="textinput:reports.Absents,disable:dropdownText()==2" />
+                                    <span asp-validation-for="Absents" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="6">Exits</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Cured"></label></td>
+                                <td>
+                                    <input asp-for="Cured" class="form-control text-center" data-bind="textinput:reports.Cured" />
+                                    <span asp-validation-for="Cured" class="text-danger" />
+                                </td>
+                                <td><label asp-for="Deaths"></label></td>
+                                <td>
+                                    <input asp-for="Deaths" class="form-control text-center" data-bind="textinput:reports.Deaths" />
+                                    <span asp-validation-for="Deaths" class="text-danger" />
+                                </td>
+
+                                <td><label asp-for="Defaulters"></label></td>
+                                <td>
+                                    <input asp-for="Defaulters" class="form-control text-center" data-bind="textinput:reports.Defaulters" />
+                                    <span asp-validation-for="Defaulters" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Transfers"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="Transfers" class="form-control text-center" data-bind="textinput:reports.Transfers" />
+                                    <span asp-validation-for="Transfers" class="text-danger" />
+                                </td>
+                                <td><label asp-for="NonCured"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="NonCured" class="form-control text-center" data-bind="textinput:reports.NonCured" />
+                                    <span asp-validation-for="NonCured" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <!-- ko if: checkOut2()==false -->
+                                    <p>Total exits cannot be greater than admissions total.</p>
+                                    <!-- /ko -->
+                                    <input type="submit" value="Save" class="btn btn-success btn-sm" data-bind="enable:(checkOut2())" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 <!-- /ko -->
+
+                <!-- ko if: dropdownText()==2 -->
+
+                    <table class="table table-condensed table-responsive text-left dt-responsive">
+                        <tbody>
+                            <tr>
+                                <th colspan="2"><b>Beneficiaries</b></th>
+                                <td colspan="4">
+                                    <input id="list" class="form-control" data-bind="textinput:reports.AgeGroup" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- ko if: tbegin()>0 -->
+                                <th colspan="2">Total at the begining of month</th>
+                                <td colspan="4">
+                                    <input asp-for="Totalbegin" class="form-control text-center" data-bind="textinput:reports.Totalbegin" readonly />
+                                    <span asp-validation-for="Totalbegin" class="text-danger" />
+                                </td>
+                                <!-- /ko -->
+                                <!-- ko if: tbegin()<=0 -->
+                                <th colspan="2">Total at the begining of month</th>
+                                <td colspan="4">
+                                    <input asp-for="Totalbegin" class="form-control text-center" data-bind="textinput:reports.Totalbegin" />
+                                    <span asp-validation-for="Totalbegin" class="text-danger" />
+                                </td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="6">New Cases</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Zscore23"></label></td>
+                                <td>
+                                    <input asp-for="Zscore23" class="form-control text-center" data-bind="textinput:reports.Zscore23,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!=1}" />
+                                    <span asp-validation-for="Zscore23" class="text-danger" />
+                                </td>
+
+                                <td><label asp-for="Muac12"></label></td>
+                                <td>
+                                    <input asp-for="Muac12" class="form-control text-center" data-bind="textinput:reports.Muac12,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!=1}" />
+                                    <span asp-validation-for="Muac12" class="text-danger"></span>
+                                </td>
+                                <td><label asp-for="Muac23"></label></td>
+                                <td>
+                                    <input asp-for="Muac23" class="form-control text-center" data-bind="textinput:reports.Muac23,disable:dropdownText()==2,css: { glowing: checkInputs()==false && dropdownText()!=2}" />
+                                    <span asp-validation-for="Muac23" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="TMale"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="TMale" class="form-control text-center" data-bind="textinput:reports.TMale,disable:dropdownText()==1,css: { glowing: checkInputs()==false && dropdownText()!==1}" />
+                                    <span asp-validation-for="TMale" class="text-danger" />
+                                </td>
+                                <td><label asp-for="TFemale"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="TFemale" class="form-control text-center" data-bind="textinput:reports.TFemale,disable:dropdownText()==1,css: { glowing: checkInputs()==false}" onchange="" />
+                                    <span asp-validation-for="TFemale" class="text-danger" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2"><label asp-for="ReferIn"></label></td>
+                                <td colspan="4">
+                                    <input asp-for="ReferIn" class="form-control text-center" data-bind="textinput:reports.ReferIn" />
+                                    <span asp-validation-for="ReferIn" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><label asp-for="Absents"></label></td>
+                                <td colspan="4">
+                                    <input asp-for="Absents" class="form-control text-center" data-bind="textinput:reports.Absents,disable:dropdownText()==2" />
+                                    <span asp-validation-for="Absents" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr style="background-color:#00C0EF">
+                                <th colspan="6">Exits</th>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Cured"></label></td>
+                                <td>
+                                    <input asp-for="Cured" class="form-control text-center" data-bind="textinput:reports.Cured" />
+                                    <span asp-validation-for="Cured" class="text-danger" />
+                                </td>
+                                <td><label asp-for="Deaths"></label></td>
+                                <td>
+                                    <input asp-for="Deaths" class="form-control text-center" data-bind="textinput:reports.Deaths" />
+                                    <span asp-validation-for="Deaths" class="text-danger" />
+                                </td>
+
+                                <td><label asp-for="Defaulters"></label></td>
+                                <td>
+                                    <input asp-for="Defaulters" class="form-control text-center" data-bind="textinput:reports.Defaulters" />
+                                    <span asp-validation-for="Defaulters" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="Transfers"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="Transfers" class="form-control text-center" data-bind="textinput:reports.Transfers" />
+                                    <span asp-validation-for="Transfers" class="text-danger" />
+                                </td>
+
+                                <td><label asp-for="NonCured"></label></td>
+                                <td colspan="2">
+                                    <input asp-for="NonCured" class="form-control text-center" data-bind="textinput:reports.NonCured" />
+                                    <span asp-validation-for="NonCured" class="text-danger" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <!-- ko if: checkInputs()==false -->
+                                    <p>Male and Female should be balanced with total new admissions ([Odema]+[W/H &lt;-3 Z Score ]+[MUAC &lt;115 mm])</p>
+                                    <!-- /ko -->
+                                    <!-- ko if: checkOut()==false -->
+                                    <p>Total exits cannot be greater than admissions total.</p>
+                                    <!-- /ko -->
+
+                                    <input type="submit" value="Save" class="btn btn-success btn-sm" data-bind="enable:(checkInputs() && checkOut())" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 <!-- /ko -->
+            </form>
+                <div class="progress" data-bind="visible: sending()">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                         role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100"
+                         style="width: 100%">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.validator.unobtrusive.parse($('#edit'));
+</script>

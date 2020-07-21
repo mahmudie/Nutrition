@@ -1,0 +1,478 @@
+@{
+    Layout=null;
+}
+    <title>Dashboard</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/logo.ico" />
+    <link href="~/Dash/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Dash/css/components.min.css" rel="stylesheet" />
+    <link href="~/Dash/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/theme/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/theme/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/nutrition.css" />
+    <link rel="stylesheet" type="text/css" href="~/js/datatables.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Rubik|Open+Sans" rel="stylesheet">
+    <!--<link href="https://code.highcharts.com/5.0.0/css/highcharts.css" rel="stylesheet" />-->
+    <style>
+        .row-fluid {
+            height: 100% !important;
+        }
+
+        .dashboard-stat2 {
+            padding-bottom: 0px;
+        }
+
+        .container {
+            background-color: #f5f5f5;
+        }
+
+        .this_small {
+            font-size: 1px;
+        }
+form{
+    background-color:#f5f5f5;
+}
+        .widget-subscribe {
+            margin: 0px;
+            padding: 0px;
+            margin-left: 15px;
+        }
+
+        .backg {
+            border-bottom-color: #6495ed !important;
+            border-bottom-style: solid;
+            border-width: 3px;
+            padding-top: 1px;
+            margin-top: 0px;
+        }
+        .buttonload {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 12px 24px; /* Some padding */
+    font-size: 16px; /* Set a font-size */
+}
+
+/* Add a right margin to each icon */
+.fa {
+    margin-left: -12px;
+    margin-right: 8px;
+}
+         #datatable .left {text-align:left!important;}
+         #othertable .left {text-align:left!important;}
+
+    </style>
+
+<body class="hold-transition skin-green fixed sidebar-collapse sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>NW</b>App</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Nutrition Web App</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+        <ul class="nav navbar-nav hidden-xs">
+            <img src="~/ic.png" height="50">
+        </ul>
+      <div class="navbar-custom-menu">
+
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li >
+            @await Html.PartialAsync("_LoginPartial")
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+     @await Html.PartialAsync("_sidebar")
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title"></h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+            <div class="col-lg-10 col-md-10">
+                <div class="input-group">
+                    <select id="selyear" for="Year" asp-items="@ViewBag.yearm" class="form-control">
+                    </select>
+                    <span class="input-group-btn">
+                    <button id="sendbtn"  onclick="send()" class="btn btn-success btn-block"><i id="send" class=""></i>Get</button>
+                  </span>
+                </div><!-- /input-group -->
+                </div>
+
+                <div class="col-lg-2 col-md-2">
+                        <a href="/dashboard" class="btn btn-info btn-block">><i class="fa fa-lightbulb-o"></i>Shamsi Dashboard</a>
+                </div>
+            </div>
+            <br>
+           
+  <form id="form1" runat="server">
+        <br />
+        <div class="container-fluid" id="dashboard" style="display:none">
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div id="idAdmits" class="dashboard-stat2 backg">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="sadmits" data-counter="counterup" data-value="7800">0</span>
+                                    <small class="font-green-sharp"></small>
+                                </h3>
+                                <small>Total new children admitted</small>
+
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div id="idchild6" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-red-haze">
+                                    <span id="schildunder6" data-counter="counterup" data-value="1349">0</span><small id="sm6"></small>
+                                </h3>
+                                <small>Under 6 new children</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-baby"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div id="idchild23" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-purple-soft">
+                                    <span id="schild623" data-counter="counterup" data-value="1349">0</span><small id="sm23"></small>
+                                </h3>
+                                <small>6 - 23 new children</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div id="idchild2359" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-blue-sharp">
+                                    <span id="schild2459" data-counter="counterup" data-value="1349">0</span><small id="sm59"></small>
+                                </h3>
+                                <small> 24 - 59 new children</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div id="iddischarge" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="sdischarge" data-counter="counterup" data-value="1349">0</span>
+                                </h3>
+                                <small>Total children discharged</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div id="idcured" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="scured" data-counter="counterup" data-value="1349">0</span><small id="scur"></small>
+                                </h3>
+                                <small>Children Cured</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                    <div id="iddeath" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-red-haze">
+                                    <span id="sdeath" data-counter="counterup" data-value="1349">0</span><small id="sdead"></small>
+                                </h3>
+                                <small>Children died</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                    <div id="iddefaults" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="sdefults" data-counter="counterup" data-value="1349">0</span><small id="sdef"></small>
+                                </h3>
+                                <small>Children defaulted</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                    <div id="idnoncured" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="snoncured" data-counter="counterup" data-value="1349">0</span><small id="snon"></small>
+                                </h3>
+                                <small>Children non-cured</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div id="idboys" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="sboys" data-counter="counterup" data-value="1349">0</span><small id="sbo"></small>
+                                </h3>
+                                <small>Total boys admitted</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div id="idgirls" class="dashboard-stat2 ">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span id="sgirls" data-counter="counterup" data-value="1349">0</span><small id="sgir"></small>
+                                </h3>
+                                <small>Total girls admitted</small>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 no-space">
+                    <div class="widget-subscribe">
+                        <span id="sprovinces" data-counter="counterup" data-value="0" class="widget-subscribe-no">0</span>
+                        <p class="widget-subscribe-subtitle widget-title-color-dark-light">
+                            Provinces <br />reported nutrition data
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 no-space">
+                    <div class="widget-subscribe">
+                        <span id="sdistricts" data-counter="counterup" data-value="0" class="widget-subscribe-no">0</span>
+                        <p style="padding-bottom: 0px" class="widget-subscribe-subtitle widget-title-color-dark-light">
+                            Districts<br /> reported nutrition data
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 no-space">
+                    <div class="widget-subscribe">
+                        <span id="sfacilities" data-counter="counterup" data-value="0" class="widget-subscribe-no">0</span>
+                        <p style="padding-bottom: 0px" class="widget-subscribe-subtitle widget-title-color-dark-light">
+                            Health facilities <br /> reported nutrition data
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 no-space">
+                    <div class="widget-subscribe">
+                        <span id="sorgs" data-counter="counterup" data-value="0" class="widget-subscribe-no">0</span>
+                        <p style="padding-bottom: 0px" class="widget-subscribe-subtitle widget-title-color-dark-light">
+                            Organizations  <br />reported nutrition data
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div id="container" style="height:560px;"></div>
+                    <div id="info">
+                        <span class="f32"><span id="flag"></span></span>
+                        <div class="subheader"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div>
+                        <div id="multimap" style="height:560px;"></div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div id="container4"></div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <div id="childrenchart" class="row-fluid"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <div id="indchart" class="row-fluid"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <div id="sexchart" class="row-fluid"></div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div id="showtable" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="table table-responsive">
+                    <table id="datatable"  style="background-color:white"  class="table table-responsive table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Province</th>
+                            <th>Total New <br>  Admitted Children</th>
+                            <th>Cured</th>
+                            <th>Deaths</th>
+                            <th>Defaults</th>
+                            <th>Non Cured</th>
+                            <th>Boys</th>
+                            <th>Girls</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: right" ></tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div id="sparkline" class="table table-responsive">
+                        <table style="background-color:white" id="othertable" class="table table-responsive table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Province</th>
+                                <th>Odema</th>
+                                <th>W/H<-3 ZScore</th>
+                                <th>MUAC <115mm</th>
+                                <th>MUAC≥ 115-<br><125mm</th>
+                                <th>MUAC <230mm</th>
+                                <th>Refer In</th>
+                                <th>Refer Out</th>
+                            </tr>
+                            </thead>
+                            <tbody style="text-align: right"  id="tbody-sparkline"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+        </div>
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+ 
+      </div>
+      <!-- /.tab-pane -->
+  </aside>
+
+</div>
+<!-- ./wrapper -->
+</body>
+
+
+
+<script src="~/Dash/js/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/heatmap.js"></script>
+<script src="https://code.highcharts.com/modules/treemap.js"></script>
+<script src="~/Dash/data/Province.js"></script>
+<script src="~/Dash/js/jquery.number.min.js"></script>
+<script src="~/Dash/js/bootstrap.min.js"></script>
+<script src="~/Dash/js/js.cookie.min.js"></script>
+<script src="~/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="~/theme/plugins/fastclick/fastclick.js"></script>
+<script src="~/Dash/js/jquery.waypoints.min.js"></script>
+<script src="~/Dash/js/jquery.counterup.min.js"></script>
+<script src="~/Dash/data/multimap.js"></script>
+<script src="~/Dash/data/dashm.js"></script>
+<script src="~/theme/dist/js/app.min.js"></script>
+<!--<script src="~/theme/dist/js/demo.js"></script>-->
+
+

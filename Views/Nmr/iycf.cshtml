@@ -1,0 +1,206 @@
+﻿@model DataSystem.Models.TblIycf
+@inject UserManager<ApplicationUser> UserManager
+@{
+	ViewData["Title"] = "Nutrition Monthly Report";
+}
+<div id="popup">
+</div>
+@Html.AntiForgeryToken()
+<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+			  <li ><a asp-action="questions" asp-route-id="@Model.Nmrid">Screening</a> </li>
+			  <li ><a asp-action="samin" asp-route-id="@Model.Nmrid">IPD-SAM</a> </li>
+			  <li ><a asp-action="samout" asp-route-id="@Model.Nmrid">OPD-SAM</a> </li>
+			  <li><a asp-action="opdmam" asp-route-id="@Model.Nmrid">OPD-MAM</a> </li>
+			  <li class="active"><a asp-action="iycfForm" asp-route-id="@Model.Nmrid">Infant and Young Child Feeding</a></li>
+			  <li ><a asp-action="msformv" asp-route-id="@Model.Nmrid">Micronutrients Supplementation</a></li>
+			  <li><a href="/nmr/">Back To List</a> </li>
+
+			</ul>
+		<div class="tab-content">
+			<div class="progress progress-sm active" data-bind="visible:sending()">
+				<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+				  <span class="sr-only">Please Wait ....</span>
+				</div>
+			  </div>
+		<div class="tab-pane active" id="tab_1" data-bind="visible:!sending()">
+			<p>
+				<button class="btn btn-sm btn-success " data-bind="click:newForm,enable:enabled">
+					<span class="glyphicon glyphicon-plus"></span> Create New</button>
+			</p>
+		   <div class="table-responsive" data-bind="visible:dataArray().length>0">
+					<table class="table table-hover table-bordered table-condensed">
+						<thead>
+							 <tr >
+								<th class="text-left">Cause short name</th>
+								<th class="text-center">Mother with Children< 6 month</th>
+								<th class="text-center">Mother with Children 6-24month</th>
+								<th class="text-center">Pregnant women</th>
+								 <th class="text-center">Total</th>
+								<th class="text-center">First Visit</th>
+								<th class="text-center">Re-Visit</th>
+								<th class="text-center">Refer In</th>
+								<th class="text-center">Refer Out</th>
+								<th class="text-center">Actions</th>
+						</thead>
+						<tfoot>
+							<tr>
+								<th  class="text-center">Sum</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[1]"></span>
+								</th>     
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[2]"></span>
+								</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[3]"></span>
+								</th>
+								 <th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[0]"></span>
+								</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[4]"></span>
+								</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[5]"></span>
+								</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[6]"></span>
+								</th>
+								<th class="text-center">
+									<span class="label label-info" data-bind="text:total().sum[7]"></span>
+								</th>
+									<th> </th>
+							</tr>
+						</tfoot>
+						<tbody  class="text-center" data-bind="foreach:dataArray">
+							<tr>
+								<td class="text-left" data-bind="text:causeShortName"></td>
+								<td data-bind="text:mChildU5months"></td>
+								<td data-bind="text:mChild524months"></td>
+								<td data-bind="text:pregnanatwomen"></td>
+								<td data-bind="text:pregnanatwomen+mChild524months+mChildU5months"></td>
+								<td data-bind="text:firstvisit"></td>
+								<td data-bind="text:revisit"></td>
+								<td data-bind="text:referIn"></td>
+								<td data-bind="text:referOut"></td>
+								<td>
+								<div class="row" style="display: inline-block; float: none; white-space: nowrap;">
+								<button class="btn btn-primary btn-xs" data-bind="click:$parent.edit"><span class="glyphicon glyphicon-pencil"></span></button> |
+								<a class="btn btn-danger btn-xs" data-bind="click: $parent.delete"><span class="glyphicon glyphicon-trash"></span></a>
+								</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="display: none" data-bind="visible:dataArray().length==0"
+					 class="alert alert-warning " role="alert">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					There are no reports to display.
+				</div>
+			</div>
+		</div>
+		</div>
+
+<div class="modal fade" id="Edit" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Infant and Young Child Feeding</h4>
+			</div>
+			<div class="modal-body ">
+				<form asp-action="Create" id="form" data-bind="submit:editRecord,visible:!sending()">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Cause Short Name</label>
+							<div class="col-sm-8">
+								<input data-bind="value:model.CauseShortName" class="form-control" readonly/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label asp-for="MChild524months" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="MChild524months" data-bind="value:model.MChild524months" class="form-control" />
+								<span asp-validation-for="MChild524months" class="text-danger" />
+							</div>
+							<label asp-for="MChildU5months" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="MChildU5months" data-bind="value:model.MChildU5months" class="form-control" />
+								<span asp-validation-for="MChildU5months" class="text-danger" />
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label asp-for="Pregnanatwomen" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="Pregnanatwomen" data-bind="value:model.Pregnanatwomen" class="form-control" />
+								<span asp-validation-for="Pregnanatwomen" class="text-danger" />
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label asp-for="Firstvisit" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="Firstvisit" data-bind="value:model.Firstvisit" class="form-control" />
+								<span asp-validation-for="Firstvisit" class="text-danger" />
+							</div>
+
+							<label asp-for="Revisit" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="Revisit" data-bind="value:model.Revisit" class="form-control" />
+								<span asp-validation-for="Revisit" class="text-danger" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label asp-for="ReferIn" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="ReferIn" data-bind="value:model.ReferIn" class="form-control" />
+								<span asp-validation-for="ReferIn" class="text-danger" />
+							</div>
+							<label asp-for="ReferOut" class="col-sm-2 control-label"></label>
+							<div class="col-sm-3">
+								<input asp-for="ReferOut" data-bind="value:model.ReferOut" class="form-control"/>
+								<span asp-validation-for="ReferOut" class="text-danger" />
+							</div>
+						</div>
+						<br/>
+					 <div class="control-group">
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-8">
+								<input type="submit" value="Save" class="btn btn-block btn-success btn-sm" />
+							</div>
+						</div>
+					 </div>
+					</div>
+				</form>
+				<div class="progress" data-bind="visible: sending()">
+					<div class="progress-bar progress-bar-info progress-bar-striped active"
+						 role="progressbar" aria-valuenow="100"
+						 aria-valuemin="0" aria-valuemax="100"
+						 style="width: 100%">
+						<span class="sr-only"></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script src="~/js/notify.min.js"></script>
+	<script src="~/js/ViewModel/iycfVm.js"></script>
+	<script>
+		$(document).ready(function() {
+			var model = new FormViewModel(@Json.Serialize(Model.Nmrid));
+			ko.applyBindings(model);
+		});
+	</script>
+}

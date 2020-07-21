@@ -1,0 +1,169 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.vscmRequestList>
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] =  "Annual Supply Requisition";
+}
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<div class="container-fluid">
+    <h2>@ViewData["Title"]</h2>
+
+    <p>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("administrator") && (user.Unicef==0 && user.Pnd==0))
+        {
+            <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+        }
+    </p>
+    <table id="reps" class="table table-bordered dt-responsive nowrap" width="100%">
+        <thead>
+            <tr>
+                <th class="text-center" data-priority="1">
+                    ID
+                </th>
+                <th class="text-center" data-priority="1">
+                    Implementer
+                </th>
+                <th class="text-center" data-priority="1">
+                    Province
+                </th>
+                <th class="text-center" data-priority="1">
+                    Period/Round
+                </th>
+                <th class="text-center" data-priority="1">
+                    Type of request
+                </th>
+                <th class="text-center">
+                    Date of request
+                </th>
+                <th class="text-center">
+                    Date from
+                </th>
+                <th class="text-center">
+                    Date to
+                </th>
+                <th class="text-center" data-priority="1">
+                    Year/Month From
+                </th>
+                <th class="text-center" data-priority="1">
+                    Year/Month To
+                </th>
+                <th class="text-center">
+                    Requested By
+                </th>
+                <th class="text-center" data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Implementer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Province)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Requesttype)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfRequest)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodFrom)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Yearmonthfrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Yearmonthto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestBy)
+                    </td>
+                    <td>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                        {
+                            <div style="display: inline-block; float: none; white-space: nowrap;">
+                                <a asp-action="Delete" asp-route-id="@item.RequestId" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                | <a asp-action="Edit" asp-route-id="@item.RequestId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="display: inline-block; float: none; white-space: nowrap;">
+                                <a asp-action="Edit" asp-route-id="@item.RequestId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#reps').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                columnDefs: [{
+                    "targets": 5,
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                        }
+                        return "";
+                    }
+                },
+                {
+                    "targets": 6,
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                        }
+                        return "";
+                    }
+                    },
+                {
+                    "targets": 7,
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                        }
+                        return "";
+                    }
+                }]
+            });
+        });
+    </script>
+}

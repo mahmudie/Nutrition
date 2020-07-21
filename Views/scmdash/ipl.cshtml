@@ -1,0 +1,38 @@
+@model IEnumerable<DataSystem.Models.LkpCategory>
+
+@{
+    ViewData["Title"] = "Request details";
+}
+
+<div id="toast_default"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Request details</h3>
+            <ejs-grid id="RequestDetailsGrid" allowSorting="true" allowFiltering="true" allowReordering="true" allowTextWrap="true" allowResizing="true" allowPaging="false">
+                <e-data-manager url="/scmdash/UrlDataSource" adaptor="UrlAdaptor"></e-data-manager>
+                <e-grid-pagesettings pageSizes="true" pageSize="50"></e-grid-pagesettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="type" headerText="Type" validationRules="@(new { required=true, number=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="yearOfRequest" headerText="Year of Request" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="startYear" headerText="Start Year"  allowFiltering="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="startMonth" headerText="Start Month"  allowFiltering="false"textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="endYear" headerText="End Year" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="endMonth" headerText="End Month" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="program" headerText="IMAM Program"  textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="item" headerText="Stock Item" textAlign="Left" width="220"></e-grid-column>
+                    <e-grid-column field="children" headerText="Total Children" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="ballance" headerText="Ballance" allowFiltering="false"textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="newStock" headerText="New Stock"allowFiltering="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="adjustment" headerText="Adj." allowFiltering="false"textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="total" headerText="Total" allowFiltering="false" textAlign="Left" width="80"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+}
+<script>
+</script>

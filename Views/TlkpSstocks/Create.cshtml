@@ -1,0 +1,83 @@
+@model DataSystem.Models.TlkpSstock
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+<h2>Create New Item</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Item" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="Item" class="form-control" />
+                <span asp-validation-for="Item" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Persachet" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="Persachet" class="form-control" />
+                <span asp-validation-for="Persachet" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Buffer" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="Buffer" class="form-control" />
+                <span asp-validation-for="Buffer" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IPDSAMZarib" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="IPDSAMZarib" class="form-control" />
+                <span asp-validation-for="IPDSAMZarib" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="OPDSAMZarib" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="OPDSAMZarib" class="form-control" />
+                <span asp-validation-for="OPDSAMZarib" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Active" />
+                        <label asp-for="Active"></label>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comments" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <ejs-richtexteditor ejs-for="Comments" id="Comments" class="form-control">
+
+                </ejs-richtexteditor>
+                <span asp-validation-for="Comments" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

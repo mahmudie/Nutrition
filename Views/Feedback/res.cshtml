@@ -1,0 +1,40 @@
+@model DataSystem.Models.Feedback
+
+@{
+    ViewData["Title"] = "Response to  Question";
+}
+<div class="container">
+    <h2>Response to  Question</h2>
+
+    <form asp-action="res">
+        <div class="form-horizontal">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Nmrid" />
+            <div class="form-group">
+                <label asp-for="Message" class="col-md-2 control-label"></label>
+                <div class="col-md-8">
+                    <input asp-for="Message" class="form-control" />
+                    <span asp-validation-for="Message" class="text-danger" />
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </form>
+
+    <div>
+    <div>
+        <a asp-controller="Nmr" asp-action="reports" asp-route-nmrid="@Model.Nmrid">Back </a>
+    </div>
+        </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

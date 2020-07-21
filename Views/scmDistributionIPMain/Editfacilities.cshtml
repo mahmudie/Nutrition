@@ -1,0 +1,394 @@
+@model DataSystem.Models.SCM.scmDistributionsIP
+
+@{
+    ViewData["Title"] = "Distribution to HFs";
+}
+@{
+    var drpItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ItemSource2, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "SupplyId", Text = "SupplyName" } };
+    var drpFacilities = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilitySource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityId", Text = "FacilityName" } };
+    var drpFacilitiesType = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilityTypeSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityTypeId", Text = "FacilityTypeName" } };
+    var drpWasteTypes = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.WasteTypeSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "WasteTypeId", Text = "WasteTypeName" } };
+
+}
+
+    <div class="container-fluid">
+        <h2>@ViewData["Title"]</h2>
+        <ejs-tab id="ej2Tab3" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Scrollable" created="tabCreated" animation="ViewBag.animation"></ejs-tab>
+        <script>
+            var tabObj;
+            function tabCreated(args) {
+                tabObj = document.getElementById("ej2Tab3").ej2_instances[0];
+            }
+
+        </script>
+        <div style="display: none" id="Grid1">
+            <form asp-action="Edit">
+                <div class="row col-md-10">
+                    <input type="hidden" id="DistId" asp-for="id" />
+                    <table id="erfacilities" class="table table-condensed">
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="id" disabled class="form-control" />
+                                    <span asp-validation-for="id" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Dist. No
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="distributionId" disabled class="form-control" />
+                                    <span asp-validation-for="distributionId" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Item
+                            </th>
+                            <td>
+                                <div>
+                                    <select asp-items="ViewBag.ItemSource" disabled asp-for="stockId" class="form-control"></select>
+                                    <span asp-validation-for="stockId" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Warehouse
+                            </th>
+                            <td>
+                                <div>
+                                    <select asp-items="@ViewBag.WhSource" disabled asp-for="whId" class="form-control"></select>
+                                    <span asp-validation-for="whId" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Batch No.
+
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="batchNumber" disabled class="form-control" />
+                                    <span asp-validation-for="batchNumber" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Quantity
+
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="quantity" disabled class="form-control" />
+                                    <span asp-validation-for="quantity" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Issue Date
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="issueDate" disabled type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#IssueDate"
+                                           data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                                    <span asp-validation-for="issueDate" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Issue By
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="issueBy" disabled class="form-control" />
+                                    <span asp-validation-for="issueBy" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Issue To
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="issueTo" disabled class="form-control" />
+                                    <span asp-validation-for="issueTo" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group">
+                        @*<div class="col-lg-offset-4 col-md-6">
+                            <button type="button" id="SaveDistribution" class="btn btn-primary">Get Distribution </button>
+                        </div>*@
+                        <div>
+                            <a asp-action="Index">Back </a>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </form>
+        </div>
+        <div style="display: none" id="Grid2">
+            @{
+                List<object> toolbarItems = new List<object>();
+                toolbarItems.Add("Add");
+                toolbarItems.Add("Edit");
+                toolbarItems.Add("Delete");
+                toolbarItems.Add("Update");
+                toolbarItems.Add("Cancel");
+                toolbarItems.Add("ExcelExport");
+                toolbarItems.Add("Search");
+                toolbarItems.Add(new { text = "Insert All", tooltipText = "Insert All Distribution", prefixIcon = "e-check", id = "InsertAll" });
+                toolbarItems.Add(new { text = "Approve", tooltipText = "Approve this request", prefixIcon = "e-check", id = "Approve" });
+                toolbarItems.Add(new { text = "Delete All", tooltipText = "Delete All", prefixIcon = "e-expand", id = "Deletes" });
+            }
+            <ejs-grid id="EditFacility_Grid" allowSorting="true" dataBound="dataBound"  allowTextWrap="true" allowFiltering="true" allowResizing="true" actionBegin="actionBegin" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete})" allowReordering="true" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+                <e-data-manager url="/scmDistributionFacilities/UrlDatasource" adaptor="UrlAdaptor" batchUrl="/scmDistributionFacilities/BatchUpdate"></e-data-manager>
+                <e-grid-editSettings allowAdding=ViewBag.gridAdd allowDeleting="true" allowEditing="true" allowNextRowEdit="true" allowEditOnDblClick="false" mode="Batch" ></e-grid-editSettings>
+                <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" textAlign="Left" width="65"></e-grid-column>
+                    <e-grid-column field="ipdistributionId" headerText="MID" allowEditing="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="facilityId" foreignKeyField="FacilityId" allowEditing="false" headerText="Facility Name" foreignKeyValue="FacilityName"
+                                   dataSource="ViewBag.FacilitySource"   editType="dropdownedit" textAlign="Left" width="250" edit="new {@params = drpFacilities }"></e-grid-column>
+                    <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" allowEditing="false" headerText="Faci. Type" foreignKeyValue="FacilityTypeName"
+                                   dataSource="ViewBag.FacilityTypeSource" editType="dropdownedit" textAlign="Left" width="100" edit="new {@params = drpFacilitiesType }"></e-grid-column>
+
+                    <e-grid-column field="supplyId" foreignKeyField="SupplyId" allowEditing="false" headerText="Stock Item" foreignKeyValue="SupplyName"
+                                   dataSource="ViewBag.ItemSource2" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpItems }"></e-grid-column>
+
+                    <e-grid-column field="program" headerText="Program" allowEditing="false" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="estimation" allowFiltering="false" headerText="Estim." allowEditing="false" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="distribution" allowFiltering="false" headerText="Dist." textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="distributionDate" allowFiltering="false" headerText="Dist. Date"  editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="approve" allowFiltering="false" headerText="Aprvd?" allowEditing="false" textAlign="Left" width="110"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+
+        <div style="display: none" id="Grid3">
+
+            <ejs-grid id="SupplyWaste_Grid" load="load" allowSorting="true" actionComplete="actionComplete" actionBegin="actionBegin"  editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmwastages/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmwastages/Insert" updateUrl="/scmwastages/Update" removeUrl="/scmwastages/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="ipDistributionId" headerText="MID" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="wasteId" foreignKeyField="WasteTypeId" headerText="Waste Type" foreignKeyValue="WasteTypeName" dataSource="ViewBag.WasteTypeSource"
+                                   editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpWasteTypes }"></e-grid-column>
+                    <e-grid-column field="dateWasted" editType="datepickeredit" customFormat="@(new {type = "date", format = "M/d/y" })" headerText="Date Wasted" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="quantity" headerText="Quantity(Carton)" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="reason" headerText="Remarks if any" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="300"></e-grid-column>
+                    <e-grid-column field="actionTaken" headerText="Action Taken" edit="@(new {create = "create2", read = "read2", destroy = "destroy2", write = "write2"})" textAlign="Left" width="300"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+        </div>
+ <script>
+
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 550;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+    function actionBegin(args) {
+
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            //assign value to corresponding key which helps to remove duplicate/conflicts
+            if (this.query.params[0] && this.query.params[0].key === 'ID') {   //Here you have to define the key property
+                this.query.params[0].value = document.getElementById('DistId').value
+            } else {
+                //if you want to send only to controller then use addparams
+                this.query = this.query.addParams("ID", document.getElementById('DistId').value)  // initial time
+                //Key             //Value
+            }
+        }
+    }
+
+
+    var ele;
+    var dObj;
+
+    var ele2;
+    var dObj2;
+
+    function create(args) {
+        ele = document.createElement('textarea');
+       // elem.id = "gridRTE";
+        return ele;
+    }
+
+    function write(args) {
+        div.innerText = args.column.headerText;
+        dObj = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+
+            showCharCount: true, maxLength: 800, placeholder: 'Remarks if any',
+            value: args.rowData.reason == undefined ? "" : args.rowData.reason,
+        });
+        dObj.appendTo(ele);
+    }
+    function destroy() {
+        dObj.destroy();
+    }
+
+    function read(args) {
+        return dObj.value;
+            }
+
+
+    function create2(args) {
+        ele2 = document.createElement('textarea');
+        return ele2;
+    }
+
+    function write2(args) {
+        div.innerText = args.column.headerText;
+        dObj2 = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+
+            showCharCount: true, maxLength: 800, placeholder: 'Action taken',
+            value: args.rowData.actionTaken == undefined ? "" : args.rowData.actionTaken,
+        });
+        dObj2.appendTo(ele2);
+    }
+    function destroy2() {
+        dObj2.destroy();
+    }
+
+    function read2(args) {
+        return dObj2.value;
+    }
+
+   function toolbarClick(args) {
+                var gridObj = document.getElementById("EditFacility_Grid").ej2_instances[0];
+                if (args.item.id === 'InsertAll') {
+                    //gridObj.excelExport();
+                    var para = $('#DistId').val();
+                    var url = "/scmDistributionIPMain/BulkInsert/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'successfully Inserted.',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to insert',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+                }
+                if (args.item.id === 'Approve') {
+                    var response = confirm("Please be carefull. Once approved, you will not be able to undo it back");
+                    if (response == true) {
+                        var para = $('#DistId').val();
+                        var url = "/scmDistributionIPMain/ApproveHFDistribution/" + para;
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: { 'id': para },
+                            success: function (data) {
+                                //$("#loading").hide();
+                                new Noty({
+                                    type: "success",
+                                    layout: "bottomRight",
+                                    text: 'All the records succefully approved',
+                                    visibilityControl: true,
+                                    timeout: 3000,
+                                }).show();
+                                gridObj.refresh();
+                            },
+                        }).fail(function () {
+                            new Noty({
+                                type: "error",
+                                layout: "bottomRight",
+                                text: 'Failed to approve',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show()
+                        }
+                        );
+                    }
+                }
+                if (args.item.id === 'Deletes') {
+                    //gridObj.excelExport();
+                    var response = confirm("Please be carefull. It will only delete non-approved records and once deleted, you will not be able to reverse it back");
+                    if (response == true) {
+                        var para = $('#DistId').val();
+                        var url = "/scmDistributionIPMain/DeleteHFDistribution/" + para;
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: { 'id': para },
+                            success: function (data) {
+                                //$("#loading").hide();
+                                new Noty({
+                                    type: "success",
+                                    layout: "bottomRight",
+                                    text: 'All the records deleted',
+                                    visibilityControl: true,
+                                    timeout: 3000,
+                                }).show();
+                                 gridObj.refresh();
+                            },
+                        }).fail(function () {
+                            new Noty({
+                                type: "error",
+                                layout: "bottomRight",
+                                text: 'Failed to delete',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show()
+                        }
+                        );
+                    }
+                }
+     }
+     function dataBound() {
+         var gridOther = '@(ViewBag.gridOther)';
+         if (gridOther == 0) {
+             this.toolbarModule.enableItems(['InsertAll', 'Approve', 'Deletes'], false);
+         }
+         else {
+             this.toolbarModule.enableItems(['InsertAll', 'Approve', 'Deletes'], true);
+         }
+     } 
+
+    function load(args) { 
+        this.getColumnByField('actionTaken').disableHtmlEncode = false;  
+        this.getColumnByField('reason').disableHtmlEncode = false;  
+    } 
+        </script>

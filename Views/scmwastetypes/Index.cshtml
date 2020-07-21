@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Waste Types";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Waste Types</h3>
+
+            <ejs-grid id="Waste_Grid" allowSorting="true" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmWasteTypes/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmWasteTypes/Insert" updateUrl="/scmWasteTypes/Update" removeUrl="/scmWasteTypes/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="name" headerText="Waste Type Descriptoin" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>

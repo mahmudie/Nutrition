@@ -1,0 +1,38 @@
+@model IEnumerable<DataSystem.Models.SCM.scmRegions>
+
+@{
+    ViewData["Title"] = "Regions";
+}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Regions</h3>
+                <br />
+                <br />
+
+            <ejs-grid id="scmRegionsGrid"  allowSorting="true"  actionComplete="actionComplete"   toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmRegions/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/scmRegions/Insert" updateUrl="/scmRegions/Update" removeUrl="/scmRegions/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="regionId" defaultValue="0" headerText="Region ID" isPrimaryKey="true" isIdentity="true" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="regionLong" headerText="Region Long Name" validationRules="@(new { required=true})" textAlign="Left" width="500"></e-grid-column>
+                    <e-grid-column field="regionShort" headerText="Region Short Name" validationRules="@(new { required=true})" textAlign="Left" width="500"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 450;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['regionShort'] : 'New';
+        }
+    }
+
+</script>

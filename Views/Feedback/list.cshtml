@@ -1,0 +1,169 @@
+@model DataSystem.Models.Feedback
+@{
+    ViewData["Title"] = "Nutrition Monthly Report";
+}
+@inject UserManager<ApplicationUser> UserManager
+
+
+<script src="~/js/ckeditor/ckeditor.js"></script>
+
+<div id="popup">
+</div>
+@Html.AntiForgeryToken()
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs" id="list1">
+        <li><a asp-controller="NMr" asp-action="reports" asp-route-nmrid="@Model.Nmrid">Reports</a> </li>
+
+        <li class="active"><a asp-controller="Feedback" asp-action="list" asp-route-nmrid="@Model.Nmrid">Feedback</a> </li>
+        <li><a asp-controller="NMR" asp-action="adminNmr">Back To List</a> </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1" data-bind="visible:!sending()">
+            <div class="container">
+                <table id="tbl" class="table table-bordered dt-responsive nowrap">
+                    <tbody>
+                        @foreach (var item in Model.items)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @if (item.CommentedBy == UserManager.GetUserName(User))
+                                    {
+                                        <article class="row">
+                                            <div class="form-horizontal ">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body">
+                                                            <header class="text-left">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="comment-user"><i class="fa fa-user danger"></i> @Html.DisplayFor(modelItem => item.CommentedBy)</div>
+                                                                        <div class="comment-date"><i class="fa fa-clock-o danger"></i> @Html.DisplayFor(modelItem => item.CommentDate)</div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p class="text-right">
+                                                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                                                            | <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </header>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="text-left bg-green-gradient">
+                                                                        <p>
+                                                                            @Html.Raw(item.Message)
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    }
+                                    else
+                                    {
+                                        <article class="row">
+                                            <div class="form-horizontal ">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body">
+                                                            <header class="text-left">
+                                                                <div class="col-md-12">
+                                                                    <div class="comment-user"><i class="fa fa-user danger"></i> @Html.DisplayFor(modelItem => item.CommentedBy)</div>
+                                                                    <div class="comment-date"><i class="fa fa-clock-o danger"></i> @Html.DisplayFor(modelItem => item.CommentDate)</div>
+                                                                </div>
+                                                            </header>
+                                                            <div class="text-left alert alert-danger">
+                                                                <p>
+                                                                    @*@Html.DisplayFor(modelItem => item.Message)*@
+                                                                    @Html.Raw(item.Message)
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <form asp-action="Create">
+                    <div class="form-horizontal ">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Nmrid" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-info pb-cmnt-container">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div>
+                                                <textarea asp-for="Message" placeholder="Write your comment here!" class="pb-cmnt-textarea"></textarea>
+                                                <span asp-validation-for="Message" class="text-danger" />
+
+                                                <script type="text/javascript" language="javascript">
+                                                    CKEDITOR.replace(message);
+                                                </script>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-md-offset-6">
+                                                <input type="submit" value="Send" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .pb-cmnt-container {
+        font-family: Lato;
+        margin-top: 100px;
+    }
+
+    .form-group {
+        margin-left: 10px !important;
+        margin-top: 20px !important;
+        margin-right: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .pb-cmnt-textarea {
+        resize: vertical;
+        padding: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: #F5F5F5;
+        height: 120px;
+        width: 100%;
+        border: 1px solid #F2F2F2;
+    }
+
+    .fa-user, .fa-clock-o {
+        font-size: 1.5em;
+        color: #1d68ee;
+    }
+</style>
+@section Scripts{
+
+    @*<script>
+            $('#tbl').DataTable({
+                responsive: true,
+                fixedHeader: true,
+            });
+        </script>*@
+}

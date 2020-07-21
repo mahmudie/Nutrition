@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Survy Results";
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>IP Requests</h3>
+
+            <ejs-grid id="scmIPRequestGrid" allowSorting="true" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel"})" allowPaging="true">
+            <e-data-manager url="/scmIPRequest/UrlDataSource" insertUrl="/scmIPRequest/Insert"
+                                updateUrl="/scmIPRequest/Update" adaptor="UrlAdaptor" removeUrl="/scmIPRequest/Remove"></e-data-manager>
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="requestId" headerText="Request" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="children" headerText="Children" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="currentBalance" visible="@ViewBag.BalanceVisibility"  headerText="Balance" textAlign="Left" width="80"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+
+        </div>
+    </div>
+</div>

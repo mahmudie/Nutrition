@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Email Client";
+}
+@{
+    var drpImpUserItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpUserSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpUserId", Text = "ImpUserName" } };
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Email</h3>
+
+            <ejs-grid id="Grid1" allowSorting="true" load="load" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmEmail/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmEmail/Insert" updateUrl="/scmEmail/Update" removeUrl="/scmEmail/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="distributionId" allowEditing="false" headerText="Main ID" textAlign="Left" width="70"></e-grid-column>
+                    <e-grid-column field="emailToUser" foreignKeyField="ImpUserId" validationRules="@(new { required=true})" headerText="To" foreignKeyValue="ImpUserName"
+                                   dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
+                    <e-grid-column field="emailToEmail" allowEditing="false" headerText="Email" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="emailFrom" allowEditing="false" headerText="Email From" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="message" headerText="Email Message" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="dateSent" headerText="Date Email Sent" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function actionComplete(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 650;
+            }
+        }
+
+        var elem;
+        var dObj;
+
+        function create(args) {
+            elem = document.createElement('textarea');
+            return elem;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 100, placeholder: 'Type something',
+                value: args.rowData.message
+            });
+            dObj.appendTo(elem);
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+
+        function actionBegin(args) {
+            if (args.requestType == "save") {
+                var dialogEditForm = args.form.closest(".e-dialog");
+                ej.popups.createSpinner({ target: dialogEditForm, width: '20px' });
+                ej.popups.showSpinner(dialogEditForm);
+            }
+        }
+
+      function load(args) { 
+        this.getColumnByField('message').disableHtmlEncode = false;  
+    } 
+    </script>
+}

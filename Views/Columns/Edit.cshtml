@@ -1,0 +1,81 @@
+﻿@model DataSystem.Models.GLM.ColumnViewModel
+@{
+    ViewData["Title"] = "Edit Column";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Columns"))
+        {
+            @Html.HiddenFor(m => m.SectionId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.SortOrder, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(m => m.SortOrder)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ColumnType, new { @class = "control-label" })
+                @Html.DropDownListFor(m => m.ColumnType, new SelectList(Model.ColumnTypes, "Key", "Value"), "", new { @class = "form-control js-column-type", @type = "number" })
+                @Html.ValidationMessageFor(m => m.ColumnType)
+            </div>
+
+            <div class="card js-percentage">
+                <div class="card-header"><span class="card-title">Percentage</span></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DividendColumn, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.DividendColumn, new SelectList(Model.DividendColumns, "Id", "Title"), "", new { @class = "form-control js-dividend-column", @type = "number" })
+                        @Html.ValidationMessageFor(m => m.DividendColumn)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DivisorColumn, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.DivisorColumn, new SelectList(Model.DivisorColumns, "Id", "Title"), "", new { @class = "form-control js-divisor-column", @type = "number" })
+                        @Html.ValidationMessageFor(m => m.DivisorColumn)
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Save</button>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        jQuery(document).ready(function ($) {
+            var columnType = $('.js-column-type').val();
+            var $percentage = $('.js-percentage');
+
+            if (columnType == 'standard') {
+                $percentage.css('display', 'none');
+            }
+
+            // enable / disable input-type & yesno-default-option field based on data-type change
+            $(document).on('change', '.js-column-type', function () {
+                var columnType = $(this).val();
+
+                if (columnType == 'percentage') {
+                    $percentage.css('display', 'block');
+                } else {
+                    $percentage.css('display', 'none');
+                }
+            })
+        });
+    </script>
+}

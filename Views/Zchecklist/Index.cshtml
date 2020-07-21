@@ -1,0 +1,42 @@
+@model IEnumerable<DataSystem.Models.lkpChecklist>
+
+@{
+    ViewData["Title"] = "MC Lookups";
+}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>MC Lookups</h3>
+                <br />
+                <br />
+
+            <ejs-grid id="Grid"  allowSorting="true" actionComplete="actionComplete"  toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/Zchecklist/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/Zchecklist/Insert" updateUrl="/Zchecklist/Update" removeUrl="/Zchecklist/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="intId" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="orderId" headerText="Numeric Order" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="stringorder" headerText="Char Order" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="description" headerText="Description" validationRules="@(new { required=true})" textAlign="Left" width="200"></e-grid-column>
+                    <e-grid-column field="descriptionDari" headerText="Description Dari" validationRules="@(new { required=true})" textAlign="Left" width="200"></e-grid-column>
+                    <e-grid-column field="active" headerText="Active" validationRules="@(new { required=true})" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="type" headerText="Type" validationRules="@(new { required=true})" textAlign="Left" width="80"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 750;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['description'] : 'New';
+        }
+    }
+
+</script>

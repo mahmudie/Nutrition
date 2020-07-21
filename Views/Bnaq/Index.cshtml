@@ -1,0 +1,107 @@
+@model IEnumerable<DataSystem.Models.TblBnaq>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BoysScreened)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChwstrainedScreening)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GirlsScreened)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IpdAdmissionsByChws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IpdRutfstockOutWeeks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MamAddminsionByChws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MamRusfstockoutWeeks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoHealthWorkers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpdAdmissionsByChws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpdRutfstockOutWeeks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plwreported)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoysScreened)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChwstrainedScreening)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GirlsScreened)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IpdAdmissionsByChws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IpdRutfstockOutWeeks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MamAddminsionByChws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MamRusfstockoutWeeks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoHealthWorkers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpdAdmissionsByChws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpdRutfstockOutWeeks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plwreported)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Bnaqid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Bnaqid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Bnaqid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

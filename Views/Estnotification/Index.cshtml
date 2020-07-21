@@ -1,0 +1,183 @@
+@{
+    ViewData["Title"] = "Request Submission Notification";
+}
+
+@{
+    var RoudDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RoudSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "RoundId", Text = "RoundName" } };
+    var ProvinceDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "Province" } };
+    var ImpDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpId", Text = "ImpName" } };
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <h3>Request Submission Notification</h3>
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add(new { text = "Receivers", tooltipText = "List of notification receivers", prefixIcon = "e-receivers", id = "Receivers" });
+        }
+        <ejs-grid id="Grid1" allowSorting="true" load="load" selectedRowIndex="0" rowSelected="selected" actionComplete="actionComplete" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/Estnotification/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/Estnotification/Insert" updateUrl="/Estnotification/Update" removeUrl="/Estnotification/Remove"></e-data-manager>
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="roundId" foreignKeyField="RoundId" headerText="Quarter" validationRules="@(new { required=true})" foreignKeyValue="RoundName" dataSource="ViewBag.RoudSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = RoudDropDownList }"></e-grid-column>
+                <e-grid-column field="startDate" headerText="Start Date" validationRules="@(new { required=true})" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="deadlineDate" headerText="Deadline Date" validationRules="@(new { required=true})" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="emailmessage" headerText="Email Message" validationRules="@(new { required=true})"  edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="250"></e-grid-column>
+                <e-grid-column field="completed" defaultValue="0" template="#comptemplate" headerText="Is Completed" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+                <e-grid-column field="datecompleted" headerText="Date Completed" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+
+    <div class="row">
+        <h3>Implementers</h3>
+        <ejs-grid id="Grid2" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+            <e-data-manager url="/Estnotification/CUrlDataSource" adaptor="UrlAdaptor" updateUrl="/Estnotification/CUpdate" removeUrl="/Estnotification/Remove"></e-data-manager>
+            <e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="submissionId" headerText="MainId" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="impId" foreignKeyField="ImpId" headerText="Implementer" validationRules="@(new { required=true})" foreignKeyValue="ImpName" dataSource="ViewBag.ImpSource" editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = ImpDropDownList }"></e-grid-column>
+                <e-grid-column field="provinceId" foreignKeyField="ProvinceId" headerText="Province" validationRules="@(new { required=true})" foreignKeyValue="Province" dataSource="ViewBag.ProvinceSource" editType="dropdownedit" textAlign="Left" width="130" edit="new {@params = ProvinceDropDownList }"></e-grid-column>
+                <e-grid-column field="email" headerText="Emailed" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column headerText="Mail" template="#sendemail" textAlign="Center" width="150"></e-grid-column>
+                <e-grid-column field="datesubmitted" headerText="Date Completed" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="completed" defaultValue="0" template="#comptemplate" headerText="Is Completed" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+
+            </e-grid-columns>
+        </ejs-grid>
+
+    </div>
+</div>
+@section Scripts{
+
+}
+<script id="sendemail" type="text/x-template">
+    <button type="button" class="btn btn-success" onclick="sendemail(event)"><i class="fa fa-send"></i> Send</button>
+</script>
+
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+
+    function selected(args) {
+        @*//var data = @Html.Raw(Json.Serialize(ViewBag.dataSource));*@
+        var id = args.data.id;
+        //var data = "/Estnotification/CUrlDataSource";
+        //If the same Id then it is not saving
+        //Now changin the id
+        //var detaildata = new ej.data.DataManager(data).executeLocal(new ej.data.Query().where("submissionId", "equal", args.data.id, false).take(50));
+        //var grid = document.getElementById("Grid2").ej2_instances[0];  //Get the instance for the detail Grid
+        //grid.dataSource = detaildata;   //Set datasource for detail grid
+        var degrid = document.getElementById("Grid2").ej2_instances[0];       // Child Grid instance
+        degrid.query = new ej.data.Query().where("submissionId", "equal", id, false).take(1);
+    }
+
+    function sendemail(args) {
+        var mailcounter = 0;
+        var previousData;
+        //e.preventDefault();
+        var rowInfo= document.getElementById("Grid2").ej2_instances[0].getRowInfo(args.target);
+        var para = rowInfo.rowData.id;
+        var emilcount= rowInfo.rowData.email;
+        //var para = $('#RequestId').val();
+        var url = "/Estnotification/EmailNotification/" + para;
+        var grid = document.getElementById("Grid2").ej2_instances[0];
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { 'id': para },
+            success: function (data) {
+                //$("#loading").hide();
+                new Noty({
+                    type: "success",
+                    layout: "bottomRight",
+                    text: 'Email successfully sent.',
+                    visibilityControl: true,
+                    timeout: 3000,
+                }).show();
+                       var grid = document.getElementById("Grid2").ej2_instances[0];
+                        grid.refresh();
+            },
+        }).fail(function () {
+            new Noty({
+                type: "error",
+                layout: "bottomRight",
+                text: 'Failed to send email',
+                visibilityControl: true,
+                timeout: 3000,
+            }).show()
+        }
+        );
+    }
+    function toolbarClick(args) {
+        if (args.item.id === 'Receivers') {
+            var url = "/Estnotification/Opennotificationlist/";
+            //window.URL = url;
+            window.location.replace(url);
+        }
+    }
+
+
+            var elem;
+        var dObj;
+
+        function create(args) {
+            elem = document.createElement('textarea');
+            return elem;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 800, placeholder: 'Message something',
+                value: args.rowData.emailmessage
+            });
+            dObj.appendTo(elem);
+
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+
+
+      function load(args) { 
+        this.getColumnByField('emailmessage').disableHtmlEncode = false;  
+    } 
+</script>
+
+<script id="comptemplate" type="text/x-template">
+    ${if(completed==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>
+
+<script id="ntfytemplate" type="text/x-template">
+    ${if(completed==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>

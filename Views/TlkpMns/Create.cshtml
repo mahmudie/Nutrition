@@ -1,0 +1,52 @@
+@model DataSystem.Models.TlkpMn
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <h2>Create</h2>
+    <form asp-action="Create">
+        <div class="form-horizontal">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Mnid" class="col-md-2 control-label"></label>
+                <div class="col-md-5">
+                    <input asp-for="Mnid" class="form-control" />
+                    <span asp-validation-for="Mnid" class="text-danger" />
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <label asp-for="Mnitems" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Mnitems" class="form-control" />
+                        <span asp-validation-for="Mnitems" class="text-danger" />
+                    </div>
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" />
+                                <label asp-for="Active"></label>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-5">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

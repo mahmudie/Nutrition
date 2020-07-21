@@ -1,0 +1,217 @@
+@model DataSystem.Models.ViewModels.qnrViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <h2>New Quarterly Report</h2>
+    <form asp-action="Create">
+        <div class="form-horizontal">
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table class="table table-condensed table-responsive text-left dt-responsive">
+                <tbody>
+                <tr>
+                    <td>
+                        <label asp-for="Province" class="control-label"></label>
+                        <select asp-items="ViewBag.province" id="Prov" asp-for="Province" class="form-control"></select>
+                        <span asp-validation-for="Province" class="text-danger" />
+                    </td>
+                    <td>
+                        <label asp-for="Implementer" class="control-label"></label>
+                        <select asp-items="ViewBag.imp" asp-for="Implementer" class="form-control"></select>
+                        <span asp-validation-for="Implementer" class="text-danger" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                    <label for="District" class="control-label">District</label>
+                    <select for="District" id="District" class="form-control"></select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label asp-for="Year" class="control-label"></label>
+                        <select asp-for="Year" class="form-control">
+                            <option>1395</option>
+                            <option>1396</option>
+                            <option>1397</option>
+                            <option>1398</option>
+                            <option>1399</option>
+                            <option>1400</option>
+                            <option>1401</option>
+                            <option>1402</option>
+                            <option>1403</option>
+                            <option>1404</option>
+                            <option>1405</option>
+                        </select>
+                        <span asp-validation-for="Year" class="text-danger" />
+                    </td>
+                    <td>
+                        <label asp-for="Month" class="control-label"></label>
+                        <select asp-for="Month" class="form-control">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                        <span asp-validation-for="Month" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan ="2">
+                        1. Highlights for quarter (key issues such as stock and access problems, …)
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="Highlights" class="form-control"></textarea>
+                        <span asp-validation-for="Highlights" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2. In-patient program (IPD-SAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2a. Explain the trends of admissions during the quarter, any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="IpdsamAdmissionsTrend" class="form-control"></textarea>
+                        <span asp-validation-for="IpdsamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="IpdsamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="IpdsamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        3.SAM outpatient program (OPD-SAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        3a. Explain the trends of admissions (Jan to June 2015), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="OpdsamAdmissionsTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdsamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="OpdsamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdsamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4.MAM program (OPD-MAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4a. Explain the trends of admissions (Jan to June 2015), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="OpdmamAdmissionsTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdmamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="OpdmamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdmamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        5.IYCF, any issues? Challenges?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="Iycf" class="form-control"></textarea>
+                        <span asp-validation-for="Iycf" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        6.Micronutrient, any issues? Challenges?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea asp-for="Micronutrients" class="form-control"></textarea>
+                        <span asp-validation-for="Micronutrients" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input type="submit" value="Create" class="btn btn-primary btn-block"/>
+                    </th>
+                </tr>
+                <tr></tr>
+                </tbody>
+                </table>
+
+                <hr/>
+                </div>
+</div>
+</form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+        $(document).ready(function () {
+            $('#Prov').change(function () {
+                var url = '@Url.Content("~/")' + "nmr/districts";
+                var ddlsource = '#Prov';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#District').empty();
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#District').html(items);
+                });
+            });
+
+        });
+        </script>
+}

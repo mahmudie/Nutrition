@@ -1,0 +1,235 @@
+@model DataSystem.Models.SCM.vscmDistributiontransfer
+
+@{
+    ViewData["Title"] = "IP to IP Transfers";
+}
+@{
+    var drpwarehouses = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.WarehouseSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "WhId", Text = "WarehouseName" } };
+
+}
+
+<div class="container-fluid">
+    <h2>@ViewData["Title"]</h2>
+    <ejs-tab id="ej2Tab3" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Scrollable" created="tabCreated" animation="ViewBag.animation"></ejs-tab>
+    <script>
+        var tabObj;
+        function tabCreated(args) {
+            tabObj = document.getElementById("ej2Tab3").ej2_instances[0];
+        }
+
+    </script>
+    <div style="display: none" id="Grid1">
+        <form asp-action="Edit">
+            <div class="row col-md-10">
+                <input type="hidden" id="DistId" asp-for="id" />
+                <table id="erfacilities" class="table table-condensed">
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="id" disabled class="form-control" />
+                                <span asp-validation-for="id" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Period Code
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="roundCode" disabled class="form-control" />
+                                <span asp-validation-for="roundCode" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date From
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="periodFrom" disabled class="form-control" />
+                                <span asp-validation-for="periodFrom" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date To
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="periodTo" disabled class="form-control" />
+                                <span asp-validation-for="periodTo" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Warehouse/Consignee
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="warehouseName" disabled class="form-control" />
+                                <span asp-validation-for="warehouseName" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Stock Item
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="item" disabled class="form-control" />
+                                <span asp-validation-for="item" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Batch No.
+
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="batchNumber" disabled class="form-control" />
+                                <span asp-validation-for="batchNumber" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Quantity
+
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="quantity" disabled class="form-control" />
+                                <span asp-validation-for="quantity" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Issue Date
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="issueDate" disabled type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#IssueDate"
+                                       data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                                <span asp-validation-for="issueDate" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="form-group">
+                    <div>
+                        <a asp-action="Index">Back </a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </form>
+    </div>
+    <div style="display: none" id="Grid2">
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+        }
+        <ejs-grid id="GridTransfers" allowSorting="true" load="loadremarks" allowTextWrap="true" allowFiltering="true" allowResizing="true" actionBegin="actionBegin" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowReordering="true" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/scmTransfers/TransferUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmTransfers/Insert" updateUrl="/scmTransfers/Update" removeUrl="/scmwastages/Remove"></e-data-manager>
+            @*<e-grid-editSettings allowAdding=ViewBag.gridAdd allowDeleting="" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
+            <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" visible="false" isPrimaryKey="true" textAlign="Left" width="65"></e-grid-column>
+                <e-grid-column field="ipdistributionId" headerText="MID" visible="false" allowEditing="false" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="whId" foreignKeyField="WhId" headerText="Consignee" foreignKeyValue="WarehouseName"
+                               dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpwarehouses }"></e-grid-column>
+                <e-grid-column field="quantitiy" headerText="Quantitiy" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="transferDate" headerText="Transfer Date" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="remarks" headerText="Remarks if any" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="300"></e-grid-column>
+
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function actionComplete(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 550;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+            }
+
+            if (args.requestType === 'filtering') {
+                var gridObj = document.getElementById('GridTransfers').ej2_instances[0];
+                var item = gridObj.getColumnByField(args.currentFilteringColumn);
+                item.allowFiltering = false;
+                gridObj.refreshColumns();
+            }
+        }
+        function actionBegin(args) {
+            if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+                if (this.query.params[0] && this.query.params[0].key === 'ID') {   //Here you have to define the key property
+                    this.query.params[0].value = document.getElementById('DistId').value
+                } else {
+                    this.query = this.query.addParams("ID", document.getElementById('DistId').value)  // initial time
+                }
+            }
+        }
+
+        var ele;
+        var dObj;
+
+        var ele2;
+        var dObj2;
+
+        function create(args) {
+            ele = document.createElement('textarea');
+            // elem.id = "gridRTE";
+            return ele;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 10000, placeholder: 'Remarks if any',
+                value: args.rowData.remarks == undefined ? "" : args.rowData.remarks,
+            });
+            dObj.appendTo(ele);
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+
+        function loadremarks(args) {
+            this.getColumnByField('remarks').disableHtmlEncode = false;
+        }
+
+
+        $(document).ready(function () {
+            var distributionID = $('#DistId').val();
+            var grid1 = document.getElementById('GridTransfers').ej2_instances[0];
+
+            grid1.filterByColumn("ipdistributionId", "equal", distributionID);
+        });
+    </script>
+}

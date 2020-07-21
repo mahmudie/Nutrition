@@ -1,0 +1,164 @@
+﻿@model DataSystem.Models.GLM.FieldViewModel
+@{
+    ViewData["Title"] = "Edit Field";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+        <a asp-controller="Fields" asp-action="Index" asp-route-SectionId="@ViewBag.SectionId" class="btn btn-link btn-sm">Back to Fields</a>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Fields"))
+        {
+            @Html.HiddenFor(m => m.Id);
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.DataType)
+                @Html.DropDownListFor(m => m.DataType, new SelectList(Model.DataTypes, "Key", "Value"), new { @class = "form-control js-data-type" })
+                @Html.ValidationMessageFor(m => m.DataType)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.InputType)
+                @Html.DropDownListFor(m => m.InputType, new SelectList(Model.InputTypes, "Key", "Value"), new { @class = "form-control js-input-type" })
+                @Html.ValidationMessageFor(m => m.InputType)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsRequired)
+                @Html.DropDownListFor(m => m.IsRequired, new SelectList(Model.IsRequiredOptions, "Key", "Value"), "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.IsRequired)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.YesNoDefaultCaption)
+                @Html.TextBoxFor(m => m.YesNoDefaultCaption, new { @class = "form-control js-yesno-default-caption" })
+                @Html.ValidationMessageFor(m => m.YesNoDefaultCaption)
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Save</button>
+        }
+
+        @if (Model.InputType == "dropdown")
+        {
+            <div class="js-field-options">
+                <div class="clearfix"></div>
+                <hr />
+
+                <div class="card">
+                    <div class="card-header">
+                        Field Options
+                        <a asp-controller="FieldOptions"
+                           asp-action="Create"
+                           asp-route-FieldId="@Model.Id"
+                           class="btn btn-secondary btn-sm float-right">Add Option</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Caption</th>
+                                    <th>Value</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var fo in Model.FieldOptions)
+                                {
+                                    <tr>
+                                        <td>@fo.Caption</td>
+                                        <td>@fo.Value</td>
+                                        <td>
+                                            <a asp-controller="FieldOptions"
+                                               asp-action="Delete"
+                                               asp-route-id="@fo.Id"
+                                               class="btn btn-danger btn-sm float-right">Delete</a>
+
+                                            <a asp-controller="FieldOptions"
+                                               asp-action="Edit"
+                                               asp-route-id="@fo.Id"
+                                               class="btn btn-link btn-sm float-right">Edit</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        jQuery(document).ready(function ($) {
+            // initial settings
+            var dataType = $('.js-data-type').val();
+            var $inputType = $('.js-input-type');
+            var $yesNoDefaultCaption = $('.js-yesno-default-caption');
+            var $fieldOptions = $('.js-field-options');
+
+            if (dataType == 'date' || dataType == 'yesno') {
+                $inputType.attr('disabled', 'disabled');
+            }
+
+            if (dataType != 'yesno') {
+                $yesNoDefaultCaption.attr('disabled', 'disabled');
+            }
+
+            if ($inputType.val() == 'dropdown' && dataType != 'yesno') {
+                $fieldOptions.css('display', 'block');
+            } else {
+                $fieldOptions.css('display', 'none');
+            }
+
+            // enable / disable input-type & yesno-default-option field based on data-type change
+            $(document).on('change', '.js-data-type', function () {
+                var dataType = $(this).val();
+                var $inputType = $('.js-input-type');
+
+                if (dataType == 'date' || dataType == 'yesno') {
+                    $inputType.attr('disabled', 'disabled');
+                } else {
+                    $inputType.removeAttr('disabled');
+                }
+
+                if ($inputType.val() == 'dropdown') {
+                    $fieldOptions.css('display', 'block');
+                } else {
+                    $fieldOptions.css('display', 'none');
+                }
+
+                if (dataType == 'yesno') {
+                    $yesNoDefaultCaption.removeAttr('disabled', 'disabled');
+                } else {
+                    $yesNoDefaultCaption.attr('disabled', 'disabled');
+                }
+            })
+
+            // hide / show field options table based on the the input-type
+            $(document).on('change', '.js-input-type', function () {
+                var dataType = $('.js-data-type').val();
+                var inputType = $('.js-input-type').val();
+                var $fieldOptions = $('.js-field-options');
+
+                if (dataType == 'yesno') {
+                    $fieldOptions.css('display', 'none');
+                }
+
+                if (inputType == 'dropdown' && dataType != 'yesno') {
+                    $fieldOptions.css('display', 'block');
+                } else {
+                    $fieldOptions.css('display', 'none');
+                }
+            });
+        });
+    </script>
+}

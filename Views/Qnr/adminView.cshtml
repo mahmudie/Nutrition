@@ -1,0 +1,142 @@
+@model IEnumerable<DataSystem.Models.ViewModels.qnrDto>
+
+@{
+    ViewData["Title"] = "Quarterly Reports";
+}
+<div class="container">
+    <h2>Quarterly Nutrition Report</h2>
+    <table id="dt" class="table table-bordered dt-responsive nowrap" width="100%">
+        <thead>
+            <tr>
+                <th  data-priority="1"> 
+                    @Html.DisplayNameFor(model => model.Implementer)
+                </th>
+                 <th  data-priority="1"> 
+                    @Html.DisplayNameFor(model => model.Province)
+                </th>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.ReportMonth)
+                </th>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.ReportYear)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReportingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Message
+                </th>
+                <th data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+    
+
+</div>
+
+@section Scripts{
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+      <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                "lengthMenu": [25,50,100],
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "ajax": {
+                    "url": "/Qnr/admindata",
+                    "type": "post"
+                },
+                "columns": [
+                        { "data": "implementer", "name": "Name", "autoWidth": true },
+                        { "data": "province", "name": "Implementer", "autoWidth": true },
+                        { "data": "reportMonth", "name": "Month", "autoWidth": true },
+                        { "data": "reportYear", "name": "Year", "autoWidth": true },
+                        { "data": "reportingDate", "name": "OpeningDate", "autoWidth": true },
+                        { "data": "updated", "autoWidth": true },
+                        { "name": "status", "autoWidth": true },
+                        { "data": "message","name": "message", "autoWidth": true },
+                        { "name": "actions", "autoWidth": true },
+                ],
+
+                "columnDefs": [
+                {
+
+                    "data": "nmrid",
+                    "targets": 8,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "width": "8%",
+                    "render": function (data, type, row) {
+                        return '<div class="row" style="display: inline-block; float: none; white-space: nowrap;"> <a href="/qnr/verify/' + row.qnrid + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a></div>';
+                    }
+                },
+                {
+                    "targets": 4,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY LT") : "";
+                        }
+                        return "";
+                    }
+                },
+                {
+                    "targets": 5,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY LT") : "";
+                        }
+                        return "";
+                    }
+                },
+                {
+                    "targets": 6,
+                    "data": "status",
+                    "class": 'text-center',
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data == 1) {
+                            return '<span class="label label-info">Processing</span>';
+                        }
+                        if (data == 2) {
+                            return '<span class="label label-primary">Updated</span>';
+                        }
+                        if (data == 3) {
+                            return '<span class="label label-success">Verified</span>';
+                        }
+                        if (data == 4) {
+                            return '<span class="label label-danger">Rejected</span>';
+                        }
+                        else{
+                            return '<span class="label label-danger">Unknown</span>';
+                       }
+                    }
+                }
+                ]
+            });
+        })
+    </script>
+
+}

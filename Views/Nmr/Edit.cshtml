@@ -1,0 +1,170 @@
+@model DataSystem.Models.Nmr
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="container">
+    <h2>Edit monthly routines report</h2>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <hr />
+            <div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div>
+            <input type="hidden" asp-for="Nmrid" />
+            <div class="form-group">
+                <label for="fac" class="col-md-2 control-label">Current Facility</label>
+                <div class="col-md-3">
+                    <p id="currentfacility" class="form-control-static">@Model.Facility.FacilityName</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Prov" class="col-md-2 control-label">Province</label>
+                <div class="col-md-3">
+                    <select for="Prov" id="Prov" class="form-control" asp-items="@ViewBag.ProvList"></select>
+                </div>
+                <label for="District" class="col-md-2 control-label">District</label>
+                <div class="col-md-3">
+                    <select asp-items="@ViewBag.DistCode" id="District" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="FacilityId" class="col-md-2 control-label">Facility</label>
+                <div class="col-md-3">
+                    <select asp-for="FacilityId" asp-items="@ViewBag.FacilityId" id="Facility" class="form-control"></select>
+                </div>
+                
+                <label asp-for="isHumanitarian" class="col-md-2 control-label"></label>
+                <div class=" col-md-3">
+                       <select asp-for="isHumanitarian" class="form-control">
+                           <option value="false">No</option>
+                           <option value="true">Yes</option>
+                      </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="HfactiveStatusId" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="HfactiveStatusId" class="form-control" asp-items="ViewBag.HfactiveStatusId"></select>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Year" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="Year" class="form-control">
+                        <option>1395</option>
+                        <option>1396</option>
+                        <option>1397</option>
+                        <option>1398</option>
+                        <option>1399</option>
+                        <option>1400</option>
+                        <option>1401</option>
+                        <option>1402</option>
+                    </select>
+                    <span asp-validation-for="Year" class="text-danger" />
+                </div>
+                <label asp-for="Month" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="Month" class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                    <span asp-validation-for="Month" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreparedBy" class="col-md-2 control-label"></label>
+                <div class="col-md-8">
+                    <input asp-for="PreparedBy" class="form-control" />
+                    <span asp-validation-for="PreparedBy" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Commen" class="col-md-2 control-label"></label>
+                <div class="col-md-8">
+                    <input asp-for="Commen" class="form-control" />
+                    <span asp-validation-for="Commen" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#Prov').change(function () {
+                var url = '@Url.Content("~/")' + "nmr/districts";
+                var ddlsource = '#Prov';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#District').empty();
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#District').html(items);
+                });
+            });
+           $('#District').change(function () {
+                var url = '@Url.Content("~/")' + "nmr/facilities";
+                var ddlsource = '#District';
+                $.getJSON(url, { DistCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#Facility').html(items);
+                });
+            });
+        }); 
+
+        $.getJSON('/nmr/fillHFID', function(data) {
+            $('#currentfacility').text(data[0].provCode +' '+data[0].distCode+' '+data[0].facilityId);
+        });
+
+     $.getJSON('/nmr/fillHFID', function(data) {
+         $('#Prov').val(data[0].provCode.substring(0,2)).blur(function () {
+                var url = '@Url.Content("~/")' + "nmr/districts";
+                var ddlsource = '#Prov';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#District').empty();
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#District').html(items);
+                });
+            });  
+            $('#District').val(data[0].distCode.substring(0,4));             
+     });  
+
+    </script>
+}

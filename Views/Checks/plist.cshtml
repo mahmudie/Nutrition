@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"]="Province submission";
+}
+
+<div class="container-fluid">
+    <hr>
+<h2>Facility report submission by province</h2>
+    <p>
+        <strong>Note:</strong>: This only shows the number of NMR submitted by province per month.<br> Each number indicates total health facilities reported NMR for the specified period.  
+    </p>  
+    <table id ="dt" class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Province</th>
+            <th>Year</th>
+            <th>M1</th>
+            <th>M2</th>
+            <th>M3</th>
+            <th>M4</th>
+            <th>M5</th>
+            <th>M6</th>
+            <th>M7</th>
+            <th>M8</th>
+            <th>M9</th>
+            <th>M10</th>
+            <th>M11</th>
+            <th>M12</th>
+            <th>View</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+@section Scripts
+{
+    <script>
+            $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: false,
+                "lengthMenu":  [[10, 50,100, -1], [ 10, 50,100, "All"]],
+                "processing": true,
+                "serverSide": false,
+                "bStateSave": true,
+                "fnStateSave": function (oSettings, oData) {
+                    localStorage.setItem('dt', JSON.stringify(oData));
+                },
+                "fnStateLoad": function (oSettings) {
+                    return JSON.parse(localStorage.getItem('dt'));
+                },
+                "ordering": true,
+                "ajax": {
+                    "url": "/Checks/plistdata",
+                    "type": "POST"
+                },
+                "columns": [
+                        { "data": "province", "autoWidth": true },
+                        { "data": "year", "autoWidth": true },
+                        { "data": "m1", "autoWidth": true },
+                        { "data": "m2", "autoWidth": true },
+                        { "data": "m3", "autoWidth": true },
+                        { "data": "m4", "autoWidth": true },
+                        { "data": "m5", "autoWidth": true },
+                        { "data": "m6", "autoWidth": true },
+                        { "data": "m7", "autoWidth": true },
+                        { "data": "m8", "autoWidth": true },
+                        { "data": "m9", "autoWidth": true },
+                        { "data": "m10", "autoWidth": true },
+                        { "data": "m11", "autoWidth": true },
+                        { "data": "m12", "autoWidth": true }
+               ],
+            "columnDefs": [
+                {
+                    "data": "provId",
+                    "targets": 14,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "width": "8%",
+                    "render": function (data, type, row) {
+                        return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a href="/Checks/hlistm?provId=' + row.provId + '" class="btn btn-primary btn-xs"><span class="fa fa-list"></span></a></div>';
+                    }
+                }
+            ],
+            });
+            })
+    </script>
+}

@@ -1,0 +1,148 @@
+
+@model DataSystem.Models.ViewModels.PivotTable.FormatFilterReq
+
+@{
+    ViewData["Title"] = "OPD-MAM Report by Province";
+}
+
+<div class="container">
+
+    <form name="pivotForm" id="pivotForm" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-8  col-md-offset-2">
+                <h2>
+                    OPD-MAM Report by Province
+                </h2>
+                <br /><br />
+                <h1></h1><h1></h1>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProvCode" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <select asp-for="ProvCode" asp-items="@ViewBag.ProvList" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Implementer" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <select asp-for="Implementer"  class="form-control">
+                    <option value="0">Select</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="YearFrom" class="col-md-2 control-label">Year From</label>
+            <div class="col-md-3">
+                <select asp-for="YearFrom" asp-items="@ViewBag.FormatYearList" class="form-control"></select>
+            </div>
+            <label for="Type" class="col-md-2 control-label">Month From</label>
+            <div class="col-md-3">
+                <select id="monthFrom" asp-for="MonthFrom" for="Type" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3 </option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8)</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="YearTo" class="col-md-2 control-label">Year To</label>
+            <div class="col-md-3">
+                <select asp-for="YearTo" asp-items="@ViewBag.FormatYearToList" class="form-control"></select>
+            </div>
+            <label for="Type" class="col-md-2 control-label">Month To</label>
+            <div class="col-md-3">
+                <select id="monthTo" asp-for="MonthTo" for="Type" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3 </option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8)</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <button id="sendbtn" type="button" onclick="send()" class="btn btn-success btn-block">Generate</button>
+            </div>
+        </div>
+        <br /><br />
+    </form>
+    <hr />
+</div>
+
+@section Scripts{
+    <script>
+             function send() {
+                 //event.preventDefault()
+                 //var e = document.getElementById("ProvCode");
+                 var provCode = Number($("#ProvCode").val());
+
+                 var yearFrom =  Number($("#YearFrom").val());
+
+                 var yearTo = Number($("#YearTo").val());
+
+                 var monthFrom = Number($("#monthFrom").val());
+
+                 var monthTo = Number($("#monthTo").val());
+                 var impl = Number($("#Implementer").val());
+
+                 var TimeFrom = yearFrom * 100 + monthFrom;
+                 var TimeTo = yearTo * 100 + monthTo;
+
+                 if (provCode == 0) {
+                     alert("Please select a province");
+                 }
+                 else if (impl == 0)
+                 {
+                     alert("Please select implementer");
+                 }
+                 else if (yearFrom == 0) {
+                     alert("Please select year from");
+                 }
+                 else if (yearTo == 0) {
+                     alert("Please select year to");
+                 }
+                 else if (TimeFrom > TimeTo) {
+                     alert("Year From and Month From " + TimeFrom + " cannot be bigger than Year To and Month To " + TimeTo + " ! Please correct it.");
+                 }
+
+                 else {
+                     document.pivotForm.action = "/FacilityReport/ProvinceReport";
+                     document.pivotForm.submit();
+                 }
+             };
+
+       $(document).ready(function () {
+           $('#ProvCode').change(function () {
+               var url = '@Url.Content("~/")' + "FacilityReport/provimplementers";
+               var ddlsource = '#ProvCode';
+               $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                   $('#Implementer').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                   $('#Implementer').html(items);
+                });
+            });
+        });
+    </script>
+}
+

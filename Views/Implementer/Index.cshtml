@@ -1,0 +1,106 @@
+@model IEnumerable<DataSystem.Models.Implementers>
+
+@{
+    ViewData["Title"] = "Implementers";
+}
+<div class="container">
+    <h3>Implementers</h3>
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+
+    <table id="implementers" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.ImpCode)
+                </th>
+
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.ImpAcronym)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImpName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImpNameDari)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImpNamePashto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImpStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AfghanistanAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OtherAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationDate)
+                </th>
+                <th data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImpCode)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImpAcronym)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImpName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImpNameDari)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImpNamePashto)
+                    </td>
+                    <td>
+                        @if (item.ImpStatus == true)
+                        {
+                            <span class="label label-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Inactive</span>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AfghanistanAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OtherAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                    </td>
+                    <td class="text-center">
+                        <div style="display: inline-block; float: none; white-space: nowrap;">
+                            <a asp-action="Delete" asp-route-id="@item.ImpCode" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                            | <a asp-action="Edit" asp-route-id="@item.ImpCode" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $('#implementers').DataTable({
+                responsive: true,
+            });
+        });
+    </script>
+
+}

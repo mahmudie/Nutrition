@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataSystem.Models.GLM.DataForm>
+@{
+    ViewData["Title"] = "DataForms";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+
+        <a asp-controller="DataForms" asp-action="Create" class="btn btn-success btn-sm float-right">Add DataForm</a>
+    </div>
+
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model)
+                {
+                <tr>
+                    <td>
+                        <a asp-controller="DataForms" asp-action="Edit" asp-route-id="@row.Id">
+                            @row.Name
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-controller="DataForms"
+                           asp-action="Delete"
+                           asp-route-id="@row.Id"
+                           class="btn btn-danger btn-sm float-right">Delete</a>
+
+                        <a asp-controller="Sections"
+                           asp-action="Index"
+                           asp-route-DataFormId="@row.Id"
+                           class="btn btn-link btn-sm float-right">Sections</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

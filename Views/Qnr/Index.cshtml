@@ -1,0 +1,106 @@
+@model IEnumerable<DataSystem.Models.ViewModels.qnrDto>
+
+@{
+    ViewData["Title"] = "Quarterly Reports";
+}
+<div class="container">
+    <h2>Nutrition Quarterly Reports</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    <table id="dt" class="table table-bordered dt-responsive nowrap" width="100%">
+        <thead>
+            <tr>
+                <th  data-priority="1"> 
+                    @Html.DisplayNameFor(model => model.Implementer)
+                </th>
+                <th data-priority="1">
+                   Quarter
+                </th>
+                <th data-priority="1">
+                   Year
+                </th>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.Province)
+                </th>
+                <th >
+                   Comment
+                </th>
+                <th data-priority="1">
+                   Reported At
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+
+               <th data-priority="1">
+                    status
+                </th>
+                <th data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Implementer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportMonth)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Province)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                     <td>@switch(item.status)
+                        {
+                            case 1:
+                               <span class="label label-info">Processing</span>
+                            break;
+                            case 2:
+                               <span class="label label-primary">Updated</span>
+                            break;
+                            case 3:
+                               <span class="label label-success">Accepted</span>
+                            break;
+                            case 4:
+                               <span class="label label-danger">Rejected</span>
+                            break;                                                      
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if(item.status!=3){
+                        <div style="display: inline-block; float: none; white-space: nowrap;">
+                            <a asp-action="Delete" asp-route-id="@item.Qnrid" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                            | <a asp-action="Edit" asp-route-id="@item.Qnrid" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                        </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+            });
+        });
+    </script>
+}

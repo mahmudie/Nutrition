@@ -1,0 +1,522 @@
+@model DataSystem.Models.HP.HpMonitoring
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@using MyProject.MyExtensions
+@{
+    ViewData["Title"] = "Community(HP) Monitoring";
+}
+@{
+    var drpResponses = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.Responses, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ResponseId", Text = "ResponseName" } };
+    var drpHpCbnpKits = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.HpCbnpKits, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonitoringId", Text = "MonitoringName" } };
+    var drpHpScreenings = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.HpScreenings, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonitoringId", Text = "MonitoringName" } };
+    var drpHpCapacityBuildings = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.HpCapacityBuildings, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonitoringId", Text = "MonitoringName" } };
+    var drpHpCommunityNutritionPlans = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.HpCommunityNutritionPlans, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonitoringId", Text = "MonitoringName" } };
+    var drpHpRecommendations = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.HpRecommendations, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonitoringId", Text = "MonitoringName" } };
+}
+<div class="container-fluid">
+    <h2>Edit Community(HP) Monitoring</h2>
+    <br />
+    <ejs-tab id="ej2Tab" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Popup" animation="ViewBag.animation"></ejs-tab>
+
+    <div style="display: none" id="Grid1">
+        <form asp-action="Edit">
+            <div class="row col-md-10">
+                <input type="hidden" id="hpmId" asp-for="HpmId" />
+                <table id="erfacilities" class="table table-condensed">
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="HpmId" class="form-control" disabled />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Monitoring Date
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-datepicker id="DateOfMonitoring" format="MM/dd/yyyy" placeholder="Pick a date" min="@ViewBag.minDate" max="@ViewBag.maxDate" ejs-for="DateOfMonitoring"></ejs-datepicker>
+                                <span asp-validation-for="DateOfMonitoring" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Data Collector Name
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="DataCollectorName" type="text" class="form-control" placeholder="type name of data collector(s) here" />
+                                <span asp-validation-for="DataCollectorName" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Respondent Name
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="RespondentName" type="text" class="form-control" placeholder="type name of respondent here" />
+                                <span asp-validation-for="RespondentName" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Respondent Contact #
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="RespondentContactNo" type="text" class="form-control" placeholder="type phone number of respondent here" />
+                                <span asp-validation-for="RespondentContactNo" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Province
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="Province" ejs-for="ProvinceId" autofill="true" dataSource="@ViewBag.Provinces" allowCustom="false" placeholder="Select a Province" change="provincechange" popupHeight="auto">
+                                    <e-combobox-fields text="Name" value="ProvinceId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            District
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="District" ejs-for="DistrictId" autofill="true" enabled="false" dataSource="@ViewBag.Districts" placeholder="Select a District" popupHeight="auto" change="districtchange">
+                                    <e-combobox-fields text="Name" value="DistrictId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Facility Id and Name
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="Facility" ejs-for="FacilityId" autofill="true" enabled="false" dataSource="@ViewBag.Facilities" placeholder="Select a Facility" change="facilitychange" popupHeight="auto">
+                                    <e-combobox-fields text="Name" value="FacilityId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            BPHS NGO Name
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="ImpId" ejs-for="ImpId" autofill="true" enabled="false" dataSource="@ViewBag.NGOs" placeholder="Select an NGOs" popupHeight="auto">
+                                    <e-combobox-fields text="Name" value="ImpId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Other IPs/NGO Name
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="OtherImpId" ejs-for="OtherImpId" autofill="true" dataSource="@ViewBag.NGOs2" placeholder="Select another NGO" popupHeight="300px">
+                                    <e-combobox-fields text="Name" value="OtherImpId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Health Post Name
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="HPName" type="text" class="form-control" placeholder="Type Health Post Name" />
+                                <span asp-validation-for="HPName" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Health Post Code
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="HPCode" type="text" class="form-control" placeholder="Type Health Post Code" />
+                                <span asp-validation-for="HPCode" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="form-group">
+                    <div class="col-lg-offset-5 col-md-6">
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                        {
+                            <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                        }
+                    </div>
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </form>
+    </div>
+    <div style="display: none" id="Grid2">
+            <ejs-grid id="HPGrid2" allowSorting="true" allowFiltering="true" load="load" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.gridAdd,AllowEditing=ViewBag.gridEdit,AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/HP/HpCbnpKitsUrlDatasource" adaptor="UrlAdaptor" insertUrl="/HP/HpCbnpKitsInsert" updateUrl="/HP/HpCbnpKitsUpdate" removeUrl="/HP/HpCbnpKitsRemove"></e-data-manager>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" allowEditing="false" isIdentity="true" isPrimaryKey="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="hpmId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="monitoringId" foreignKeyField="MonitoringId" allowEditing="false" visible="true" headerText="Question" textAlign="Left" width="350" foreignKeyValue="MonitoringName"
+                                   dataSource="ViewBag.HpCbnpKits" editType="dropdownedit" edit="new {@params = drpHpCbnpKits }"></e-grid-column>
+                    <e-grid-column field="responseId" foreignKeyField="ResponseId" validationRules="@(new { required=true})" headerText="Response" foreignKeyValue="ResponseName"
+                                   dataSource="ViewBag.Responses" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpResponses }"></e-grid-column>
+                    <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="350"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+    </div>
+    <div style="display: none" id="Grid3">
+        <ejs-grid id="HPGrid3" allowSorting="true" allowFiltering="true" load="load" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.gridAdd,AllowEditing=ViewBag.gridEdit,AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <e-data-manager url="/HP/HpScreeningUrlDatasource" adaptor="UrlAdaptor" insertUrl="/HP/HpScreeningInsert" updateUrl="/HP/HpScreeningUpdate" removeUrl="/HP/HpScreeningRemove"></e-data-manager>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" allowEditing="false" isIdentity="true" isPrimaryKey="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="hpmId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="monitoringId" foreignKeyField="MonitoringId" allowEditing="false" visible="true" headerText="Question" textAlign="Left" width="550" foreignKeyValue="MonitoringName"
+                               dataSource="ViewBag.HpScreenings" editType="dropdownedit" edit="new {@params = drpHpScreenings }"></e-grid-column>
+                <e-grid-column field="responseId" foreignKeyField="ResponseId" validationRules="@(new { required=true})" headerText="Response" foreignKeyValue="ResponseName"
+                               dataSource="ViewBag.Responses" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpResponses }"></e-grid-column>
+                <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="250"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div style="display: none" id="Grid4">
+        <ejs-grid id="HPGrid4" allowSorting="true" allowFiltering="true" load="load" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.gridAdd,AllowEditing=ViewBag.gridEdit,AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <e-data-manager url="/HP/HpCapacityBuildingUrlDatasource" adaptor="UrlAdaptor" insertUrl="/HP/HpCapacityBuildingInsert" updateUrl="/HP/HpCapacityBuildingUpdate" removeUrl="/HP/HpCapacityBuildingRemove"></e-data-manager>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" allowEditing="false" isIdentity="true" isPrimaryKey="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="hpmId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="monitoringId" foreignKeyField="MonitoringId" allowEditing="false" visible="true" headerText="Question" textAlign="Left" width="350" foreignKeyValue="MonitoringName"
+                               dataSource="ViewBag.HpCapacityBuildings" editType="dropdownedit" edit="new {@params = drpHpCapacityBuildings }"></e-grid-column>
+                <e-grid-column field="responseId" foreignKeyField="ResponseId" validationRules="@(new { required=true})" headerText="Response" foreignKeyValue="ResponseName"
+                               dataSource="ViewBag.Responses" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpResponses }"></e-grid-column>
+                <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="350"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div style="display: none" id="Grid5">
+        <ejs-grid id="HPGrid5" allowSorting="true" allowFiltering="true" load="load" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.gridAdd,AllowEditing=ViewBag.gridEdit,AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <e-data-manager url="/HP/HpCommunityNutritionPlanUrlDatasource" adaptor="UrlAdaptor" insertUrl="/HP/HpCommunityNutritionPlanInsert" updateUrl="/HP/HpCommunityNutritionPlanUpdate" removeUrl="/HP/HpCommunityNutritionPlanRemove"></e-data-manager>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" allowEditing="false" isIdentity="true" isPrimaryKey="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="hpmId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="monitoringId" foreignKeyField="MonitoringId" allowEditing="false" visible="true" headerText="Question" textAlign="Left" width="350" foreignKeyValue="MonitoringName"
+                               dataSource="ViewBag.HpCommunityNutritionPlans" editType="dropdownedit" edit="new {@params = drpHpCommunityNutritionPlans }"></e-grid-column>
+                <e-grid-column field="responseId" foreignKeyField="ResponseId" validationRules="@(new { required=true})" headerText="Response" foreignKeyValue="ResponseName"
+                               dataSource="ViewBag.Responses" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpResponses }"></e-grid-column>
+                <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="350"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div style="display: none" id="Grid6">
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add(new { text = "Delete Unused", tooltipText = "Delete All Unused rows", prefixIcon = "e-expand", id = "Deletes" });
+        }
+        <ejs-grid id="HPGrid6" allowSorting="true" load="load2" actionBegin="actionBegin" toolbarClick="toolbarClick"  allowTextWrap="true" allowFiltering="true" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=false,AllowEditing=ViewBag.gridEdit,AllowDeleting = false,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/HP/HpRecommendationsDatasource" adaptor="UrlAdaptor" insertUrl="/HP/HpRecommendationsInsert" updateUrl="/HP/HpRecommendationisUpdate" removeUrl="/HP/HpRecommendationsRemove"></e-data-manager>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isIdentity="true" isPrimaryKey="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="hpmId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="monitoringId" foreignKeyField="MonitoringId" visible="true" headerText="Recommended action" textAlign="Left" width="200" foreignKeyValue="MonitoringName"
+                               dataSource="ViewBag.HpRecommendations" editType="dropdownedit" edit="new {@params = drpHpRecommendations }"></e-grid-column>
+                <e-grid-column field="keyFindings" headerText="Key Findings (Max 2)" edit="@(new {create = "createK", read = "readK", destroy = "destroyK", write = "writeK"})" validationRules="@(new { required=true})" textAlign="Left" width="150"></e-grid-column>
+                <e-grid-column field="responsiblePersonUnit" headerText="Responsible Person" validationRules="@(new { required=true})" textAlign="Left" width="140"></e-grid-column>
+                <e-grid-column field="contributingPersonUnit" headerText="Contributing Person" validationRules="@(new { required=true})" textAlign="Left" width="140"></e-grid-column>
+                <e-grid-column field="deadline" headerText="Deadline" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="recommendationStatus" headerText="Recommendation Status" edit="@(new {create = "creater", read = "readr", destroy = "destroyr", write = "writer"})" validationRules="@(new { required=true})" textAlign="Left" width="200"></e-grid-column>
+                <e-grid-column field="dateOfCompletion" headerText="Date Of Completion" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="150"></e-grid-column>
+                <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="350"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+
+    //Filter sub grids
+    $(document).ready(function () {
+        var HPMoniId = $('#hpmId').val();
+        var grid2 = document.getElementById('HPGrid2').ej2_instances[0];
+        var grid3 = document.getElementById('HPGrid3').ej2_instances[0];
+        var grid4 = document.getElementById('HPGrid4').ej2_instances[0];
+        var grid5 = document.getElementById('HPGrid5').ej2_instances[0];
+        var grid6 = document.getElementById('HPGrid6').ej2_instances[0];
+
+        grid2.filterByColumn("hpmId", "equal", HPMoniId);
+        grid3.filterByColumn("hpmId", "equal", HPMoniId);
+        grid4.filterByColumn("hpmId", "equal", HPMoniId);
+        grid5.filterByColumn("hpmId", "equal", HPMoniId);
+        grid6.filterByColumn("hpmId", "equal", HPMoniId);
+    });
+    // Change size of the dialog form
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+        }
+
+        ////Disable filtering of sub-grids
+        if (args.requestType === 'filtering') {
+            var gridObj = document.getElementById('HPGrid2').ej2_instances[0];
+            var item = gridObj.getColumnByField(args.currentFilteringColumn);
+            item.allowFiltering = false;
+            gridObj.refreshColumns();
+
+            var gridObj2 = document.getElementById('HPGrid3').ej2_instances[0];
+            var item2 = gridObj2.getColumnByField(args.currentFilteringColumn);
+            item2.allowFiltering = false;
+            gridObj2.refreshColumns();
+
+            var gridObj3 = document.getElementById('HPGrid4').ej2_instances[0];
+            var item3 = gridObj3.getColumnByField(args.currentFilteringColumn);
+            item3.allowFiltering = false;
+            gridObj3.refreshColumns();
+
+            var gridObj4 = document.getElementById('HPGrid5').ej2_instances[0];
+            var item4 = gridObj4.getColumnByField(args.currentFilteringColumn);
+            item4.allowFiltering = false;
+            gridObj4.refreshColumns();
+
+            var gridObj5 = document.getElementById('HPGrid6').ej2_instances[0];
+            var item5 = gridObj5.getColumnByField(args.currentFilteringColumn);
+            item5.allowFiltering = false;
+            gridObj5.refreshColumns();
+        }
+    }
+
+    function provincechange() {
+        var facility = document.getElementById('Facility').ej2_instances[0];
+        var district = document.getElementById('District').ej2_instances[0];
+        var province = document.getElementById('Province').ej2_instances[0];
+        // disable the state DropDownList
+        district.enabled = true;
+        // frame the query based on selected value in Province DropDownList.
+        var tempQuery = new ej.data.Query().where('ProvinceId', 'equal', province.value);
+        // set the framed query based on selected value in province DropDownList.
+        district.query = tempQuery;
+        // set null value to state DropDownList text property
+        district.text = null;
+        // bind the property changes to state DropDownList
+        district.dataBind();
+        // set null value to city DropDownList text property
+        facility.text = null;
+        // disable the city DropDownList
+        facility.enabled = false;
+        // bind the property changes to City DropDownList
+        facility.dataBind();
+    }
+
+    function districtchange() {
+        var facility = document.getElementById('Facility').ej2_instances[0];
+        var district = document.getElementById('District').ej2_instances[0];
+        facility.enabled = true;
+        // Query the data source based on state DropDownList selected value
+        var tempQuery1 = new ej.data.Query().where('DistrictId', 'equal', district.value);
+        // set the framed query based on selected value in city DropDownList.
+        facility.query = tempQuery1;
+        //clear the existing selection
+        facility.text = null;
+        // bind the property change to city DropDownList
+        facility.dataBind();
+    }
+
+    function facilitychange() {
+        var implementers = document.getElementById('Implementers').ej2_instances[0];
+        var facility = document.getElementById('Facility').ej2_instances[0];
+        implementers.enabled = true;
+        // Query the data source based on state DropDownList selected value
+        var tempQuery1 = new ej.data.Query().where('FacilityId', 'equal', facility.value);
+        // set the framed query based on selected value in city DropDownList.
+        implementers.query = tempQuery1;
+        //clear the existing selection
+        implementers.text = null;
+        // bind the property change to city DropDownList
+        implementers.dataBind();
+    }
+    // Ricktext editor for HPdbnp Kits
+
+    var elem;
+    var ele;
+    var dObj;
+
+    function create(args) {
+        ele = document.createElement('textarea');
+        // elem.id = "gridRTE";
+        return ele;
+    }
+
+    function write(args) {
+        div.innerText = args.column.headerText;
+        dObj = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+            showCharCount: true, maxLength: 100000, placeholder: 'Write Remarks here',
+            header:'Remarks',
+            value: args.rowData.remarks == undefined ? "" : args.rowData.remarks,
+        });
+        dObj.appendTo(ele);
+    }
+    function destroy() {
+        dObj.destroy();
+    }
+
+    function read(args) {
+        return dObj.value;
+    }
+
+    //Key findings
+    
+    var elemk;
+    var elek;
+    var dObjk;
+
+    function createK(args) {
+        elek = document.createElement('textarea');
+        // elem.id = "gridRTE";
+        return elek;
+    }
+
+    function writeK(args) {
+        div.innerText = args.column.headerText;
+        dObjk = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+            showCharCount: true, maxLength: 100000, placeholder: 'Write Key Findings here',
+            value: args.rowData.keyFindings == undefined ? "" : args.rowData.keyFindings,
+        });
+        dObjk.appendTo(elek);
+    }
+    function destroyK() {
+        dObjk.destroy();
+    }
+
+    function readK(args) {
+        return dObjk.value;
+    }
+
+//Key recommendationStatus
+    
+    var elemr;
+    var eler;
+    var dObjr;
+
+    function creater(args) {
+        eler = document.createElement('textarea');
+        // elem.id = "gridRTE";
+        return eler;
+    }
+
+    function writer(args) {
+        div.innerText = args.column.headerText;
+        dObjr = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+            showCharCount: true, maxLength: 100000, placeholder: 'Write Recommendation Status here',
+            value: args.rowData.recommendationStatus == undefined ? "" : args.rowData.recommendationStatus,
+        });
+        dObjr.appendTo(eler);
+    }
+    function destroyr() {
+        dObjr.destroy();
+    }
+
+    function readr(args) {
+        return dObjr.value;
+    }
+    function load(args) {
+        this.getColumnByField('remarks').disableHtmlEncode = false;
+    }
+    function load2(args) {
+        this.getColumnByField('remarks').disableHtmlEncode = false;
+        this.getColumnByField('recommendationStatus').disableHtmlEncode = false;
+        this.getColumnByField('keyFindings').disableHtmlEncode = false;
+    } 
+
+    function actionBegin(args) {
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            //assign value to corresponding key which helps to remove duplicate/conflicts
+            if (this.query.params[0] && this.query.params[0].key === 'ID') {   //Here you have to define the key property
+                this.query.params[0].value = document.getElementById('hpmId').value
+            } else {
+                //if you want to send only to controller then use addparams
+            this.query.addParams("ID", document.getElementById('hpmId').value)  // initial time
+                //Key             //Value
+            }
+        }
+    }
+
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("HPGrid6").ej2_instances[0];
+        if (args.item.id === 'Deletes') {
+            var response = confirm("Please be carefull. Once deleted, you will not be able to undo it back");
+            if (response == true) {
+                //gridObj.excelExport();
+                var para = $('#hpmId').val();
+                var url = "/HP/DeleteRecommendation/" + para;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { 'id': para },
+                    success: function (data) {
+                        //$("#loading").hide();
+                        new Noty({
+                            type: "success",
+                            layout: "bottomRight",
+                            text: 'All unused rows deleted.',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show();
+                        gridObj.refresh();
+                    },
+                }).fail(function () {
+                    new Noty({
+                        type: "error",
+                        layout: "bottomRight",
+                        text: 'Failed to delete',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show()
+                }
+                );
+            }
+        }
+    }
+</script>
+}
+

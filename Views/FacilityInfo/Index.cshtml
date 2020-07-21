@@ -1,0 +1,178 @@
+@model IEnumerable<DataSystem.Models.FacilityInfo>
+
+@{
+    ViewData["Title"] = "Facilities List";
+}
+<div class="container">
+    <h2>Facilities</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Add New</a>
+        <button id="importFacilities" class="btn btn-success" ><span class="glyphicon glyphicon-plus"></span> Update Facilities</button>
+
+    </p>
+    <table id="dt" class="table table-bordered table-hover table-striped dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <td data-priority="1">
+                    @Html.DisplayNameFor(model => model.FacilityId)
+                </td>
+                <th data-priority="2">
+                    @Html.DisplayNameFor(model => model.FacilityName)
+                </th>
+                <th data-priority="2">
+                    @Html.DisplayNameFor(model => model.FacilityNameDari)
+                </th> 
+                 <th data-priority="2">
+                    @Html.DisplayNameFor(model => model.FacilityNamePashto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateEstablished)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DistCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FacilityType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationDari)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationPashto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lon)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lat)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gpslattitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gpslongtitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubImplementer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ViliCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Implementer)
+                </th>
+                <th data-priority="1">
+                    actions
+                 </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                "lengthMenu": [10,15,25,50,100],
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "ajax": {
+                    "url": "/FacilityInfo/pagedata",
+                    "type": "post"
+                },
+                "columns": [
+                        { "data": "facilityId", "name": "FacilityId", "autoWidth": true },
+                        { "data": "facilityName", "name": "FacilityName", "autoWidth": true },
+                        { "data": "facilityNameDari", "name": "FacilityNameDari", "autoWidth": true },
+                        { "data": "facilityNamePashto", "name": "FacilityNamePashto", "autoWidth": true },
+                        { "data": "activeStatus", "name": "ActiveStatus", "autoWidth": true },
+                        { "data": "dateEstablished", "name": "DateEstablished", "autoWidth": true },
+                        { "data": "distCode", "name": "DistCode", "autoWidth": true },
+                        { "data": "facilityTypeNavigation.facType", "name": "FacilityType", "autoWidth": true },
+                        { "data": "location", "name": "Location", "autoWidth": true },
+                        { "data": "locationDari", "name": "LocationDari", "autoWidth": true },
+                        { "data": "locationPashto", "name": "LocationPashto", "autoWidth": true },
+                        { "data": "lon", "name": "Lon", "autoWidth": true },
+                        { "data": "lat", "name": "Lat", "autoWidth": true },
+                        { "data": "gpslattitude", "Gpslattitude": "Lat", "autoWidth": true },
+                        { "data": "gpslongtitude", "name": "Gpslongtitude", "autoWidth": true },
+                        { "data": "subImplementer", "name": "SubImplementer", "autoWidth": true },
+                        { "data": "viliCode", "name": "ViliCode", "autoWidth": true },
+                        { "data": "implementer", "name": "Implementer", "autoWidth": true },                        
+                        { "name": "actions","autoWidth": true},
+
+
+                ],
+                "columnDefs": [
+                               {
+                                   "data": "facilityId",
+                                   "targets": 18,
+                                   "class": 'text-center',
+                                   "width": "10%",
+                                   "sorting": false,
+                                   "orderable": false,
+                                   "render": function (data, type, row) {
+                                       return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a href="/facilityinfo/delete/' + data + '" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a> | <a class="btn btn-primary btn-xs" href="/facilityinfo/edit/' + data + '"><span class="glyphicon glyphicon-pencil"></span></a> | <a class="btn btn-primary btn-xs" href="/facilityinfo/details/' + data + '"><span class="glyphicon glyphicon-eye-open"></span></a></div></div>';
+                                   }
+                               },
+                                {
+                                    "targets": 5,
+                                    "sorting": false,
+                                    "orderable": false,
+                                    "render": function (data, type, row) {
+                                        if (data) {
+                                            var mDate = moment(data);
+                                            return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY") : "";
+                                        }
+                                        return "";
+                                    }
+                 }
+                ]
+
+            });
+        })
+        $(document).ready(function () {
+            $("#importFacilities").click(function (e) {
+                var url = "/FacilityInfo/ImportFacilities";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: [],
+                    success: function (data) {
+                        //$("#loading").hide();
+                        new Noty({
+                            type: "success",
+                            layout: "bottomRight",
+                            text: 'Facilities successfully imported.',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show();
+                    },
+
+                }).fail(function () {
+                    new Noty({
+                        type: "error",
+                        layout: "bottomRight",
+                        text: 'Import Failed failed',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show()
+                }
+                );
+            });
+        });
+    </script>
+}

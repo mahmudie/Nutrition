@@ -1,0 +1,59 @@
+@model IEnumerable<DataSystem.Models.LkpHfstatus>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container" style="padding-top:3em;">
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    @if (Model.Any())
+    {
+    <table id="dt" class="table table-bordered table-hover table-striped" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HfactiveStatusId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HfstatusDescription)
+                </th>
+                <th data-priority="1" >Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HfactiveStatusId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HfstatusDescription)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.HfactiveStatusId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.HfactiveStatusId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.HfactiveStatusId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }else
+    {
+    <div class="alert alert-info">No record available.</div>
+}
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                paging: false,
+
+            });
+         })
+    </script>
+}

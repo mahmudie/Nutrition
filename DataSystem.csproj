@@ -1,0 +1,415 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+    <!--<AspNetCoreHostingModel>OutProcess</AspNetCoreHostingModel>-->
+    <!--<RuntimeFrameworkVersion>2.1.5</RuntimeFrameworkVersion>-->
+    <!--<PlatformTarget>AnyCPU</PlatformTarget>-->
+    <!--<UseAppHost>True</UseAppHost>-->
+    <!--<EnableDefaultCompileItems>false</EnableDefaultCompileItems>-->
+    <UserSecretsId>aspnet-DataSystem-53bc9b9d-9d6a-45d4-8429-2a2761773502</UserSecretsId>
+    <!--<Self-Contained>True</Self-Contained>-->
+    <!--<RuntimeIdentifier>win-x86</RuntimeIdentifier>-->
+    <!--<PackageTargetFallback>portable-net45+win8</PackageTargetFallback>--> 
+    <AllowUntrustedCertificate>True</AllowUntrustedCertificate>
+    <RazorCompileToolset>PrecompilationTool</RazorCompileToolset>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <StartupObject>DataSystem.Program</StartupObject>
+    <Company>http://www.kamyab.tech</Company>
+    <Product>WebNutrition</Product>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Controllers\HP\Models\**" />
+    <Compile Remove="Views\Bnaq\**" />
+    <Content Remove="Controllers\HP\Models\**" />
+    <Content Remove="Views\Bnaq\**" />
+    <EmbeddedResource Remove="Controllers\HP\Models\**" />
+    <EmbeddedResource Remove="Views\Bnaq\**" />
+    <None Remove="Controllers\HP\Models\**" />
+    <None Remove="Views\Bnaq\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Controllers\SCM\scmDistributionIPController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\Default Settings.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" PrivateAssets="All" />    
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="DataTables.AspNet.Core" Version="2.0.2" />
+    <PackageReference Include="DataTables.AspNet.AspNetCore" Version="2.0.2" />
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.4.0.39" />
+    <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="17.4.0.39" />
+    <PackageReference Include="Syncfusion.EJ2.PdfViewer.AspNet.Core.Windows" Version="17.4.0.39" />
+    <PackageReference Include="Syncfusion.EJ2.Spreadsheet.AspNet.Core" Version="17.4.0.39" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <!--Added for PdfViewer-->
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="2.7.79" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Views\Categories\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Feedback\list.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Import\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Indicators\mindicators.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Nmr\list.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Nmr\submission.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\scmGenXlsx\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\SurInfo\Create.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\SurInfo\Delete.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\SurInfo\Details.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\SurInfo\Edit.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Submission\" />
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Columns\Create.cshtml" />
+    <None Include="Views\Columns\Delete.cshtml" />
+    <None Include="Views\Columns\Edit.cshtml" />
+    <None Include="Views\Columns\Index.cshtml" />
+    <None Include="Views\DataForms\Create.cshtml" />
+    <None Include="Views\DataForms\Delete.cshtml" />
+    <None Include="Views\DataForms\Edit.cshtml" />
+    <None Include="Views\DataForms\Index.cshtml" />
+    <None Include="Views\FieldOptions\Create.cshtml" />
+    <None Include="Views\FieldOptions\Delete.cshtml" />
+    <None Include="Views\FieldOptions\Edit.cshtml" />
+    <None Include="Views\Fields\Create.cshtml" />
+    <None Include="Views\Fields\Delete.cshtml" />
+    <None Include="Views\Fields\Edit.cshtml" />
+    <None Include="Views\Fields\Index.cshtml" />
+    <None Include="Views\Notehelper\Edit.cshtml" />
+    <None Include="Views\Notehelper\List.cshtml" />
+    <None Include="Views\Home\About.cshtml" />
+    <None Include="Views\Home\Contact.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Questions\Create.cshtml" />
+    <None Include="Views\Questions\Delete.cshtml" />
+    <None Include="Views\Questions\Edit.cshtml" />
+    <None Include="Views\Questions\Index.cshtml" />
+    <None Include="Views\Reports\Create.cshtml" />
+    <None Include="Views\Reports\Delete.cshtml" />
+    <None Include="Views\Reports\Edit.cshtml" />
+    <None Include="Views\Reports\Index.cshtml" />
+    <None Include="Views\Reports\ReportDetails.cshtml" />
+    <None Include="Views\Reports\ShowReport.cshtml" />
+    <None Include="Views\Sections\Create.cshtml" />
+    <None Include="Views\Sections\Delete.cshtml" />
+    <None Include="Views\Sections\Edit.cshtml" />
+    <None Include="Views\Sections\Index.cshtml" />
+    <None Include="Views\Shared\Components\SurveyResultsWidget\Default.cshtml" />
+    <None Include="wwwroot\js\ckeditor\adapters\jquery.js" />
+    <None Include="wwwroot\js\ckeditor\build-config.js" />
+    <None Include="wwwroot\js\ckeditor\CHANGES.md" />
+    <None Include="wwwroot\js\ckeditor\ckeditor.js" />
+    <None Include="wwwroot\js\ckeditor\config.js" />
+    <None Include="wwwroot\js\ckeditor\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\az.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\de-ch.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\en-au.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\es-mx.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\eu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fo.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\oc.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\colordialog\dialogs\colordialog.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\copyformatting\cursors\cursor-disabled.svg" />
+    <None Include="wwwroot\js\ckeditor\plugins\copyformatting\cursors\cursor.svg" />
+    <None Include="wwwroot\js\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\div\dialogs\div.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\find\dialogs\find.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\flash\dialogs\flash.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\iframe\dialogs\iframe.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\image\dialogs\image.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\link\dialogs\anchor.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\link\dialogs\link.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\pastefromword\filter\default.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\CHANGELOG.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\dialogs\options.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\README.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\smiley\dialogs\smiley.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\az.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\de-ch.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en-au.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en-ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\es-mx.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\eu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ko.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\oc.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ro.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\table\dialogs\table.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\templates\dialogs\templates.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\templates\templates\default.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\README.md" />
+    <None Include="wwwroot\js\ckeditor\README.md" />
+    <None Include="wwwroot\js\ckeditor\samples\img\logo.svg" />
+    <None Include="wwwroot\js\ckeditor\samples\js\sample.js" />
+    <None Include="wwwroot\js\ckeditor\samples\js\sf.js" />
+    <None Include="wwwroot\js\ckeditor\samples\old\assets\posteddata.php" />
+    <None Include="wwwroot\js\ckeditor\samples\old\assets\uilanguages\languages.js" />
+    <None Include="wwwroot\js\ckeditor\samples\old\dialog\assets\my_dialog.js" />
+    <None Include="wwwroot\js\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <None Include="wwwroot\js\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <None Include="wwwroot\js\ckeditor\samples\old\htmlwriter\assets\outputforflash\swfobject.js" />
+    <None Include="wwwroot\js\ckeditor\samples\old\sample.js" />
+    <None Include="wwwroot\js\ckeditor\samples\old\sample_posteddata.php" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\font\fontello.svg" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\js\abstracttoolbarmodifier.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\js\fulltoolbareditor.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\js\toolbarmodifier.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\js\toolbartextmodifier.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\lib\codemirror\javascript.js" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <None Include="wwwroot\js\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.js" />
+    <None Include="wwwroot\js\ckeditor\skins\moono-lisa\readme.md" />
+    <None Include="wwwroot\js\ckeditor\styles.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\css\bootstrap-datepicker.css.map" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\css\bootstrap-datepicker.standalone.css.map" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\css\bootstrap-datepicker3.css.map" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\css\bootstrap-datepicker3.standalone.css.map" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\js\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker-en-CA.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ar-tn.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ar.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.az.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.bg.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.bm.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.bn.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.br.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.bs.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ca.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.cs.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.cy.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.da.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.de.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.el.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-AU.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-CA.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-GB.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-IE.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-NZ.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.en-ZA.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.eo.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.es.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.et.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.eu.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.fa.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.fi.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.fo.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.fr-CH.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.fr.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.gl.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.he.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.hi.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.hr.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.hu.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.hy.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.id.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.is.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.it-CH.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.it.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ja.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ka.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.kh.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.kk.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.km.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ko.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.kr.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.lt.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.lv.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.me.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.mk.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.mn.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ms.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.nl-BE.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.nl.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.no.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.oc.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.pl.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.pt-BR.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.pt.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ro.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.rs-latin.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.rs.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ru.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.si.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sk.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sl.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sq.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sr-latin.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sr.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sv.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.sw.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.ta.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.tg.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.th.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.tk.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.tr.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.uk.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.uz-cyrl.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.uz-latn.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.vi.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.zh-CN.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\locales\bootstrap-datepicker.zh-TW.min.js" />
+  </ItemGroup>
+</Project>

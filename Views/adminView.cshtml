@@ -1,0 +1,121 @@
+﻿@model DataSystem.Models.Samreq
+
+@{
+    ViewData["Title"] = "Monthly  Reports";
+}
+<div class="container">
+    <h2>Sam Reports</h2>
+    <br />
+    <table id="dt" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+        <thead>
+                    <tr>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Year)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Month)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.ReqBy)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.UpdateDate)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.YearFrom)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.MonthFrom)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.YearTo)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.MonthTo)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Ph)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Dh)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Chc)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Shc)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Mht)
+                        </th>
+                        <th class="text-center" data-priority="1">Actions</th>
+                    </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+      <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                "lengthMenu": [25,50,100],
+                "processing": true,
+                "serverSide": false,
+                "ordering": false,
+                "ajax": {
+                    "url": "/report/pagedata",
+                    "type": "post"
+                },
+                "columns": [
+                        { "data": "reqYear", "name": "Name", "autoWidth": true },
+                        { "data": "reqMonth", "name": "ReqMonth", "autoWidth": true },
+                        { "data": "reqBy", "name": "ReqBy", "autoWidth": true },
+                        { "data": "updateDate", "name": "UpdateDate", "autoWidth": true },
+                        { "data": "yearFrom", "name": "YearFrom", "autoWidth": true },
+                        { "data": "monthFrom", "name": "MonthFrom", "autoWidth": true },
+                        { "data": "yearTo", "autoWidth": true },
+                        { "data": "monthTo", "autoWidth": true },
+                        { "data": "ph", "autoWidth": true },
+                        { "data": "dh", "autoWidth": true },
+                        { "data": "chc", "autoWidth": true },
+                        { "data": "shc", "autoWidth": true },
+                        { "data": "mht", "autoWidth": true },
+
+                        { "name": "actions", "autoWidth": true },
+
+                ],
+
+                "columnDefs": [
+                {
+
+                    "data": "rid",
+                    "targets": 13,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "width": "8%",
+                    "render": function (data, type, row) {
+                        return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a href="/report/detail/' + row.rid + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a></div>';
+                    }
+                },
+                {
+                    "targets": 3,
+                    "sorting": false,
+                    "orderable": false,
+                    "class": 'text-center',
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY LT") : "";
+                        }
+                        return "";
+                    }
+                },
+                ]
+            });
+        })
+    </script>
+}

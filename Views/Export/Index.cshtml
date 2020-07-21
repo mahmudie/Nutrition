@@ -1,0 +1,114 @@
+﻿@model DataSystem.Models.ViewModels.PivotTable.CreateReq
+@{
+    ViewData["Title"] = "Export MAM Report";
+}
+<style>
+
+</style>
+<form name="pivotForm" id="pivotForm" class="form-horizontal">
+<div class="container-fluid">
+<h2>Export MAM - Facility</h1>
+ <table id="district" class="table-striped table-bordered table-condensed nowrap margin:50px;" width="100%" cellspacing="0">
+            <tr>
+                <th>Implementer</th>
+                <td>
+                    @Html.DropDownListFor(model => model.Implementer, ViewData["ImpList"] as SelectList, new { @class = "form-control" })
+                 </td>
+            </tr>
+            <tr>
+                <th>Province</th>
+                <td>
+                    @Html.DropDownList("ProvCode", new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Text= "All", Value = "0" }
+                            }, new { @class = "form-control" })
+                </td>
+                 </td>
+            </tr>
+            <tr>
+                <th>District</th>
+                <td>
+                    @Html.DropDownList("DistCode", new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Text= "All", Value = "0" }
+                            }, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <th>Facility</th>
+                <td>
+                      @Html.DropDownList("Facility", new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Text= "All", Value = "0" }
+                            }, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <th>Year From</th>
+                <td>
+                      @Html.DropDownList("YearFrom", new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Text= "All", Value = "0" }
+                            }, new { @class = "form-control" })
+                </td>
+            </tr>
+            </table>
+</div>
+</form>
+@section Scripts{
+<script>
+         $(document).ready(function () {
+
+           $('#Implementer').change(function () {
+               var url = '@Url.Content("~/")' + "Export/provinces";
+                var ddlsource = '#Implementer';
+                $.getJSON(url, { ImpCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#ProvCode').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#ProvCode').html(items);
+                });
+                });
+
+           $('#ProvCode').change(function () {
+               var url = '@Url.Content("~/")' + "Export/districts";
+                var ddlsource = '#ProvCode';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#DistCode').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#DistCode').html(items);
+                });
+                });
+
+           $('#DistCode').change(function () {
+               var url = '@Url.Content("~/")' + "Export/facilities";
+                var ddlsource = '#DistCode';
+                $.getJSON(url, { DistCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#Facility').html(items);
+                });
+                });
+           $('#Facility').change(function () {
+               var url = '@Url.Content("~/")' + "Export/years";
+                var ddlsource = '#Facility';
+                $.getJSON(url, { Facility: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#YearFrom').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#YearFrom').html(items);
+                });
+                });
+         }); 
+</script>
+}

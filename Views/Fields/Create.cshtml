@@ -1,0 +1,84 @@
+﻿@model DataSystem.Models.GLM.FieldViewModel
+@{
+    ViewData["Title"] = "Add Field";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Create", "Fields"))
+        {
+            @Html.HiddenFor(m => m.QuestionId);
+            @Html.HiddenFor(m => m.ColumnId);
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.DataType)
+                @Html.DropDownListFor(m => m.DataType, new SelectList(Model.DataTypes, "Key", "Value"), "", new { @class = "form-control js-data-type" })
+                @Html.ValidationMessageFor(m => m.DataType)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.InputType)
+                @Html.DropDownListFor(m => m.InputType, new SelectList(Model.InputTypes, "Key", "Value"), "", new { @class = "form-control js-input-type" })
+                @Html.ValidationMessageFor(m => m.InputType)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsRequired)
+                @Html.DropDownListFor(m => m.IsRequired, new SelectList(Model.IsRequiredOptions, "Key", "Value"), "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.IsRequired)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.YesNoDefaultCaption)
+                @Html.TextBoxFor(m => m.YesNoDefaultCaption, new { @class = "form-control js-yesno-default-caption" })
+                @Html.ValidationMessageFor(m => m.YesNoDefaultCaption)
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Save</button>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        jQuery(document).ready(function ($) {
+            // initial settings
+            var dataType = $('.js-data-type').val();
+            var $inputType = $('.js-input-type');
+            var $yesNoDefaultCaption = $('.js-yesno-default-caption');
+
+            if (dataType == 'date' || dataType == 'yesno') {
+                $inputType.attr('disabled', 'disabled');
+            }
+
+            if (dataType != 'yesno') {
+                $yesNoDefaultCaption.attr('disabled', 'disabled');
+            }
+
+            // enable / disable input-type & yesno-default-option field based on data-type change
+            $(document).on('change', '.js-data-type', function () {
+                var dataType = $(this).val();
+                var $inputType = $('.js-input-type');
+
+                if (dataType == 'date' || dataType == 'yesno') {
+                    $inputType.attr('disabled', 'disabled');
+                } else {
+                    $inputType.removeAttr('disabled');
+                }
+
+                if (dataType == 'yesno') {
+                    $yesNoDefaultCaption.removeAttr('disabled', 'disabled');
+                } else {
+                    $yesNoDefaultCaption.attr('disabled', 'disabled');
+                }
+            })
+        });
+    </script>
+}

@@ -1,0 +1,159 @@
+@model DataSystem.Models.SurveyInfovm
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Add Survey Details";
+}
+<div class="container-fluid">
+    <h2>Add Survey Details</h2>
+
+    @using (Html.BeginForm("Create", "SurInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row col-md-12">
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        <label asp-for="SurveyAccro" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="SurveyAccro" class="form-control" />
+                            <span asp-validation-for="SurveyAccro" class="text-danger" />
+                        </div>
+                    </td>
+                    <th>
+                        <label asp-for="SurveyFull" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="SurveyFull" class="form-control" />
+                            <span asp-validation-for="SurveyFull" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="LeadBy" class=" control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="LeadBy" class="form-control" />
+                            <span asp-validation-for="LeadBy" class="text-danger" />
+                        </div>
+                    </td>
+                    <th>
+                        <label asp-for="ImpBy" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="ImpBy" class="form-control" />
+                            <span asp-validation-for="ImpBy" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="SurveyYear" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="SurveyYear" class="form-control" />
+                            <span asp-validation-for="SurveyYear" class="text-danger" />
+                        </div>
+                    </td>
+                    <th>
+                        <label asp-for="Month" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-for="Month" class="form-control">
+                                <option></option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                            </select>
+                            <span asp-validation-for="Month" class="text-danger" />
+                        </div>
+                    </td>                   
+                </tr>
+
+                <tr>
+                    <th>
+                        <label asp-for="Writers" class="control-label">Author Names</label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Writers" class="form-control" />
+                            <span asp-validation-for="Writers" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Attachment" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Attachment" onchange="ValidateExtension();" class="form-control" />
+                            <span asp-validation-for="Attachment" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4">
+                        <label asp-for="Abstract" class="control-label"></label>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div>
+                            <div class="form-group">
+                                <ejs-richtexteditor ejs-for="Abstract" id="Abstract">
+                                </ejs-richtexteditor>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-md-6">
+                    @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+                    {
+                        <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                    }
+                    </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+    }
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function ValidateExtension() {
+            var str = document.getElementById('Attachment').value;
+            var ext = str.substring(str.length - 3, str.length).toString();
+            extext = ext.toLowerCase();
+            if (ext == "pdf") {
+                return true;
+            }
+            else {
+                alert("No valid file. Only PDF is allowed"); return false;
+            }
+        }
+    </script>
+}

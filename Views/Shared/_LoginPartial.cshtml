@@ -1,0 +1,243 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DataSystem.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="dropdown notifications-menu">
+        <a style="padding:0px!important" href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div class="sample_container badge-notification">
+                <div class="layout">
+                    <div class="margin">
+                        <div class="badge-block">
+                            <div class="e-nutrition svg_icons"></div>
+                            <!-- Warning Colored Notification Badge -->
+                            <span id="custom" class="e-badge e-badge-danger e-badge-notification e-badge-overlap"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <ul id="mymenu" class="dropdown-menu row">
+            <li class="header">Welcome @UserManager.GetUserName(User) </li>
+            <li id="menuclick">
+                <div class="container">
+                    @*<ejs-grid id="Gridzz" allowSorting="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                        <e-data-manager url="/Appynotify/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/Appynotify/Insert" updateUrl="/Appynotify/Update" removeUrl="/Appynotify/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="id" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Left" width="120"></e-grid-column>
+                            <e-grid-column field="roundDescription" headerText="Quarter" textAlign="Left" width="150"></e-grid-column>
+                            <e-grid-column field="startDate" headerText="Start Date" textAlign="Left" width="150"></e-grid-column>
+                            <e-grid-column field="deadlineDate" headerText="Deadline" textAlign="Left" width="150"></e-grid-column>
+                            <e-grid-column field="emailmessage" headerText="Message" textAlign="Left" width="300"></e-grid-column>
+                        </e-grid-columns>
+                    </ejs-grid>*@
+                </div>
+            </li>
+        </ul>
+    </li>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var Badge_element = document.getElementById("custom");
+            // While using single badge element. you can set the style using id.
+            Badge_element.style.display = "none";
+        })
+    </script>
+    <li class="dropdown notifications-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-tasks"></i>     Welcome @UserManager.GetUserName(User)!
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Welcome @UserManager.GetUserName(User)!</li>
+            <li>
+
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 120px;">
+                    <ul class="menu" style="overflow: hidden; width: 100%; height: 120px;">
+                        <li>
+                            <a href="/manage/changepassword">
+                                <i class="fa fa-pencil-square-o"></i> Change Password
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/account/logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i>Logout </a>
+                        </li>
+                    </ul>
+                    <div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                    <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                </div>
+            </li>
+        </ul>
+    </li>
+
+    <form asp-area="" id="logout-form" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right" style="display: none;">
+        <li>
+            <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+        </li>
+    </form>
+}
+else
+{
+
+    <a href="/account/login"><i class="fa fa-sign-in"></i>  Sign In  </a>
+}
+
+<script id="rowtemplate" type="text/x-template">
+    <tr>
+        <td class="details">
+            <table class="CardTable" cellpadding="3" cellspacing="2">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td class="CardHeader">First Name </td>
+                        <td>${FirstName} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">Last Name</td>
+                        <td>${LastName} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Title
+                        </td>
+
+                        <td>
+                            ${Title}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Birth Date
+                        </td>
+                        <td>
+                            ${BirthDate.toLocaleDateString()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Hire Date
+                        </td>
+                        <td>
+                            ${HireDate.toLocaleDateString()}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</script>
+<style>
+    /* Layout Design */
+
+    .sample_container.badge-notification {
+        max-width: 50px;
+        margin: auto;
+    }
+
+        .sample_container.badge-notification .badge-block {
+            position: relative;
+            display: inline-block;
+            /*margin: 10px 13px 10px 10px;*/
+        }
+
+        .sample_container.badge-notification .layout {
+            /*box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);*/
+            /*padding: 25px 10px 10px 10px;*/
+            background-color: transparent;
+            /*border-radius: 205px;*/
+        }
+
+    .highcontrast .sample_container.badge-notification .layout {
+        box-shadow: 0 2px 15px 0 rgb(92, 91, 91);
+        background-color: transparent;
+    }
+
+    .margin {
+        margin: 5px;
+    }
+
+    .innerMargin {
+        margin: 15px;
+        /*padding: 15px 95px 15px 15px;*/
+        display: inline-block;
+    }
+
+    .fontSize {
+        font-size: 16px;
+    }
+
+    .skype + .e-badge.e-badge-dot {
+        transform: translateX(-100%) translateY(-70%);
+    }
+
+    .facebook + .e-badge.e-badge-dot {
+        transform: translateX(-100%) translateY(+30%);
+    }
+
+
+    .contact.svg_icons + .e-badge-dot,
+    .pinterest.svg_icons + .e-badge-dot {
+        left: 90%;
+        bottom: 7px;
+        top: auto
+    }
+
+    /* SVG Icons */
+
+    .svg_icons {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+    }
+
+    .e-nutrition::before {
+        content: "\f0f3";
+        font-family: "fontawesome" !important;
+        color: white !important;
+        font-size: 20pt;
+    }
+
+    .e-badge-overlap {
+        background-color: red !important;
+        margin-top: 10px !important;
+    }
+
+    ul#mymenu {
+        width: 1100px !important;
+    }
+
+    .navbar-nav > .notifications-menu > .dropdown-menu > li.header,
+    .navbar-nav > .messages-menu > .dropdown-menu > li.header,
+    .navbar-nav > .tasks-menu > .dropdown-menu > li.header {
+        background-color: #2FA3CB !important;
+    }
+
+    .details {
+        border-width: 1px 0px 0px 0px;
+        padding-left: 18px;
+    }
+
+    .e-bigger .details {
+        padding-left: 25px;
+    }
+
+    .e-device .details {
+        padding-left: 8px;
+    }
+
+    .details > table {
+        width: 100%;
+    }
+
+    .CardHeader {
+        font-weight: 600;
+    }
+
+    td {
+        padding: 2px 2px 3px 4px;
+    }
+</style>

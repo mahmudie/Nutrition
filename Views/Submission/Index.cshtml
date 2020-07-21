@@ -1,0 +1,62 @@
+
+@model DataSystem.Models.ViewModels.PivotTable.IndicatorsFilter
+
+<div class="container" style="padding:0px;">
+    <form name="pivotForm" id="pivotForm" class="form-horizontal" style="background-color:white;padding:50px;width:100%">
+        <h2>Report submission status</h2>
+        <h4>Download and view list of health facilities submitting Nutrition Monthly Report completeness and sections reported.</h4>
+        <br />
+        <table id="district" class="table-striped table-bordered table-condensed nowrap margin:10px;" width="100%" cellspacing="0">
+            <tr>
+                <th>Implementer</th>
+                <td>
+                    <select asp-for="Implementer" class="form-control" asp-items="@ViewBag.ImpList"></select>
+                </td>
+            </tr>
+            <tr>
+                <th>Province</th>
+                <td>
+                    <select asp-for="Province" class="form-control">
+                        <option value="0">All</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+                        <div class="col-md-3 col-md-offset-6">
+                            <button id="sendbtn" onclick="send()" class="btn btn-success btn-block">Download</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+@section Scripts{
+    <script>
+                function send() {
+                    document.pivotForm.action = "/Submission/pivot";
+                    document.pivotForm.submit();
+
+                };
+
+
+          $(document).ready(function () {
+               $('#Implementer').change(function () {
+                   var url = '@Url.Content("~/")' + "Submission/provinces";
+                   var ddlsource = '#Implementer';
+                   $.getJSON(url, { Implementer: $(ddlsource).val() }, function (data) {
+                        var items = '';
+                        $('#Province').empty();
+                        $.each(data, function (i, dist) {
+                            items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                        });
+                       $('#Province').html(items);
+                    });
+                    })
+           });
+
+    </script>
+}

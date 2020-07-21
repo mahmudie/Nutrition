@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "API Store";
+}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>@ViewData["Title"]</h3>
+                <p class="webnutnote">
+                    Use this page to enter API urls to be consumed by this application.
+                    <br />
+                    Following API are needed:
+                            <br />
+                            <strong>Common</strong> to get list of active health facilities
+                </p>
+            <ejs-grid id="ApistoreGrid"  allowSorting="true"  actionComplete="actionComplete"   toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/Apistore/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/Apistore/Insert" updateUrl="/Apistore/Update" removeUrl="/Apistore/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="apiurl" headerText="API Url" validationRules="@(new { required=true})" textAlign="Left" width="350"></e-grid-column>
+                    <e-grid-column field="filtervalue" headerText="API Filter Value" validationRules="@(new { required=true})" textAlign="Left" width="190"></e-grid-column>
+                    <e-grid-column field="isActive" headerText="Is Active" template="#active" textAlign="Left" editType="booleanedit" type="Boolean" width="100"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script id="active" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 550;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['apiurl'] : 'New';
+        }
+    }
+
+</script>

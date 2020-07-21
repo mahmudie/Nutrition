@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Survey Indicators";
+}
+
+<div id="toast_default"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div>
+            <h3>Survey Indicators</h3>
+            <ejs-grid id="SurveysGrid" allowSorting="true" allowTextWrap="true"  editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog })" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowFiltering="true" allowPaging="false">
+                <e-data-manager url="/SurvIndicators/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/SurvIndicators/Insert" updateUrl="/SurvIndicators/Update" removeUrl="/SurvIndicators/Remove"></e-data-manager>
+                <e-grid-columns>
+                    <e-grid-column field="indicatorId" headerText="Indicator ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="indicatorName" headerText="Indicator Name" validationRules="@(new { required=true})" textAlign="Left" width="400"></e-grid-column>
+                    <e-grid-column field="originalIndicatorName" headerText="Original Indicator Name" textAlign="Left" width="400"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastObj = new ej.notifications.Toast({
+            position: { X: 'Right', Y: 'Top' }
+        });
+        toastObj.appendTo('#toast_default');
+    });
+
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 850;
+            args.dialog.enableResize = true;
+            args.dialog.position.X = "center"; 
+            args.dialog.position.Y = "center"; 
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['indicatorName'] : 'New';
+        }
+        var toastInstances = document.getElementById("toast_default").ej2_instances[0];
+        if (args.requestType === 'save') {
+            toastInstances.show({
+                title: 'Success!',
+                content: 'Record has been saved successfully.',
+                cssClass: 'e-toast-success', icon: 'e-success toast-icons'
+            });
+        }
+        if (args.requestType === 'delete') {
+            toastInstances.show({
+                content: 'Deleted successfully',
+                target: document.body
+            });
+        } // you can perform toast for whatever you want....
+    }
+</script>

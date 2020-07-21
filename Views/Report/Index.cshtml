@@ -1,0 +1,159 @@
+@model IEnumerable<DataSystem.Models.Samreq>
+
+@{
+    ViewData["Title"] = "SAM Supply Requests";
+}
+    <div class="container">
+    <h2>SAM Supply Requests</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+            <table id="reps" class="table table-bordered dt-responsive nowrap"  width="100%">
+                <thead>
+                    <th colspan="2" class="text-center">Month From</th>
+                    <th colspan="2" class="text-center">Month To</th>
+                    <th colspan="2" class="text-center"> Request Month</th>
+                    <th colspan="6" class="text-center"> Request Month</th>
+                    <tr>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.YearFrom)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.MonthFrom)
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.YearTo)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.MonthTo)
+                        </th>  
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Year)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Month)
+                        </th> 
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Ph)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Dh)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Chc)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Bhc)
+                        </th>  
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Shc)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Mht)
+                        </th>  
+                        <th class="text-center">
+                            Province
+                        </th>  
+                         <th class="text-center">
+                            Implementer
+                        </th> 
+                        <th class="text-center">
+                            Requested By
+                        </th>
+                        <th class="text-center">
+                            Request Date
+                        </th>                                                            
+                        <th class="text-center" data-priority="1">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.YearFrom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MonthFrom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.YearTo)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MonthTo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Year)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Month)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ph)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Dh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Chc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Bhc)
+                            </td> 
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Shc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mht)
+                            </td>
+                             <td>
+                                @Html.DisplayFor(modelItem => item.ProvCode)
+                            </td> 
+                             <td>
+                                @Html.DisplayFor(modelItem => item.ImpCode)
+                            </td> 
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReqBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateDate)
+                            </td>                                                                        
+                            <td>
+                                <div style="display: inline-block; float: none; white-space: nowrap;">
+                                     <a asp-action="Delete" asp-route-id="@item.Rid" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                      | <a asp-action="Details" asp-route-id="@item.Rid" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                                 </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#reps').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                    columnDefs: [{
+                     "targets": 17,
+                     "sorting": false,
+                     "orderable": false,
+                     "render": function (data, type, row) {
+                         if (data) {
+                             var mDate = moment(data);
+                             return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY") : "";
+                         }
+                         return "";
+                     }
+                 } ]
+            });
+        });
+    </script>
+}

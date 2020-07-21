@@ -1,0 +1,111 @@
+
+@model DataSystem.Models.ViewModels.PivotTable.IndicatorsFilter
+
+<div class="container" style="padding:0px;">
+    <form name="pivotForm" id="pivotForm" class="form-horizontal" style="background-color:white;padding:50px;width:100%">
+        <h2>Indicators PivotTable</h2>
+        <h4>Download indicators data as Microsoft Excel Pivot Table and do further analysis</h4>
+        <br />
+        <table id="district" class="table-striped table-bordered table-condensed nowrap margin:10px;" width="100%" cellspacing="0">
+            <tr>
+                <th>Province</th>
+                <td>
+                    <select asp-for="Province" class="form-control" asp-items="@ViewBag.ProvList"></select>
+                </td>
+            </tr>
+            <tr>
+                <th>District</th>
+                <td>
+                    <select asp-for="DistCode" class="form-control">
+                        <option value="0">All</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>View Type</th>
+                <td>
+                    <select asp-for="Viewtype" class="form-control">
+                        <option value="1">Province</option>
+                        <option value="2">District</option>
+                        <option value="3">Facility</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Period</th>
+                <td>
+                    <select asp-for="Period" class="form-control">
+                        <option value="1">Year</option>
+                        <option value="2">Quarter</option>
+                        <option value="3">Month</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+                        <div class="col-md-3 col-md-offset-6">
+                            <button id="sendbtn" onclick="send()" class="btn btn-success btn-block">Download</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @*<img src="~/Content/pivot/indloc/region.png" id="pivotimg" class="img-rounded img-responsive" />*@
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+@section Scripts{
+    <script>
+                function send() {
+                    document.pivotForm.action = "/Indicators/IndPivotM";
+                    document.pivotForm.submit();
+
+                };
+
+
+          $(document).ready(function () {
+           $('#Province').change(function () {
+               var url = '@Url.Content("~/")' + "Indicators/districts";
+                var ddlsource = '#Province';
+                $.getJSON(url, { ProvinceId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#DistCode').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#DistCode').html(items);
+                });
+                });
+
+            //$("#Measure").change(function () {
+            //    var mval = $("#Measure option:selected").text()
+            //    if (mval == "Region") {
+            //        $("#Region option[value=0]").prop("selected", true);
+            //        $('#pivotimg').attr("src", "../Content/pivot/indloc/region.png");
+            //    }
+            //    if (mval == "Province")
+            //    {
+            //        $("#Province option[value=0]").prop("selected", true);
+            //        $('#pivotimg').attr("src", "../Content/pivot/indloc/province.png");
+            //    }
+            //    if (mval == "District") {
+            //        $('#pivotimg').attr("src", "../Content/pivot/indloc/district.png");
+            //    }
+            //    if (mval == "Year") {
+            //        $("#Round option[value=0]").prop("selected", true);
+            //        $('#pivotimg').attr("src", "../Content/pivot/indloc/year.png");
+            //    }
+            //    if (mval == "Month") {
+            //        $("#Round option[value=0]").prop("selected", true);
+            //        $('#pivotimg').attr("src", "../Content/pivot/indloc/month.png");
+            //    }
+            //});
+
+           });
+
+    </script>
+}

@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Notification Receivers";
+}
+@{
+    var UserDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.UsersSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "UserId", Text = "UserName" }};
+    var ProvinceDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "ProvinceName" }};
+    var IPDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpId", Text = "ImpName" }};
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <h3>Notification Receivers</h3>
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add(new { text = "Notification", tooltipText = "List of notification receivers", prefixIcon = "e-notification", id = "Notification" });
+        }
+        <ejs-grid id="scmNotifylistGrid" allowSorting="true" actionComplete="actionComplete" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/scmNotifylist/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmNotifylist/Insert" updateUrl="/scmNotifylist/Update" removeUrl="/scmNotifylist/Remove"></e-data-manager>
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="username" headerText="User Name" validationRules="@(new { required=true})" dataSource="ViewBag.RegionSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = UserDropDownList }"></e-grid-column>
+                <e-grid-column field="provinceId" foreignKeyField="ProvinceId" headerText="Province" validationRules="@(new { required=true})" foreignKeyValue="ProvinceName" dataSource="ViewBag.ProvinceSource" editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = ProvinceDropDownList }"></e-grid-column>
+                <e-grid-column field="impId" foreignKeyField="ImpId" headerText="Implementer" validationRules="@(new { required=true})" foreignKeyValue="ImpName" dataSource="ViewBag.ImpSource" editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = IPDropDownList }"></e-grid-column>
+                <e-grid-column field="isActive" defaultValue="1" headerText="Is Active" template="#activetemplate" editType="booleanedit" textAlign="Center" type="boolean" width="120"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+  function toolbarClick(args) {
+        if (args.item.id === 'Notification') {
+            var url = "/scmNotifylist/NotificationPage/";
+            window.location.replace(url);
+        }
+    }
+</script>
+
+<script id="activetemplate" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>

@@ -1,0 +1,885 @@
+
+@using Microsoft.AspNetCore.Identity
+@using DataSystem.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using MyProject.MyExtensions
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("guest"))
+{
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/dashboard">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard</a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/pivot/index"><i class="fa fa-table"></i>Pivot Table</a></li>
+                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>OPD-MAM Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                    </ul>
+                </li>
+        </section>
+    </aside>
+}
+
+
+@if (User.IsInRole("dataentry"))
+{
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/Checks">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard</a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
+
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/pivot/index"><i class="fa fa-table"></i>Pivot Table</a></li>
+                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>OPD-MAM Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-plus-square"></i> <span>Data Entry</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/nmr/index"><i class="fa fa-plus-circle"></i>Monthly Reports</a></li>
+                        <li><a href="/qnr/index"><i class="fa fa-plus-circle"></i>Quarterly Reports</a></li>
+                        <li><a href="/checks/index"><i class="fa fa-plus-circle"></i>Report Submission</a></li>
+                        <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span>Monitoring</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li><a href="/Reports/Index"><i class="fa fa-table"></i>Facility Level Monitoring</a></li>
+                        <li><a href="/HP/index"><i class="fa fa-table"></i>Community Level Monitoring</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>Emergency</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Ernmr/Index"><i class="fa fa-table"></i>Emergecy Report</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-support"></i> <span>Help Desk</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/manual"><i class="fa fa-file"></i>User Manual</a></li>
+                        <li><a href="/manual/FAQ"><i class="fa fa-question-circle"></i>FAQ</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+}
+
+@if ((User.IsInRole("administrator") && User.MyProperty() != "1"))
+{
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/Checks">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard</a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/pivot/index"><i class="fa fa-table"></i>Pivot Table</a></li>
+                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>OPD-MAM Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-search-plus"></i> <span>Data Entry</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/nmr/adminNmr"><i class="fa fa-eye"></i>Monthly Reports</a></li>
+                        <li><a href="/qnr/adminView"><i class="fa fa-eye"></i>Quarterly Reports</a></li>
+                        <li><a href="/Checks"><i class="fa fa-eye"></i>Report Submission</a></li>
+                        <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                    </ul>
+                </li>
+                @*<li class="treeview">
+            <a href="#">
+                <i class="fa fa-th-large"></i> <span>Supply Request</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/report/adminView"><i class="fa fa-file"></i>SAM Request</a></li>
+                <li><a href="/mamreport/adminView"><i class="fa fa-file"></i>MAM Request</a></li>
+            </ul>
+        </li>*@
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span>Monitoring</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li><a href="/Reports/Index"><i class="fa fa-table"></i>Facility Level Monitoring</a></li>
+                        <li><a href="/HP/index"><i class="fa fa-table"></i>Community Level Monitoring</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-medkit"></i>
+                        <span>Emergency</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Ernmr/Index"><i class="fa fa-table"></i>Emergecy Report</a></li>
+                    </ul>
+                </li>
+                @*<li class="treeview">
+            <a href="#">
+                <i class="fa fa-file"></i>
+                <span>HMIS Indicators</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/Hmind/index"><i class="fa fa-table"></i>Indicators</a></li>
+                <li><a href="/hmisindicatorValues/index"><i class="fa fa-table"></i>Import HMIS Results</a></li>
+            </ul>
+        </li>*@
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-truck"></i>
+                        <span>SCM</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Forecast and Quant.</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmrequest/index"><i class="fa fa-table"></i>Quarterly Requisition</a></li>
+                                <li><a href="/scmrequest/annual"><i class="fa fa-table"></i>Annual Requisition</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-share-alt"></i>
+                                <span>Stock Mgt and Dist</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmDistributionIPMain/index"><i class="fa fa-table"></i>IP to HFs</a></li>
+                                <li><a href="/scmTransfers/index"><i class="fa fa-table"></i>IP to IP</a></li>
+                                <li><a href="/scmRecdispo/Index"><i class="fa fa-table"></i>Recall/Disposal</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i>
+                                <span>Report/Analysis</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmdash/index"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                                <li><a href="/scmStokmovmnt/RequestPivot"><i class="fa fa-table"></i>Request Report</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Transfer</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Recall/Disposal</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-list"></i>
+                                <span>Master List</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmpoc/index"><i class="fa fa-table"></i>Service Points</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-support"></i> <span>Help Desk</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/manual"><i class="fa fa-file"></i>User Manual</a></li>
+                        <li><a href="/manual/FAQ"><i class="fa fa-question-circle"></i>FAQ</a></li>
+                    </ul>
+                </li>
+</section>
+    </aside>
+}
+
+@if (User.IsInRole("administrator") && User.MyProperty() == "1")
+{
+
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/Checks">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard </a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/pivot/index"><i class="fa  fa-table"></i>Pivot Table</a></li>
+                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>OPD-MAM Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-search-plus"></i> <span>View Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/nmr/adminNmr"><i class="fa fa-eye"></i>Monthly Reports</a></li>
+                        <li><a href="/qnr/adminView"><i class="fa fa-eye"></i>Quarterly Reports</a></li>
+                        <li><a href="/Checks"><i class="fa fa-eye"></i>Submission by Facility</a></li>
+                        <li><a href="/Checks/plist"><i class="fa fa-list"></i>Submission by Province</a></li>
+                        <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                    </ul>
+                </li>
+                @*<li class="treeview">
+            <a href="#">
+                <i class="fa fa-th-large"></i> <span>Supply Requests</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/report/adminView"><i class="fa fa-file"></i>SAM Request</a></li>
+                <li><a href="/mamreport/adminView"><i class="fa fa-file"></i>MAM Request</a></li>
+            </ul>
+        </li>*@
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span>Monitoring</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li><a href="/Reports/Index"><i class="fa fa-table"></i>Facility Level Monitoring</a></li>
+                        <li><a href="/HP/index"><i class="fa fa-table"></i>Community Level Monitoring</a></li>
+                        <li><a href="/Sections/index"><i class="fa fa-table"></i>Data Sections</a></li>
+                        <li><a href="/Questions/index"><i class="fa fa-table"></i>Questions</a></li>
+                        <li><a href="/Columns/index"><i class="fa fa-table"></i>Data Columns</a></li>
+                        <li><a href="/Fields/index"><i class="fa fa-table"></i>Data Fields</a></li>
+                        <li><a href="/FieldOptions/edit"><i class="fa fa-table"></i>Field Options</a></li>
+
+
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-medkit"></i>
+                        <span>Emergency</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li><a href="/Ernmr/Index"><i class="fa fa-table"></i>Emergecy Report</a></li>
+                        <li><a href="/ERFacilities/index"><i class="fa fa-table"></i>Emergency Facilities</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-check-square"></i>
+                        <span>Survey Indicators</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/SurInfo/index"><i class="fa fa-table"></i>Indicator Results</a></li>
+                        <li><a href="/Categories/index"><i class="fa fa-table"></i>Categories</a></li>
+                        <li><a href="/Thematics/index"><i class="fa fa-table"></i>Thematic Areas</a></li>
+                        <li><a href="/Disaggregation/index"><i class="fa fa-table"></i>Disaggregation Level</a></li>
+                        <li><a href="/SurvIndicators/index"><i class="fa fa-table"></i>Indicators</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-th-list"></i>
+                        <span>HMIS Indicators</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Hmind/index"><i class="fa fa-table"></i>HMIS Indicators List</a></li>
+                        <li><a href="/hmisindicatorValues/index"><i class="fa fa-table"></i>Import from HMIS</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-truck"></i>
+                        <span>SCM</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Forecast and Quant.</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmrequest/index"><i class="fa fa-table"></i>Quarterly Requisition</a></li>
+                                <li><a href="/scmrequest/annual"><i class="fa fa-table"></i>Annual Requisition</a></li>
+                                <li><a href="/Estnotification/index"><i class="fa fa-table"></i>Email Notifications</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-share-alt"></i>
+                                <span>Stock Mgt and Dist</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmDistributionMain/index"><i class="fa fa-table"></i>UNICEF to IP</a></li>
+                                <li><a href="/scmDistributionIPMain/index"><i class="fa fa-table"></i>IP to HFs</a></li>
+                                <li><a href="/scmTransfers/index"><i class="fa fa-table"></i>IP to IP</a></li>
+                                <li><a href="/scmRecdispo/Index"><i class="fa fa-table"></i>Recall/Disposal</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i>
+                                <span>Report/Analysis</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmdash/index"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                                <li><a href="/scmStokmovmnt/index"><i class="fa fa-truck"></i>Stock Movement/Tracking</a></li>
+                                <li><a href="/scmStokmovmnt/RequestPivot"><i class="fa fa-table"></i>Quarterly Request</a></li>
+                                <li><a href="/scmStokmovmnt/RequestPivotAnnual"><i class="fa fa-table"></i>Annual Request</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Transfer</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Recall/Disposal</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-list"></i>
+                                <span>Master List</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmRounds/index"><i class="fa fa-table"></i>Quarters</a></li>
+                                <li><a href="/scmNotifylist/index"><i class="fa fa-table"></i>Notification List</a></li>
+                                @*<li><a href="/scmDocs/index"><i class="fa fa-table"></i>Documents</a></li>*@
+                                <li><a href="/scmWarehouses/index"><i class="fa fa-table"></i>Warehouses</a></li>
+                                <li><a href="/scmStocks/Index"><i class="fa fa-table"></i>Stocks</a></li>
+                                <li><a href="/scmwastetypes/index"><i class="fa fa-table"></i>Waste Types</a></li>
+                                <li><a href="/scmStockaverage/index"><i class="fa fa-table"></i>Avg Stock Estimation</a></li>
+                                <li><a href="/scmavglvl/index"><i class="fa fa-table"></i>Estimation Level</a></li>
+                                <li><a href="/scmRequesttype/Index"><i class="fa fa-table"></i>Request Types</a></li>
+                                <li><a href="/scmRequestReas/Index"><i class="fa fa-table"></i>Request Reasons</a></li>
+                                <li><a href="/scmmailgroup/Index"><i class="fa fa-table"></i>Email Group</a></li>
+                                <li><a href="/scmStatusitems/Index"><i class="fa fa-table"></i>Request States</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-table"></i> <span>Master Data</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Province/index"><i class="fa fa-location-arrow"></i>Province</a></li>
+                        <li><a href="/Districts/index"><i class="fa fa-location-arrow"></i>Districts</a></li>
+                        <li><a href="/FacilityInfo/index"><i class="fa fa-location-arrow"></i>Health Facilities</a></li>
+                        <li><a href="/ERFacilities/index"><i class="fa fa-location-arrow"></i>Emergency Facilities</a></li>
+                        <li><a href="/Import/index"><i class="fa fa-location-arrow"></i>Import Facilities</a></li>
+                        <li><a href="/FacilityTypes/index"><i class="fa fa-list"></i>Facility Types</a></li>
+                        <li><a href="/Implementer/index"><i class="fa fa-circle-o"></i>Implementers</a></li>
+                        <li><a href="/TlkpMns/index"><i class="fa fa-list"></i>Growth Monitoring Items</a></li>
+                        <li><a href="/TlkpOtptfus/index"><i class="fa fa-list"></i>SAM Age Group</a></li>
+                        <li><a href="/tlkpsstocks/index"><i class="fa fa-list"></i>SAM Stock Items</a></li>
+                        <li><a href="/tlkpsfps/index"><i class="fa fa-list"></i>MAM Beneficiaries Type</a></li>
+                        <li><a href="/tlkpfstocks/index"><i class="fa fa-list"></i>MAM Food Items</a></li>
+                        <li><a href="/Apistore/index"><i class="fa fa-list"></i>API Store</a></li>
+                        <li><a href="/Notehelper/List"><i class="fa fa-list"></i>Note/Tip Helper</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-support"></i> <span>Help Desk</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/manual/adminman"><i class="fa fa-file"></i>Admin Manual</a></li>
+                        <li><a href="/manual"><i class="fa fa-file"></i>User Manual</a></li>
+                        <li><a href="/manual/FAQ"><i class="fa fa-question-circle"></i>FAQ</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-user-plus"></i> <span>User Management</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/account/userslist"><i class="fa fa-users"></i>Users List</a></li>
+                        <li><a href="/tenants"><i class="fa fa-link"></i>Tenants</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+}
+@if ((User.IsInRole("unicef") ||User.IsInRole("pnd")) && User.MyProperty() == "1")
+{
+
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/Checks">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard </a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/pivot/index"><i class="fa  fa-table"></i>Pivot Table</a></li>
+                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file"></i>
+                        <span>OPD-MAM Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-search-plus"></i> <span>View Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/nmr/adminNmr"><i class="fa fa-eye"></i>Monthly Reports</a></li>
+                        <li><a href="/qnr/adminView"><i class="fa fa-eye"></i>Quarterly Reports</a></li>
+                        <li><a href="/Checks"><i class="fa fa-eye"></i>Submission by Facility</a></li>
+                        <li><a href="/Checks/plist"><i class="fa fa-list"></i>Submission by Province</a></li>
+                        <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-desktop"></i>
+                        <span>Monitoring</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li><a href="/Reports/Index"><i class="fa fa-table"></i>Facility Level Monitoring</a></li>
+                        <li><a href="/HP/index"><i class="fa fa-table"></i>Community Level Monitoring</a></li>
+                        <li><a href="/Sections/index"><i class="fa fa-table"></i>Data Sections</a></li>
+                        <li><a href="/Questions/index"><i class="fa fa-table"></i>Questions</a></li>
+                        <li><a href="/Columns/index"><i class="fa fa-table"></i>Data Columns</a></li>
+                        <li><a href="/Fields/index"><i class="fa fa-table"></i>Data Fields</a></li>
+                        <li><a href="/FieldOptions/edit"><i class="fa fa-table"></i>Field Options</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-medkit"></i>
+                        <span>Emergency</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Ernmr/Index"><i class="fa fa-table"></i>Emergecy Report</a></li>
+                        <li><a href="/ERFacilities/index"><i class="fa fa-table"></i>Emergency Facilities</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-check-square"></i>
+                        <span>Survey Indicators</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/SurInfo/index"><i class="fa fa-table"></i>Indicator Results</a></li>
+                        <li><a href="/Categories/index"><i class="fa fa-table"></i>Categories</a></li>
+                        <li><a href="/Thematics/index"><i class="fa fa-table"></i>Thematic Areas</a></li>
+                        <li><a href="/Disaggregation/index"><i class="fa fa-table"></i>Disaggregation Level</a></li>
+                        <li><a href="/SurvIndicators/index"><i class="fa fa-table"></i>Indicators</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-th-list"></i>
+                        <span>HMIS Indicators</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Hmind/index"><i class="fa fa-table"></i>HMIS Indicators List</a></li>
+                        <li><a href="/hmisindicatorValues/index"><i class="fa fa-table"></i>Import from HMIS</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-truck"></i>
+                        <span>SCM</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Forecast and Quant.</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmrequest/index"><i class="fa fa-table"></i>Quarterly Requisition</a></li>
+                                <li><a href="/scmrequest/annual"><i class="fa fa-table"></i>Annual Requisition</a></li>
+                                <li><a href="/Estnotification/index"><i class="fa fa-table"></i>Email Notifications</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-share-alt"></i>
+                                <span>Stock Mgt and Dist</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmDistributionMain/index"><i class="fa fa-table"></i>UNICEF to IP</a></li>
+                                <li><a href="/scmDistributionIPMain/index"><i class="fa fa-table"></i>IP to HFs</a></li>
+                                <li><a href="/scmTransfers/index"><i class="fa fa-table"></i>IP to IP</a></li>
+                                <li><a href="/scmRecdispo/Index"><i class="fa fa-table"></i>Recall/Disposal</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i>
+                                <span>Report/Analysis</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmdash/index"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                                <li><a href="/scmStokmovmnt/index"><i class="fa fa-truck"></i>Stock Movement/Tracking</a></li>
+                                <li><a href="/scmStokmovmnt/RequestPivot"><i class="fa fa-table"></i>Quarterly Request</a></li>
+                                <li><a href="/scmStokmovmnt/RequestPivotAnnual"><i class="fa fa-table"></i>Annual Request</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Transfer</a></li>
+                                <li><a href="/scmReports/Index"><i class="fa fa-table"></i>Stock Recall/Disposal</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-list"></i>
+                                <span>Master List</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/scmRounds/index"><i class="fa fa-table"></i>Quarters</a></li>
+                                <li><a href="/scmNotifylist/index"><i class="fa fa-table"></i>Notification List</a></li>
+                                @*<li><a href="/scmDocs/index"><i class="fa fa-table"></i>Documents</a></li>*@
+                                <li><a href="/scmWarehouses/index"><i class="fa fa-table"></i>Warehouses</a></li>
+                                <li><a href="/scmStocks/Index"><i class="fa fa-table"></i>Stocks</a></li>
+                                <li><a href="/scmwastetypes/index"><i class="fa fa-table"></i>Waste Types</a></li>
+                                <li><a href="/scmStockaverage/index"><i class="fa fa-table"></i>Avg Stock Estimation</a></li>
+                                <li><a href="/scmavglvl/index"><i class="fa fa-table"></i>Estimation Level</a></li>
+                                <li><a href="/scmRequesttype/Index"><i class="fa fa-table"></i>Request Types</a></li>
+                                <li><a href="/scmRequestReas/Index"><i class="fa fa-table"></i>Request Reasons</a></li>
+                                <li><a href="/scmmailgroup/Index"><i class="fa fa-table"></i>Email Group</a></li>
+                                <li><a href="/scmStatusitems/Index"><i class="fa fa-table"></i>Request States</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-support"></i> <span>Help Desk</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/manual/adminman"><i class="fa fa-file"></i>Admin Manual</a></li>
+                        <li><a href="/manual"><i class="fa fa-file"></i>User Manual</a></li>
+                        <li><a href="/manual/FAQ"><i class="fa fa-question-circle"></i>FAQ</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+}

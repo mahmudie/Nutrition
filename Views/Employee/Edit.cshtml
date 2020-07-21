@@ -1,0 +1,47 @@
+﻿@model DataSystem.Models.EmployeeViewModel
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+
+        @using (Html.BeginForm("RemoveAttachment", "Employee"))
+        {
+            @Html.Hidden("Id", Model.Id)
+            <button type="submit" class="btn btn-light btn-sm float-right">Remove Attachment</button>
+        }
+
+        <a asp-controller="Employee" asp-action="ChangeAttachment" asp-route-id="@Model.Id" class="btn btn-light btn-sm float-right">Change Attachment</a>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+            
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Update Employee</button>
+        }
+    </div>
+</div>

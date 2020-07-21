@@ -1,0 +1,110 @@
+@model DataSystem.Models.TblQnr
+
+@{
+    ViewData["Title"] = "Delete Report";
+}
+<div class="container ">
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal col-md-offset-1">
+        <dt>
+            @Html.DisplayNameFor(model => model.Highlights)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Highlights)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Implementer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Implementer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IpdsamAdmissionsTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IpdsamAdmissionsTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IpdsamPerformanceTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IpdsamPerformanceTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Iycf)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Iycf)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Micronutrients)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Micronutrients)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdmamAdmissionsTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdmamAdmissionsTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdmamPerformanceTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdmamPerformanceTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdsamAdmissionsTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdsamAdmissionsTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdsamPerformanceTrend)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdsamPerformanceTrend)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportMonth)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportMonth)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportingDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportingDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
+</div>

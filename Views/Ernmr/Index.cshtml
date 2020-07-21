@@ -1,0 +1,114 @@
+@model IEnumerable<DataSystem.Models.Ernmr>
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@using MyProject.MyExtensions
+
+@{
+    ViewData["Title"] = "Emergency Reporting";
+}
+<div class="container">
+    <h2>Nutrition Emergency Response</h2>
+
+    <p>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+        {
+            <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Add New</a>
+        }
+
+    </p>
+    <table id="dt" class="table table-bordered table-hover table-striped dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.FacilityId)
+                </th>
+                <th data-priority="2">
+                    FacilityName
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FacilityType)
+                </th>
+                <th>
+                    Province
+                </th>
+                <th>
+                    District
+                </th>
+                <th>
+                    Implementer
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Year)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Month)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Biweekly)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.U5Screened)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th data-priority="1">
+                    actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                "lengthMenu": [10, 15, 25, 50, 100],
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "ajax": {
+                    "url": "/Ernmr/pagedata",
+                    "type": "post"
+                },
+                "columns": [
+                    { "data": "facilityId", "name": "FacilityId", "autoWidth": true },
+                    { "data": "facilityName", "name": "FacilityName", "autoWidth": true },
+                    { "data": "facilityType", "name": "FacilityType", "autoWidth": true },
+                    { "data": "province", "name": "Province", "autoWidth": true },
+                    { "data": "district", "name": "District", "autoWidth": true },
+                    { "data": "implementer", "name": "Implementer", "autoWidth": true },
+                    { "data": "year", "name": "Year", "autoWidth": true },
+                    { "data": "month", "name": "Month", "autoWidth": true },
+                    { "data": "biweekly", "name": "biweekly", "autoWidth": true },
+                    { "data": "screens", "name": "U5Screened", "autoWidth": true },
+                    { "data": "userName", "name": "UserName", "autoWidth": true },
+                    { "name": "actions", "autoWidth": true },
+
+
+                ],
+                "columnDefs": [
+                    {
+                        "data": "ernmrid",
+                        "targets": 11,
+                        "class": 'text-center',
+                        "width": "10%",
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a href="/Ernmr/delete/' + data + '" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a> | <a class="btn btn-primary btn-xs" href="/Ernmr/edit/' + data + '"><span class="glyphicon glyphicon-pencil"></span></a><a target="_blank" href="/Ernmr/ErIndicators/' + data + '" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> </div> '
+                        }
+                    }
+                ]
+
+            });
+        })
+    </script>
+}

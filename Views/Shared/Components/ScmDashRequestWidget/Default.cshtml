@@ -1,0 +1,127 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.scmdashrequest>
+@{
+    ViewData["Title"] = "Requests";
+}
+    <style>
+        h4 {
+            font-size: large !important;
+            font-family: 'Segoe UI' !important;
+            color: #1a1818 !important;
+        }
+    </style>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="row">
+            <div class="col-md-2">
+                <h4>Latest Requests</h4>
+            </div>
+            <div class="col-md-10">
+                <h4 style="float:right!important;padding-right:5px;">
+                    <a href="/scmdash/ipl"><i class="fa fa-ellipsis-h"></i></a>
+                </h4>
+
+            </div>
+        </div>
+        <table id="request" style="width:100%;float:left;background-color:#FAFAFB!important" class="table table-condensed table-bordered dt-responsive text-left" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th data-priority="1">
+                        Type of Request
+                    </th>
+                    <th>
+                        Year of Request
+                    </th>
+                    <th>
+                        Start Year
+                    </th>
+                    <th>
+                        Start Month
+                    </th>
+                    <th>
+                        End Year
+                    </th>
+                    <th>
+                        End Month
+                    </th>
+                    <th>
+                        Program
+                    </th>
+                    <th>
+                        Stock Item
+                    </th>
+                    <th>
+                        Children
+                    </th>
+                    <th>
+                        Ballance
+                    </th>
+                    <th>
+                        New Stock
+                    </th>
+                    <th>
+                        Adjust.
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-left text-nowrap">
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.YearOfRequest)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartYear)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartMonth)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndYear)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndMonth)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Children)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ballance)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NewStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Adjustment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Total)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+@section Scripts{
+}
+<script>
+
+</script>
+

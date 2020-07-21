@@ -1,0 +1,38 @@
+@model DataSystem.Models.TlkpFstock
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container">
+    <h2>Details</h2>
+
+    <div>
+       
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Item)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Item)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Active)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Active)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DistAmountKg)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DistAmountKg)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.StockId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

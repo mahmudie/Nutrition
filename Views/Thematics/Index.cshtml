@@ -1,0 +1,26 @@
+@model IEnumerable<DataSystem.Models.lkpThematicArea>
+
+@{
+    ViewData["Title"] = "Thematic Areas";
+}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <h3>Thematic Areas</h3>
+                <br />
+                <br />
+
+            <ejs-grid id="Grid"  allowSorting="true"  toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/Thematics/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/Thematics/Insert" updateUrl="/Thematics/Update" removeUrl="/Thematics/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="themeId" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="thematicArea" headerText="Thematica Area" validationRules="@(new { required=true})" textAlign="Left" width="500"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}

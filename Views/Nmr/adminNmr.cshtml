@@ -1,0 +1,189 @@
+﻿@model DataSystem.Models.Nmr
+
+@{
+    ViewData["Title"] = "Monthly  Reports";
+
+}
+<div class="container">
+    <h2>Nutrition Monthly Reports</h2>
+    <br />
+    <table id="dt" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.Facility.FacilityId)
+</th>
+<th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.Facility.FacilityName)
+</th>
+<th data-priority="1">
+    Type
+</th>
+<th data-priority="1">
+    Province
+</th>
+<th>
+
+
+@Html.DisplayNameFor(model => model.Status.StatusDescription)
+</th>
+<th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.Implementer)
+</th>
+<th data-priority="1">
+    HF status
+</th>
+<th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.Month)
+</th>
+<th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.Year)
+</th>
+<th>
+
+
+@Html.DisplayNameFor(model => model.OpeningDate)
+</th>
+<th data-priority="1">
+
+
+@Html.DisplayNameFor(model => model.UpdateDate)
+</th>
+<th>
+
+
+@Html.DisplayNameFor(model => model.PreparedBy)
+</th>
+<th data-priority="1">
+    User
+</th>
+<th data-priority="1">Actions</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dt').DataTable({
+                responsive: true,
+                "lengthMenu": [10, 25, 50, 100],
+                "processing": true,
+                "serverSide": true,
+                "bStateSave": true,
+                "fnStateSave": function (oSettings, oData) {
+                    localStorage.setItem('dt', JSON.stringify(oData));
+                },
+                "fnStateLoad": function (oSettings) {
+                    return JSON.parse(localStorage.getItem('dt'));
+                },
+                "ordering": false,
+                "ajax": {
+                    "url": "/nmr/adminpagedata",
+                    "type": "post"
+                },
+                "columns": [
+                    { "data": "facilityId", "name": "FacilityId", "autoWidth": true },
+                    { "data": "facilityName", "name": "FacilityName", "autoWidth": true },
+                    { "data": "typeAbbrv", "name": "TypeAbbrv", "autoWidth": true },
+                    { "data": "province", "name": "Province", "autoWidth": true },
+                    { "statusDescription": "Description", "autoWidth": true },
+                    { "data": "implementer", "name": "Implementer", "autoWidth": true },
+                    { "data": "hfStatus", "name": "Hf Status", "autoWidth": true },
+                    { "data": "month", "name": "Month", "autoWidth": true },
+                    { "data": "year", "name": "Year", "autoWidth": true },
+                    { "data": "openingDate", "name": "OpeningDate", "autoWidth": true },
+                    { "data": "updateDate", "autoWidth": true },
+                    { "data": "preparedBy", "autoWidth": true },
+                    { "data": "username", "autoWidth": true },
+                    { "name": "actions", "autoWidth": true },
+
+                ],
+
+                "columnDefs": [
+                    {
+
+                        "data": "nmrid",
+                        "targets": 13,
+                        "sorting": false,
+                        "orderable": false,
+                        "class": 'text-center',
+                        "width": "8%",
+                        "render": function (data, type, row) {
+                            return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a target="_blank" href="/nmr/reports?nmrid=' + row.nmrid + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a></div>';
+                        }
+                    },
+                    {
+                        "targets": 9,
+                        "sorting": false,
+                        "orderable": false,
+                        "class": 'text-center',
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY LT") : "";
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "targets": 10,
+                        "sorting": false,
+                        "orderable": false,
+                        "class": 'text-center',
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY LT") : "";
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "targets": 4,
+                        "data": "stat",
+                        "class": 'text-center',
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data <= 2) {
+                                return '<span class="label label-default">Updating</span>';
+                            }
+                            if (data == 3) {
+                                return '<span class="label label-success">Verified</span>';
+                            }
+                            if (data == 4) {
+                                return '<span class="label label-danger">Rejected</span>';
+                            }
+                            if (data == 5) {
+                                return '<span class="label label-warning">Reacted</span>';
+                            }
+                            if (data == 6) {
+                                return '<span class="label label-info">Information</span>';
+                            }
+                            if (data == 7) {
+                                return '<span class="label label-primary">Submitted</span>';
+                            }
+                        }
+                    }
+                ]
+            });
+        })
+    </script>
+
+
+}

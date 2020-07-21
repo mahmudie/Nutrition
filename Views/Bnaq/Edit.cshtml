@@ -1,0 +1,127 @@
+@model DataSystem.Models.TblBnaq
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>TblBnaq</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Bnaqid" />
+        <div class="form-group">
+            <label asp-for="BoysScreened" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BoysScreened" class="form-control" />
+                <span asp-validation-for="BoysScreened" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ChwstrainedScreening" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ChwstrainedScreening" class="form-control" />
+                <span asp-validation-for="ChwstrainedScreening" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="GirlsScreened" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="GirlsScreened" class="form-control" />
+                <span asp-validation-for="GirlsScreened" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IpdAdmissionsByChws" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IpdAdmissionsByChws" class="form-control" />
+                <span asp-validation-for="IpdAdmissionsByChws" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IpdRutfstockOutWeeks" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IpdRutfstockOutWeeks" class="form-control" />
+                <span asp-validation-for="IpdRutfstockOutWeeks" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MamAddminsionByChws" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MamAddminsionByChws" class="form-control" />
+                <span asp-validation-for="MamAddminsionByChws" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MamRusfstockoutWeeks" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MamRusfstockoutWeeks" class="form-control" />
+                <span asp-validation-for="MamRusfstockoutWeeks" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nmrid" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="Nmrid" class="form-control" asp-items="ViewBag.Nmrid"></select>
+                <span asp-validation-for="Nmrid" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NoHealthWorkers" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NoHealthWorkers" class="form-control" />
+                <span asp-validation-for="NoHealthWorkers" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OpdAdmissionsByChws" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OpdAdmissionsByChws" class="form-control" />
+                <span asp-validation-for="OpdAdmissionsByChws" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OpdRutfstockOutWeeks" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OpdRutfstockOutWeeks" class="form-control" />
+                <span asp-validation-for="OpdRutfstockOutWeeks" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Plwreported" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Plwreported" class="form-control" />
+                <span asp-validation-for="Plwreported" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UpdateDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

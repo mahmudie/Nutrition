@@ -1,0 +1,168 @@
+@{
+    ViewData["Title"] = "Average stock estimation";
+}
+@{
+    var ItemDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ItemSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "SupplyId", Text = "SupplyName" }};
+    var FacilityTypeDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilityTypeSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityTypeId", Text = "FacilityTypeName" }};
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <h3>Average stock estimation</h3>
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add(new { text = "Set Estimation Level", tooltipText = "Set Estimation Level ", prefixIcon = "e-notification", id = "Estlevel" });
+            toolbarItems.Add(new { text = "Calculate Estimation", tooltipText = "Estimate/Re-estimate average", prefixIcon = "e-notification", id = "Estimate" });
+        }
+    <ejs-grid id="estimationGrid" allowSorting="true" load="load" allowFiltering="true" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+        <e-data-manager url="/scmStockaverage/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmStockaverage/Insert" updateUrl="/scmStockaverage/Update" removeUrl="/scmStockaverage/Remove"></e-data-manager>
+        <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+        <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+        <e-grid-columns>
+            <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="type" headerText="Type"  validationRules="@(new { required=true})"  textAlign="Left" width="120"></e-grid-column>
+            <e-grid-column field="year" headerText="Year"  validationRules="@(new { required=true})"  textAlign="Left" width="120"></e-grid-column>
+            <e-grid-column field="facilityTypeId"  validationRules="@(new { required=true})"  foreignKeyField="FacilityTypeId" headerText="Facility Type" foreignKeyValue="FacilityTypeName" dataSource="ViewBag.FacilityTypeSource"
+                           editType="dropdownedit" textAlign="Left" width="300" edit="new {@params = FacilityTypeDownList }"></e-grid-column>
+            <e-grid-column field="program" headerText="Program"  validationRules="@(new { required=true})"  textAlign="Left" width="150"></e-grid-column>
+            <e-grid-column field="supplyId" foreignKeyField="SupplyId"  validationRules="@(new { required=true})"  headerText="Stock Item" foreignKeyValue="SupplyName" dataSource="ViewBag.ItemSource"
+                           editType="dropdownedit" textAlign="Left"  width="250" edit="new {@params = ItemDownList }"></e-grid-column>
+            <e-grid-column field="totalNeeds" headerText="Total estimated"  validationRules="@(new { required=true})"  textAlign="Left" width="120"></e-grid-column>
+
+        </e-grid-columns>
+    </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+  function toolbarClick(args) {
+      if (args.item.id === 'Estimate') {
+          var response = confirm("Please be carefull. Doing this will replace the existing one if any");
+          var para = 1;
+          if (response == true) {  
+              var url = "/scmStockaverage/Averagecalculation" ;
+              $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: { 'id': para },
+                  success: function (data) {
+                      new Noty({
+                          type: "success",
+                          layout: "bottomRight",
+                          text: 'Request successfully proccessed',
+                          visibilityControl: true,
+                          timeout: 3000,
+                      }).show();
+                      window.location='/scmStockaverage/RunIndex'
+                  },
+              }).fail(function () {
+                  new Noty({
+                      type: "error",
+                      layout: "bottomRight",
+                      text: 'Failed',
+                      visibilityControl: true,
+                      timeout: 3000,
+                  }).show()
+              }
+              );
+          }
+      }
+    if (args.item.id === 'Estlevel') {
+          var response = confirm("Are you going to open the page for setting average estimation level");
+          var para = 1;
+          if (response == true) {  
+              var url = "/scmavglvl/Index" ;
+              $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: { 'id': para },
+                  success: function (data) {
+                      new Noty({
+                          type: "success",
+                          layout: "bottomRight",
+                          text: 'Request successfully proccessed',
+                          visibilityControl: true,
+                          timeout: 3000,
+                      }).show();
+                      window.location='/scmavglvl/Index'
+                  },
+              }).fail(function () {
+                  new Noty({
+                      type: "error",
+                      layout: "bottomRight",
+                      text: 'Failed',
+                      visibilityControl: true,
+                      timeout: 3000,
+                  }).show()
+              }
+              );
+          }
+      }
+
+    }
+
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 700;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+
+     var grid;
+    function load(args) {
+        grid = this;
+        grid.columns[1].validationRules = { required: true, minLength: [customFnfortype, 'Please type either Overall or Annual'] };
+        grid.columns[2].validationRules = { required: true, minLength: [customFnyear, 'Type 0 for Overall or Shamsi year, actual year like 1399,etc.'] };
+        grid.columns[4].validationRules = { required: true, minLength: [customFnprogram, 'Type IPD-SAM or OPD-SAM'] };
+    }
+    
+    function customFnfortype(args) { 
+        var form = ej.grids.parentsUntil(args.element, 'e-gridform'); 
+        // here you can get the other columns’s edited value 
+        var editedData = grid.editModule.getCurrentEditedData(form, {}); 
+
+        var type = editedData['type'];
+        if (type === "Overall" || type === "Annual")
+            return 1;
+        else
+            return 0;
+    }; 
+    function customFnyear(args) {
+        var form = ej.grids.parentsUntil(args.element, 'e-gridform');
+        // here you can get the other columns’s edited value 
+        var editedData = grid.editModule.getCurrentEditedData(form, {});
+        var type = editedData['type'];
+
+        var yr = editedData['year'];
+        if (type === "Overall" && yr === 0) {
+            return 1;
+        }
+        else if (type === "Annual" && (yr >= 1398 && yr <= 1420)) {
+            return 1
+        }
+        else {
+            return 0;
+        }
+    };
+    function customFnprogram(args) { 
+        var form = ej.grids.parentsUntil(args.element, 'e-gridform'); 
+        // here you can get the other columns’s edited value 
+        var editedData = grid.editModule.getCurrentEditedData(form, {}); 
+
+        var prog = editedData['program'];
+        if (prog === "IPD-SAM" || prog === "OPD-SAM")
+            return 1;
+        else
+            return 0;
+    }; 
+</script>

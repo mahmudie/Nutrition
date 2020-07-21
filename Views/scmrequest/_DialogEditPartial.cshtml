@@ -1,0 +1,139 @@
+﻿@model DataSystem.Models.SCM.scmIPRequest
+
+@using Syncfusion.EJ2
+
+<div class="row">
+    <div class="form-row">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <h3>Edit</h3>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <ejs-textbox id="id" value=@Model.id enabled="false"></ejs-textbox>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="requestId">Request ID</label>
+                    <ejs-textbox id="requestId" value="@Model.requestId" enabled="false"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="SupplyId">Supply</label>
+                    <ejs-dropdownlist id="supplyId" value=@Model.supplyId placeholder="Select a supply" enabled="@ViewBag.gridIP" dataSource="@ViewBag.SupplySource" popupHeight="300px">
+                        <e-dropdownlist-fields text="Item" value="SupplyId"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <ejs-textbox id="program" value="@Model.program" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="children">Total Children</label>
+                    <ejs-textbox id="children" value="@Model.children" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="stockForChildren">Estimated Stock</label>
+                    <ejs-textbox id="stockForChildren" value="@Model.stockForChildren" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="currentBalance">Current Balance</label>
+                    <ejs-textbox id="currentBalance" value="@Model.currentBalance" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="adjustment">Adjustment</label>
+                    <ejs-textbox id="adjustment" value="@Model.adjustment" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="adjustment">Adjustment Reason</label>
+                    <ejs-richtexteditor id="adjustmentReason" value="@Model.adjustmentReason" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="emergency">Emergency</label>
+                    <ejs-textbox id="emergency" value="@Model.emergency" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="emergencyReason">Emergency Reason</label>
+                    <ejs-richtexteditor id="emergencyReason" value="@Model.emergencyReason" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="commentByIp">Comment by IP</label>
+                    <ejs-richtexteditor id="commentByIp" value="@Model.commentByIp" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="commentByPnd">Comment by PND</label>
+                    <ejs-richtexteditor id="commentByPnd" value="@Model.commentByPnd" enabled="@ViewBag.gridPnd"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="approveByPnd">Approved by PND</label>
+                    <ejs-checkbox id="approveByPnd" name="approveByPnd" checked="(bool)@Model.approveByPnd" enabled="@ViewBag.gridPnd"></ejs-checkbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="commentByUnicef">Comment by UNICEF</label>
+                    <ejs-richtexteditor id="commentByUnicef" value="@Model.commentByUnicef" enabled="@ViewBag.gridUnicef"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="approveByUnicef">Approved by UNICEF</label>
+                    <ejs-checkbox id="approveByUnicef" name="approveByUnicef" checked="(bool)@Model.approveByUnicef" enabled="@ViewBag.gridUnicef"></ejs-checkbox>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ejs-scripts></ejs-scripts> 

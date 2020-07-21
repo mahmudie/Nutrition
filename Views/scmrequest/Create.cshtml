@@ -1,0 +1,169 @@
+@model DataSystem.Models.SCM.scmRequest
+
+@{
+    ViewData["Title"] = "Generate Request";
+}
+<div class="container">
+    <h2>Create Supply Request</h2>
+    <br />
+    <form asp-action="Create">
+        <div class="row col-md-10">
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="requestId" class="form-control" disabled />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Implementer
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="ImpId" ejs-for="impId" autofill="true" dataSource="@ViewBag.imps" placeholder="Select an IP" popupHeight="230px">
+                                <e-combobox-fields text="Name" value="ImpId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Province
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="ProvinceId" ejs-for="provinceId" autofill="true" dataSource="@ViewBag.Provinces" placeholder="Select an Province" popupHeight="230px">
+                                <e-combobox-fields text="Name" value="ProvinceId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                @*<tr>
+                    <th>
+                        Type of Request
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="TypeOfRequest" ejs-for="typeOfRequest" placeholder="Select a type" popupHeight="@ViewBag.popupHeight" dataSource="@ViewBag.ReqType" change="reqtypeChange">
+                                <e-combobox-fields text="ReqTypeName" value="ReqTypeId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>*@
+
+                <tr>
+                    <th>
+                        Request Period
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="RequestPeriod" ejs-for="requestPeriod" placeholder="Select a ReqPeriod " popupHeight="@ViewBag.popupHeight" dataSource="@ViewBag.rounds">
+                                <e-combobox-fields text="RoundName" value="RoundId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Request Date
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="requestDate" type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#requestDate"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                            <span asp-validation-for="requestDate" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Requested By
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="requestBy" type="text" class="form-control" />
+                            <span asp-validation-for="requestBy" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-4 col-md-6">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    function reqtypeChange() {
+        var reqtypeObj = document.getElementById('TypeOfRequest').ej2_instances[0];
+        var reqperiodObj = document.getElementById('RequestPeriod').ej2_instances[0];
+        var startyearObj = document.getElementById('StartYear').ej2_instances[0];
+        var startmonthObj = document.getElementById('StartMonth').ej2_instances[0];
+        var endyearObj = document.getElementById('EndYear').ej2_instances[0];
+        var endmonthObj = document.getElementById('EndMonth').ej2_instances[0];
+        var tempQuery = new ej.data.Query().where('ReqTypeId', 'equal', reqtypeObj.value);
+        reqperiodObj.query = tempQuery;
+        reqperiodObj.text = null;
+        startyearObj.text = null;
+        startmonthObj.text = null;
+        endyearObj.text = null;
+        endmonthObj.text = null;
+        reqperiodObj.dataBind();
+    }
+    function startmonthChange() {
+        var reqtypeObj = document.getElementById('TypeOfRequest').ej2_instances[0];
+        var startyearObj = document.getElementById('StartYear').ej2_instances[0];
+        var startmonthObj = document.getElementById('StartMonth').ej2_instances[0];
+        var endyearObj = document.getElementById('EndYear').ej2_instances[0];
+        var endmonthObj = document.getElementById('EndMonth').ej2_instances[0];
+        var startyearValue;
+        var startmonthValue;
+        var endYear = 11;
+        var quarterYear = 2;
+        if (reqtypeObj.text == 'Annual') {
+            if (startmonthObj.text > 1) {
+                startyearValue = startyearObj.text + 1;
+            }
+            else {
+                 startyearValue = startyearObj.text;
+            }
+            startmonthValue = new Date(startyearObj.text, startmonthObj.text + endYear - 1).getMonth() + 1;
+            startmonthObj.dataBind();
+            var tempquery = new ej.data.Query().where('EndYearName', 'equal', startyearValue);
+            endyearObj.query = tempquery;
+            endyearObj.text = null;
+            endyearObj.dataBind();
+            var tempquery1 = new ej.data.Query().where('EndMonthName', 'equal', startmonthValue);
+            endmonthObj.query = tempquery1;
+            endmonthObj.text = null;
+            endmonthObj.dataBind();
+        }
+        else if (reqtypeObj.text == 'Quarterly') {
+            startyearValue = new Date(startyearObj.text, (startmonthObj.value - 1) + quarterYear).getFullYear();
+            startmonthValue = new Date(startyearObj.text, (startmonthObj.value - 1) + quarterYear).getMonth() + 1;
+            var tempquery = new ej.data.Query().where('EndYearName', 'equal', startyearValue);
+            endyearObj.query = tempquery;
+            endyearObj.text = null;
+            endyearObj.dataBind();
+            var tempquery1 = new ej.data.Query().where('EndMonthName', 'equal', startmonthValue);
+            endmonthObj.query = tempquery1;
+            endmonthObj.text = null;
+            endmonthObj.dataBind();
+        }
+    }
+    </script>
+}

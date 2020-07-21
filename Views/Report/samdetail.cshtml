@@ -1,0 +1,146 @@
+@model DataSystem.Models.Samreq
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+	ViewData["Title"] = "SAM Request Details";
+}
+<div id="popup">
+</div>
+@Html.AntiForgeryToken()
+<div class="nav-tabs-custom">
+		  
+		<div class="tab-content">
+			<div class="progress progress-sm active" data-bind="visible:sending()">
+				<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+				  <span class="sr-only">Please Wait ....</span>
+				</div>
+			  </div>
+		<div class="tab-pane active" id="tab_1" data-bind="visible:!sending()">
+
+		<a class="btn btn-success" asp-action="samxl" asp-route-id="@Model.Rid"><span class="glyphicon glyphicon-plus"></span>Export to Excel</a>
+
+		   <div class="table-responsive" data-bind="visible:dataArray().length>0">
+					<table class="table table-hover table-bordered table-condensed">
+						<thead>
+							 <tr >
+								<th class="text-left">Item</th>                                
+								<th class="text-center">FormName</th>
+								<th class="text-center">U6</th>
+								<th class="text-center">O6</th>
+								<th class="text-center">CurrentBalance</th>
+								<th class="text-center">Adjustment</th>
+								<th class="text-center">AdjustmentComment</th>
+	@if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+	{
+
+								<th class="text-center">actions</th>
+	}
+						</thead>
+						<tbody  class="text-center" data-bind="foreach:dataArray">
+							<tr>
+								<td class="text-left" data-bind="text:item"></td>
+								<td data-bind="text:formname"></td>
+								<td data-bind="text:u6"></td>
+								<td data-bind="text:o6"></td>
+								<td data-bind="text:balance"></td>
+								<td data-bind="text:adj"></td>
+								<td data-bind="text:comment"></td>
+	 @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+	 {
+								<td>
+								<div class="row" style="display: inline-block; float: none; white-space: nowrap;">
+								<button class="btn btn-primary btn-xs" data-bind="click:$parent.edit"><span class="glyphicon glyphicon-pencil"></span></button> 
+								</div>
+								</td>
+	 }
+							</tr>
+						</tbody>
+					</table>
+						@if (SignInManager.IsSignedIn(User) &&  User.IsInRole("dataentry")){
+
+				<a class="btn btn-sm btn-primary " href="/report">
+					<span class="glyphicon glyphicon-arrow-left	" ></span> Back to list</a>
+		}
+	 @if (SignInManager.IsSignedIn(User) &&  User.IsInRole("administrator")){
+				<a class="btn btn-sm btn-primary " href="/report">
+					<span class="glyphicon glyphicon-arrow-left	" ></span> Back to list</a>
+		} 
+				</div>
+				<div style="display: none" data-bind="visible:dataArray().length==0"
+					 class="alert alert-warning " role="alert">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					There are no reports to display.
+				</div>
+			</div>
+		</div>
+		</div>
+
+<div class="modal fade" id="Edit" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Infant and Young Child Feeding</h4>
+			</div>
+			<div class="modal-body ">
+				<form asp-action="Create" id="form" data-bind="submit:editRecord,visible:!sending()">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Current Balance :</label>
+							<div class="col-sm-8">
+								<input data-bind="value:model.CurrentBalance" class="form-control" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Adjustment :</label>
+							<div class="col-sm-8">
+								<input data-bind="value:model.Adjustment" class="form-control" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Adjustment Comment :</label>
+							<div class="col-sm-8">
+								<input data-bind="value:model.AdjustmentComment" class="form-control" />
+							</div>
+						</div>
+						<br/>
+					 <div class="control-group">
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-8">
+								<input type="submit" value="Save" class="btn btn-block btn-success btn-sm" />
+							</div>
+						</div>
+					 </div>
+					</div>
+				</form>
+				<div class="progress" data-bind="visible: sending()">
+					<div class="progress-bar progress-bar-info progress-bar-striped active"
+						 role="progressbar" aria-valuenow="100"
+						 aria-valuemin="0" aria-valuemax="100"
+						 style="width: 100%">
+						<span class="sr-only"></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script src="~/js/notify.min.js"></script>
+	<script src="~/js/ViewModel/samreq.js"></script>
+	<script>
+		$(document).ready(function() {
+			var model = new FormViewModel(@Json.Serialize(Model.Rid));
+			ko.applyBindings(model);
+		});
+	</script>
+}

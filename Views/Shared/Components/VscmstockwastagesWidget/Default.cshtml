@@ -1,0 +1,104 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.vscmstockwastages>
+@{
+    ViewData["Title"] = "Stock wastages";
+}
+<style>
+    h4{
+     font-size:large!important;
+    font-family: 'Segoe UI'!important;
+    color: #1a1818!important;
+    }
+</style>
+<div class="container-fluid">
+    <div id="wastetypeHeight" class="row" style="overflow-y:auto;overflow-x:hidden;">
+
+        <div class="row">
+            <div class="col-md-2">
+                <h4>Stock wastages</h4>
+            </div>
+            <div class="col-md-10">
+                <h4 style="float:right!important;padding-right:5px;">
+                    <a href="/scmDistributionMain"><i class="fa fa-ellipsis-h"></i></a>
+                </h4>
+
+            </div>
+        </div>
+
+        <table id="wastetypes" style="width:100%;float:left;background-color:#FAFAFB!important" class="table table-condensed table-bordered dt-responsive text-left" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th data-priority="1">
+                        Implementer
+                    </th>
+                    <th data-priority="1">
+                        Province
+                    </th>
+                    <th data-priority="1">
+                        Tracker
+                    </th>
+                    <th>
+                        Stock Item
+                    </th>
+                    <th>
+                        Batch No.
+                    </th>
+                    <th>
+                        Quanity
+                    </th>
+                    <th>
+                        Tye of Wastage
+                    </th>
+                    <th>
+                        Expiry Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-left">
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Implementer)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.Province)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.Quarter)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockItem)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BatchNumber)
+                        </td>
+                        <td class="text-nowrap">
+                            @if (item.Quantity > 5)
+                            {
+                                <span class="bg-red btn-block"> @Html.DisplayFor(modelItem => item.Quantity)</span>
+                            }
+                            else
+                            {
+                                <span class="bg-green btn-block"> @Html.DisplayFor(modelItem => item.Quantity)</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                                <span class="bg-red btn-block"> @Html.DisplayFor(modelItem => item.WateType)</span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpiryDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+}
+<script>
+
+</script>

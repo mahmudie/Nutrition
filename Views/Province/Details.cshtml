@@ -1,0 +1,54 @@
+@model DataSystem.Models.Provinces
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Provience</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProvName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProvName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProveNameDari)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProveNameDari)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProveNamePashto)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProveNamePashto)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AGHCHOCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AGHCHOCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AIMSCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AIMSCode)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProvCode">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

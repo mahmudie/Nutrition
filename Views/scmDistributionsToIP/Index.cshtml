@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Distributions";
+}
+
+@{
+    var drpRounds2 = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RoundSources, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "RoundId", Text = "RoundDescription" } };
+    var drpImplementers2 = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpSources, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpId", Text = "ImpName" } };
+
+}
+@{
+    List<object> commands2 = new List<object>();
+    commands2.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "e-flat" } });
+    commands2.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
+    commands2.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Distributions</h3>
+
+            <ejs-grid id="scmDistributionToIPGrid" allowSorting="true" actionBegin="Begin" toolbarClick="toolbarClick" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmDistributionsToIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsToIP/Insert" updateUrl="/scmDistributionsToIP/Update" removeUrl="/scmDistributionsToIP/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="distributionId" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="roundId" foreignKeyField="RoundId" validationRules="@(new { required=true})" headerText="Distribution Round" foreignKeyValue="RoundDescription"
+                                   dataSource="ViewBag.RoundSources" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpRounds2 }"></e-grid-column>
+                    <e-grid-column field="impId" foreignKeyField="ImpId" validationRules="@(new { required=true})" headerText="Implementer" clipMode="EllipsisWithTooltip" foreignKeyValue="ImpName"
+                                   dataSource="ViewBag.ImpSources" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpImplementers2 }"></e-grid-column>
+                    <e-grid-column field="dateFrom" headerText="Date From" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="dateTo" headerText="Date To" validationRules="@(new { required=true})" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column headerText="Manage Records" width="120" commands="commands2"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+        }
+    }
+
+    var commandClick;
+    function toolbarClick(args) {
+        if (args.name === 'toolbarClick')
+            commandClick = true;
+    }
+
+    function Begin(args) {
+        var type = args.requestType;
+        if (type == "beginEdit" || type == "add") {
+            if (!commandClick) {
+                args.cancel = true;
+                if (args.rowIndex != undefined)
+                    var ID = this.currentViewData[args.rowIndex]["distributionId"];
+                if (type == "beginEdit")
+                    var url = "/scmDistributionsToIP/Edit/" + ID;
+                else if (type == "add")
+                    var url = "/scmDistributionsToIP/Edit/" + 0;
+                location.assign(url);
+            }
+            commandClick = false;
+        }
+    }
+</script>

@@ -1,0 +1,100 @@
+@model IEnumerable<DataSystem.Models.TlkpSstock>
+
+@{
+    ViewData["Title"] = "SAM Stock Items";
+}
+<div class="container">
+    <h2>SAM Stock Items</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    <table id="dt" class="table table-striped table-bordered table-hover text-left dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    Item ID
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Persachet)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Buffer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IPDSAMZarib)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OPDSAMZarib)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comments)
+                </th>
+                <th class="col-md-2" data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SstockId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Item)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Persachet)
+                    </td>
+                    <td>
+                        @if (item.Active.Equals(true))
+                        {
+                            <span class="label label-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">No</span>
+                        }                   
+                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Buffer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IPDSAMZarib)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OPDSAMZarib)
+                    </td>                    
+                    <td>
+                        
+                        @Html.Raw(item.Comments)
+                    </td>
+                    <td>
+                            <div style="display: inline-block; float: none; white-space: nowrap;">
+                                     <a asp-action="Delete" asp-route-id="@item.SstockId" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                      | <a asp-action="Edit" asp-route-id="@item.SstockId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                             </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $('#dt').DataTable({
+                responsive: true,
+                paging: false,
+                "searching": false
+            });
+        });
+    </script>
+}

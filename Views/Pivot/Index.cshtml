@@ -1,0 +1,144 @@
+
+@model DataSystem.Models.ViewModels.PivotTable.CreateReq
+
+@{
+   ViewData["Title"] = "Pivot Table";
+}
+
+<div class="container">
+
+<form name="pivotForm" id="pivotForm" class="form-horizontal">
+    <div class="row">
+        <div class="col-md-8  col-md-offset-2">
+        <h2>
+           Excel Pivot Table
+        </h2>
+        <br/><br/>
+        <h1></h1><h1></h1>
+    </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProvCode" class="col-md-2 control-label"></label>
+        <div class="col-md-3">
+            <select asp-for="ProvCode" asp-items="@ViewBag.ProvList" class="form-control">
+         </select>
+        </div>
+        <label asp-for="Year" class="col-md-2 control-label">Year</label>
+        <div class="col-md-3">
+            <select asp-for="Year" class="form-control">
+             <option value="0">All</option>
+             <option value="1390">1390</option>
+             <option value="1391">1391</option>
+             <option value="1392">1392</option>
+             <option value="1393">1393</option>
+             <option value="1394">1394</option>
+             <option value="1395">1395</option>
+             <option value="1396">1396</option>
+             <option value="1397">1397</option>
+             <option value="1398">1398</option>
+             <option value="1399">1399</option>
+             <option value="1400">1400</option>
+             <option value="1401">1401</option>
+             <option value="1402">1402</option>
+             <option value="1403">1403</option>
+             <option value="1404">1404</option>
+         </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Type" class="col-md-2 control-label">Pivot Type</label>
+        <div class="col-md-8">
+            <select id="pivotType" for="Type" class="form-control">
+             <option value="6" >IPD-SAM </option>
+             <option value="5" >IPD-SAM Stock</option>
+             <option value="4" >OPD-SAM </option>
+             <option value="7" >OPD-SAM Stock</option>
+             <option value="1" >OPD-MAM Children</option>
+             <option value="2" >OPD-MAM Mothers</option>
+             <option value="3" >OPD-MAM Food Stock</option>
+             <option value="10" >GMP (Health Facility)</option>
+             <option value="8" >BNA Questions</option>
+             <option value="11" >Report Submission</option>
+           </select>
+       </div>
+    </div>
+    <div class="form-group" style="display:none">
+        <label asp-for="option" class="col-md-2 control-label"></label>
+        <div class="col-md-3">
+            <select asp-for="option" class="form-control">
+             <option value="1" >Filter by all columns</option>
+           </select>
+       </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-8 col-md-offset-2">
+        <button id="sendbtn" onclick="send()" class="btn btn-success btn-block">Generate</button>
+        </div>
+    </div>
+    <br/><br/>
+</form>
+<hr/>
+</div>
+
+@section Scripts{
+         <script>
+             function send(){
+                //event.preventDefault()
+                var e = document.getElementById("pivotType");
+                var type = Number(e.options[e.selectedIndex].value);
+                switch(type){
+
+                      case 1:
+                          document.pivotForm.action="/Pivot/pivotMamChild";
+                          document.pivotForm.submit();
+                      break;
+
+                      case 2:
+                          document.pivotForm.action="/Pivot/pivotMam";
+                          document.pivotForm.submit();
+                      break;  
+
+                      case 3:
+                          document.pivotForm.action="/Pivot/pivotMAMstock";
+                          document.pivotForm.submit();
+                      break;  
+
+                     case 4:
+                          document.pivotForm.action="/Pivot/pivotSam";
+                          document.pivotForm.submit();
+                      break; 
+
+                     case 5:
+                          document.pivotForm.action="/Pivot/samStock";
+                          document.pivotForm.submit();
+                      break;   
+
+                     case 6:
+                          document.pivotForm.action="/Pivot/pivotsamOut";
+                          document.pivotForm.submit();
+                      break; 
+                     case 7:
+                          document.pivotForm.action="/Pivot/samStockOut";
+                          document.pivotForm.submit();
+                      break;      
+                      case 8:
+                          document.pivotForm.action="/Pivot/pivotBNA";
+                          document.pivotForm.submit();
+                      break;                    
+                      case 9:
+                          document.pivotForm.action="/Pivot/pivotIYCF";
+                          document.pivotForm.submit();
+                      break;     
+
+                      case 10:
+                          document.pivotForm.action="/Pivot/pivotMN";
+                          document.pivotForm.submit();
+                      break;                                                             
+                      case 11:
+                          document.pivotForm.action="/Pivot/pivotSubmission";
+                          document.pivotForm.submit();
+                      break;   
+                }
+             };
+         </script>
+}

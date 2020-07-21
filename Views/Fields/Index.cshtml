@@ -1,0 +1,65 @@
+﻿@model DataSystem.Models.GLM.FormGridViewModel
+@{
+    ViewData["Title"] = "Fields";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+
+        <a asp-controller="Sections" 
+           asp-action="Index" 
+           class="btn btn-link btn-sm">Back to Sections</a>
+    </div>
+
+    <div class="card-body">
+        <h6 class="card-title">@ViewData["SectionTitle"]</h6>
+
+        <table class="table table-bordered table-sm .table-responsive">
+            <thead style="font-weight: normal;">
+                <tr>
+                    <th></th>
+                    @foreach (var column in Model.Columns)
+                    {
+                        <th class="font-weight-normal">@column.Title</th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var question in Model.Questions)
+                {
+                    <tr>
+                        <td>@question.QuestionTitle</td>
+
+                        @foreach (var field in question.Fields)
+                        {
+                            <td>
+                                @if (field.Id == 0)
+                                {
+                                    <a asp-controller="Fields"
+                                       asp-action="Create"
+                                       asp-route-QuestionId="@field.QuestionId"
+                                       asp-route-ColumnId="@field.ColumnId"
+                                       class="btn btn-link btn-sm">Add</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Fields"
+                                       asp-action="Edit"
+                                       asp-route-id="@field.Id"
+                                       class="btn btn-link btn-sm">Edit</a>
+
+                                    <a asp-controller="Fields"
+                                       asp-action="Delete"
+                                       asp-route-id="@field.Id"
+                                       class="btn btn-danger btn-sm">Delete</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

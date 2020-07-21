@@ -1,0 +1,126 @@
+@model IEnumerable<DataSystem.Models.SurveyInfo>
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Survey Result";
+}
+<style>
+    .textareawidth {
+        height: 230px !important;
+        width: 1100px !important;
+    }
+</style>
+<div class="container-fluid">
+    <h2>Survey Result</h2>
+
+    <p>
+        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+        {
+            <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Add New</a>
+
+        }
+    </p>
+    <table id="dt" class="table table-bordered table-hover table-striped dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th data-priority="1">
+                    Id
+                </th>
+                <th data-priority="2">
+                    Survey Acro
+                </th>
+                <th>
+                    Survey Full Name
+                </th>
+                <th>
+                    Survey Year
+                </th>                
+                <th>
+                    Month
+                </th>
+                <th>
+                    Lead By
+                </th>
+                <th>
+                    Implementer By
+                </th>
+                <th>
+                    Author Names
+                </th>
+                <th>
+                    Abstract
+                </th>
+                <th data-priority="1">
+                    Download
+                </th>
+                <th data-priority="1">
+                    View PDF
+                </th>
+                <th data-priority="1">
+                    actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var survey in Model)
+            {
+            <tr>
+                <td>@survey.SurveyId</td>
+                <td>@survey.SurveyAccro</td>
+                <td>@survey.SurveyFull</td>
+                <td>@survey.SurveyYear</td>
+                <td>@survey.Month</td>
+                <td>@survey.LeadBy</td>
+                <td>@survey.ImpBy</td>
+                <td>@survey.Writers</td>
+                <td>@Html.Raw(survey.Abstract)</td>
+                <td>
+                    @if (survey.Attachment != null && survey.Attachment != "")
+                    {
+                        var filepath = survey.FilePath + "/" + survey.Attachment;
+                        <a href="~/survey/@filepath" class="btn btn-sm badge badge-primary"><i class="fa fa-cloud-download"></i></a>
+                    }
+                </td>
+                <td>
+                    @if (survey.Attachment != null && survey.Attachment != "")
+                    {
+                    <a href="/Pdfviewer/Index/@survey.SurveyId" target="_blank" class="btn btn-primary btn-xs"><span class="fa fa-eye"></span></a>                    
+                    }
+                </td>
+                <td>
+                    <div style="display: inline-block; float: none; white-space: nowrap;">
+                        <a asp-action="Delete" asp-route-id="@survey.SurveyId" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                        | <a asp-action="Edit" asp-route-id="@survey.SurveyId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                        | <a asp-action="Details" asp-route-id="@survey.SurveyId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#dt').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                columnDefs: [{
+                    "targets": 6,
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY") : "";
+                        }
+                        return "";
+                    }
+                }]
+            });
+        });
+    </script>
+}

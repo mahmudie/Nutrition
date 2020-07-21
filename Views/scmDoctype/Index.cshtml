@@ -1,0 +1,35 @@
+
+@{
+    ViewData["Title"] = "Document types";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h3>Document Types</h3>
+            <br />
+            <br />
+
+            <ejs-grid id="scmDoctypeGrid" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmDoctype/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDoctype/Insert" updateUrl="/scmDoctype/Update" removeUrl="/scmDoctype/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="docId" headerText="ID" isIdentity="true" isPrimaryKey="true" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="documentType" headerText="Document Type" validationRules="@(new { required=true})" textAlign="Left" width="500"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 450;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['documentType'] : 'New';
+        }
+    }
+</script>

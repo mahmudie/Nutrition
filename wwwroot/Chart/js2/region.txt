@@ -1,0 +1,1 @@
+[{"RABRV":"CE","value":2141531.25},{"RABRV":"E","value":1053568.625},{"RABRV":"N","value":1207321.0},{"RABRV":"NE","value":1255597.375},{"RABRV":"S","value":1696863.593082265},{"RABRV":"SW","value":966603.75},{"RABRV":"W","value":1201890.75}]

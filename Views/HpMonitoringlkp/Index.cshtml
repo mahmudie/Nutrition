@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Questions Roster";
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Questions Roster</h3>
+
+            <ejs-grid id="Questions_grid" actionComplete="actionComplete"  allowSorting="true" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/HpMonitoringlkp/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/HpMonitoringlkp/Insert" updateUrl="/HpMonitoringlkp/Update" removeUrl="/HpMonitoringlkp/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" visible="true" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="section" headerText="Section" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="partCode" headerText="Part Code" validationRules="@(new { required=true})" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="questionname" headerText="Question" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                    <e-grid-column field="verificationSource" headerText="Verification Source" textAlign="Left" width="220"></e-grid-column>
+                    <e-grid-column field="possibleReponse" headerText="Possible Reponse" validationRules="@(new { required=true})" textAlign="Left" width="150"></e-grid-column>
+                    <e-grid-column field="isActive" headerText="Is Active" template="#activetemplate"  defaultValue="1" editType="booleanedit" validationRules="@(new { required=true})" textAlign="Center" width="100"></e-grid-column>
+                    <e-grid-column field="comment" headerText="Comment" textAlign="Left" width="250"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 750;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+</script>
+<script id="activetemplate" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>

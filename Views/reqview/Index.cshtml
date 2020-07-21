@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Supply Request";
+}
+<div class="container-fluid">
+    <div class="row">
+        <h3>Requests</h3>
+        <ejs-grid id="ReqGrid1" allowSorting="true"  selectedRowIndex="0" toolbar="@(new List<string>() {"Search" })" rowSelected="selected" allowPaging="true">
+            <e-data-manager url="/reqview/UrlDataSource" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-pagesettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column field="requestId" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="implementer" headerText="Implementer" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="province" headerText="Province" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="requestType" headerText="Type" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="startYear" headerText="Year from" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="startMonth" headerText="Month from" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="endYear" headerText="Year to" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="endMonth" headerText="Month to" textAlign="Left" width="130"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+
+    <div class="row">
+        <h3>Details</h3>
+        <ejs-grid id="ReqGrid2" allowSorting="true" allowResizing="true" allowTextWrap="true" toolbar="@(new List<string>() {"Search" })" allowPaging="true">
+            <e-data-manager url="/reqview/UrlDatasourceSub" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" mode="Dialog"></e-grid-editSettings>
+            <e-grid-pagesettings pageSizes="true" pageSize="12"></e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="requestId" headerText="MID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="item" headerText="Stock item" textAlign="Left" width="290"></e-grid-column>
+                <e-grid-column field="program" headerText="Program" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="children" headerText="Children" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="totalEstimation" headerText="Total Estim." textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="totalBuffer" headerText="Total Buffer" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="currentBalance" headerText="Current Balance" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="Adjustment" headerText="Adjustment" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="emergency" headerText="Emergency" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="totalRequest" headerText="Total Request" textAlign="Left" width="130"></e-grid-column>
+                <e-grid-column field="adjustmentReason" headerText="Adjustment Reason" textAlign="Left" width="300"></e-grid-column>
+                <e-grid-column field="emergencyReason" headerText="Emergency Reason" textAlign="Left" width="300"></e-grid-column>
+                <e-grid-column field="ipdsamFactor" headerText="IPD-SAM Factor" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="opdsamFactor" headerText="OPD-SAM Factor" textAlign="Left" width="110"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+
+    </div>
+</div>
+@section Scripts{
+
+}
+<script id="sendemail" type="text/x-template">
+    <button type="button" class="btn btn-success" onclick="sendemail(event)"><i class="fa fa-send"></i> Send</button>
+</script>
+
+<script>
+
+    function selected(args) {
+        var id = args.data.requestId;   
+        var degrid = document.getElementById("ReqGrid2").ej2_instances[0];       // Child Grid instance 
+        degrid.query = new ej.data.Query().where("requestId", "equal", id, false).take(1); 
+    }
+</script>

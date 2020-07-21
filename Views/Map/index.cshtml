@@ -1,0 +1,268 @@
+
+@{
+    ViewData["title"] = "Charts";
+}
+    <div id="container"></div>
+    <div id="info">
+        <span class="f32"><span id="flag"></span></span>
+        <div class="subheader">Click proivnces to view history</div>
+        <div id="country-chart" ></div>
+    </div>
+@section Scripts{
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+    <script type="text/javascript"  src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="~/chart/js2/Province.js"></script>
+
+<script type="text/javascript">
+           $.getJSON('/js/NutProvinceData2Rich.txt', function (data2) {
+
+
+                var mapChart, countryChart;
+
+                var proveencies = [];
+
+
+                var UniqProv = [];
+                var UniqName = [];
+
+                for (i = 0; i < data2.length; i++) {
+                    if (UniqProv.indexOf(data2[i].PROV_32_ID) === -1) {
+                        UniqProv.push(data2[i].PROV_32_ID);
+                        UniqName.push(data2[i].Pname);
+                    }
+                };
+
+                // getting the category
+                //var categories2 = [];
+                //for (i = 0; i < data2.length; i++) {
+                //    if (categories2.indexOf(data2[i].Time) === -1) {
+                //        categories2.push(data2[i].Time);
+                //    }
+                //};
+
+                //creating arrary for each Province (UniqProv)
+                for (j = 0; j < UniqProv.length; j++) {
+                    var prv = UniqProv[j];
+                    var nm = UniqName[j];
+                    //filter a single province
+                    var prov = $.grep(data2, function (element, index) {
+                        return element.PROV_32_ID === prv;
+                    });
+
+                    //move data value to arrary
+                    var arr = [];
+                    var cat = [];
+                    for (var p in prov) {
+                        arr.push({name: prov[p].Time, y: prov[p].value});
+                    }
+
+                    //adding all arrary together
+                    proveencies[j] = {
+                        code: parseInt(prv),
+                        name: nm,
+                        data: arr
+                    };
+                };
+
+
+                var data = [];
+                for (var code in proveencies) {
+                    if (proveencies.hasOwnProperty(code)) {
+                        var value = null,
+                            year,
+                            itemData = proveencies[code].data,
+                            i = itemData.length;
+
+                        while (i--) {
+                            if (typeof itemData[i] === 'number') {
+                                value = itemData[i];
+                                year = categories[i];
+                                break;
+                            }
+                        }
+                        data.push({
+                            name: proveencies[code].name,
+                            code: code,
+                            value: value,
+                            year: year,
+                            pointData: itemData
+                        });
+                    }
+                }
+
+                // Wrap point.select to get to the total selected points
+                Highcharts.wrap(Highcharts.Point.prototype, 'select', function (proceed) {
+
+                    var categories = [];
+                    proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+
+                    var points = mapChart.getSelectedPoints();
+                    if (points.length) {
+                        if (points.length === 1) {
+                            $('#info h2').html(points[0].Pname);
+                        } else {
+                            $('#info h2').html('Comparing provinces');
+
+                        }
+                        $('#info .subheader').html('<h4>Historical population</h4><small><em>Shift + Click on map to compare countries</em></small>');
+
+                        if (!countryChart) {
+                            countryChart = Highcharts.chart('country-chart', {
+                                chart: {
+                                    height: 250,
+                                    spacingLeft: 0
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                title: {
+                                    text: null
+                                },
+                                subtitle: {
+                                    text: null
+                                },
+                                xAxis: {
+                                    crosshair: true,
+                                    uniqueNames: true,
+                                    type: 'category'
+                                },
+                                yAxis: {
+                                    title: null,
+                                    opposite: true
+                                },
+                                tooltip: {
+                                    split: true
+                                },
+                                plotOptions: {
+                                    series: {
+                                        animation: {
+                                            duration: 500
+                                        },
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        threshold: 0,
+                                    }
+                                }
+                            });
+                        }
+                        $.each(points, function (i, point) {
+                            Highcharts.each(data[point.index].pointData, function (p) {
+                                if(categories.indexOf(p.name) === -1) {
+                                    categories.push(p.name);
+                                }
+                            });
+                            categories.sort(function(a,b){
+                                return a-b;
+                            });
+                            countryChart.xAxis[0].update({categories:categories});
+                            if (countryChart.series[i]) {
+                                countryChart.series[i].update({
+                                    name: this.Pname,
+                                    data: data[point.index].pointData,
+                                    type: points.length > 1 ? 'line' : 'area'
+                                }, false);
+                            } else {
+                                countryChart.addSeries({
+                                    name: this.Pname,
+                                    data: data[point.index].pointData,
+                                    type: points.length > 1 ? 'line' : 'area'
+                                }, false);
+                            }
+                        });
+                        while (countryChart.series.length > points.length) {
+                            countryChart.series[countryChart.series.length - 1].remove(false);
+                        }
+                        countryChart.redraw();
+
+                    } else {
+                        $('#info #flag').attr('class', '');
+                        $('#info h2').html('');
+                        $('#info .subheader').html('');
+                        if (countryChart) {
+                            countryChart = countryChart.destroy();
+                        }
+                    }
+                });
+                // Initiate the
+                $.getJSON('/js/NutProvinceData.txt', function (da) {
+                    mapChart = Highcharts.mapChart('container', {
+                        title: {
+                            text: ""
+                        },
+
+                        mapNavigation: {
+                            enabled: true,
+                            buttonOptions: {
+                                verticalAlign: 'bottom'
+                            }
+                        },
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            borderWidth: 0,
+                            symbolHeight: 20,
+                            backgroundColor: 'rgba(255,255,255,0.85)',
+                            floating: true,
+                            verticalAlign: 'bottom',
+                            y: 10
+                        },
+                        colorAxis: {
+                            min: 1,
+                            type: 'logarithmic',
+                            minColor: '#EEEEFF',
+                            maxColor: '#000022',
+                            stops: [
+                                [0, '#EFEFFF'],
+                                [0.70, '#4444FF'],
+                                [1, '#000022']
+                            ]
+                        },
+                        credits: {
+                            enabled: false
+                        },
+
+                        series: [
+                            {
+                                animation: {
+                                    duration: 1000
+                                },
+                                data: da,
+                                mapData: provinces,
+                                joinBy: ['PROV_32_ID', 'PROV_32_ID'],
+                                name: 'Vaccinations',
+                                color: '#E0E0E0',
+                                nullColor: 'red',
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                states: {
+                                    select: {
+                                        color: '#32CD32'
+                                    },
+                                    hover: {
+                                        color: '#a4edba'
+                                    }
+                                },
+
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.Pname}'
+                                },
+
+                                tooltip: {
+                                    pointFormat: 'Vaccinations: {point.value}'
+                                }
+
+                            }
+                        ]
+
+                    });
+                    // Pre-select a province
+                    mapChart.series[0].data[0].select(true);
+                });
+            });
+        </script>
+
+}

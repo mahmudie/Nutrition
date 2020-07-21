@@ -1,0 +1,67 @@
+@model DataSystem.Models.Nmr
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <h2>Nutrition Monthly Report Details</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Commen)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Commen)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Flanumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Flanumber)
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Implementer)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Month)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Month)
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.OpeningDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PreparedBy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PreparedBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UpdateDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Nmrid">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

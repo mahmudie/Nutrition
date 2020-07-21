@@ -1,0 +1,129 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.vscmRequeststatus>
+@{
+    ViewData["Title"] = "Request status";
+}
+<style>
+    h4 {
+        font-size: large !important;
+        font-family: 'Segoe UI' !important;
+        color: #1a1818 !important;
+        padding: 0px !important;
+    }
+</style>
+<div class="container-fluid">
+    <div id="statusHeight" class="row" style="overflow-y:auto;overflow-x:hidden;">
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Request Status</h4>
+            </div>
+            <div class="col-md-9">
+                <h4 style="float: right !important; padding-right: 5px;">
+                    <a href="/scmrequest/Index" target="_blank"><i class="fa fa-ellipsis-h"></i></a>
+                </h4>
+            </div>
+        </div>
+        <table id="request" style="width:100%; float:left;background-color:#FAFAFB!important" class="table table-condensed table-bordered dt-responsive text-left" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th data-priority="1">
+                        Implementer
+                    </th>
+                    <th>
+                        Province
+                    </th>
+                    <th>
+                        Tracker
+                    </th>
+                    <th>
+                        Reviewed by PND
+                    </th>
+                    <th>
+                        Reviewed by UNICEF
+                    </th>
+                    <th>
+                        Request Reviewed
+                    </th>
+                    <th>
+                        Distribution Done
+                    </th>
+                    <th>
+                        Request on time
+                    </th>
+                    <th>
+                        Date Completed
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-left text-nowrap">
+
+                        <td>
+                            <a asp-action="Edit" asp-controller="scmrequest" target="_blank" asp-route-id="@item.requestId">@Html.DisplayFor(modelItem => item.Implementer)</a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="scmrequest" target="_blank" asp-route-id="@item.requestId">@Html.DisplayFor(modelItem => item.Province)</a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="scmrequest" target="_blank" asp-route-id="@item.requestId"> @Html.DisplayFor(modelItem => item.RoundCode)</a>
+                        </td>
+                        <td class="nowrap">
+                            @if (item.revievedByPnd == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.revievedByPnd == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.reviewedByUnicef == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.reviewedByUnicef == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.requestViewed == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.requestViewed == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.distributionCompleted == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.distributionCompleted == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.requestOntime == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.requestOntime == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @String.Format("{0:yyyy/MM/dd}", item.dateCompleted)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

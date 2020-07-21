@@ -1,0 +1,98 @@
+@model DataSystem.Models.Samreq
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <h2>New Sam Request</h2>
+
+    <form asp-action="Create">
+        <div class="form-horizontal">
+            <hr />
+            <h2><div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div></h2>
+
+            <div class="form-group">
+                <label asp-for="ProvCode" class="col-md-2 control-label">Province</label>
+                <div class="col-md-3">
+                    <select asp-for="ProvCode" id="Prov" class="form-control" asp-items="@ViewBag.ProvList"></select>
+                </div>
+                <label asp-for="ImpCode" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="ImpCode" asp-items="@ViewBag.Implementers" class="form-control"></select>
+                    <span asp-validation-for="ImpCode" class="text-danger" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Year" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="Year" class="form-control">
+                        <option>1395</option>
+                        <option>1396</option>
+                        <option>1397</option>
+                        <option>1398</option>
+                        <option>1399</option>
+                        <option>1400</option>
+                        <option>1401</option>
+                        <option>1402</option>
+                    </select>
+                    <span asp-validation-for="Year" class="text-danger" />
+                </div>
+                <label asp-for="Month" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <select asp-for="Month" class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                    <span asp-validation-for="Month" class="text-danger" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="ReqBy" class="col-md-2 control-label"></label>
+                <div class="col-md-8">
+                    <input asp-for="ReqBy" class="form-control" />
+                    <span asp-validation-for="ReqBy" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Create" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-md-8">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-warning"></i> Caution!</h4>
+                    <ul>
+                        <li><b>Year</b>- select Year of generating request for</li>
+                        <li><b>Month</b>- select Month of generating request for</li>
+                        <li>The <b>Month</b>indicates the Request month but the report will be gerenated from 3 months back of the select month.</li>
+                        <li><b>You are allowed to only create one request for each Month note more</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-4">
+                        <a asp-action="Index" class="btn btn-block btn-primary btn-sm">Back to List</a>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+</div>
+

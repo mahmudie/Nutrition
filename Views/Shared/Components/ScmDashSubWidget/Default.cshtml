@@ -1,0 +1,112 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.scmdashsubmission>
+@{
+    ViewData["Title"] = "Request submission";
+}
+    <style>
+        h4 {
+            font-size: large !important;
+            font-family: 'Segoe UI' !important;
+            color: #1a1818 !important;
+        }
+    </style>
+<div class="container-fluid">
+
+    <div id="notificationHeight" class="row" style="overflow-y:auto;overflow-x:hidden;">
+        <div class="row">
+            <div class="col-md-2">
+                <h4>Request Notifications</h4>
+            </div>
+            <div class="col-md-10">
+                <h4 style="float:right!important;padding-right:5px;">
+                    <a href="/Estnotification" target="_blank"><i class="fa fa-ellipsis-h"></i></a>
+                </h4>
+
+            </div>
+        </div>
+        <table id="tblnotifications" style="width:100%;float:left;background-color:#FAFAFB!important" class="table table-condensed table-bordered dt-responsive text-left" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th data-priority="1">
+                        ID
+                    </th>
+                    <th>
+                        Tracker
+                    </th>
+                    <th>
+                        Due Date
+                    </th>
+                    <th>
+                        IP
+                    </th>
+                    <th>
+                        Province
+                    </th>
+                    <th>
+                        Times Notified
+                    </th>
+                    <th>
+                        Completed
+                    </th>
+                    <th>
+                        Date Completed
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-left">
+
+                        <td>
+                            <a href="/Estnotification/index" target="_blank">@Html.DisplayFor(modelItem => item.Id)</a>
+                        </td>
+                        <td class="text-nowrap">
+                            <a href="/Estnotification/index" target="_blank">@Html.DisplayFor(modelItem => item.Quarter)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeadlineDate)
+                        </td>
+                        <td>
+                            <a href="/Estnotification/index" target="_blank">@Html.DisplayFor(modelItem => item.ImpAcronym)</a>
+                        </td>
+                        <td class="text-nowrap">
+                            <a href="/Estnotification/index" target="_blank">@Html.DisplayFor(modelItem => item.ProvName)</a>
+                        </td>
+                        <td class="text-nowrap">
+                            @if (item.email > 0)
+                            {
+                                <span class="bg-green btn-block"> @Html.DisplayFor(modelItem => item.email)</span>
+                            }
+                            else
+                            {
+                                <span class="bg-danger btn-block"> @Html.DisplayFor(modelItem => item.email)</span>
+                            }
+
+                        </td>
+                        <td>
+                            @if (item.Completed == true)
+                            {
+                                <span class="bg-green btn-block">Yes</span>
+                            }
+                            else if (item.Completed == false)
+                            {
+                                <span class="bg-red btn-block">No</span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Datecompleted)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+}
+<script>
+
+</script>
+

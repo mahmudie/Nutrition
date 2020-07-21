@@ -1,0 +1,98 @@
+﻿@model IEnumerable<DataSystem.Models.SCM.scmdashdistmain>
+@{
+    ViewData["Title"] = "Distribution";
+}
+<style>
+    h4{
+     font-size:large!important;
+    font-family: 'Segoe UI'!important;
+    color: #1a1818!important;
+    padding:0px;
+    }
+</style>
+<div class="container-fluid">
+
+    <div id="distHeight" class="row" style="overflow-y:auto;overflow-x:hidden;">
+            <div class="row">
+                <div class="col-md-2">
+                    <h4>Distributions</h4>
+                </div>
+                <div class="col-md-10">
+                    <h4 style="float:right!important;padding-right:5px;">
+                        <a href="/scmDistributionMain" target="_blank"><i class="fa fa-ellipsis-h"></i></a>
+                    </h4>
+                    
+                </div>
+            </div>
+
+            <table id="distribution"  style="width:100%;float:left;background-color:#FAFAFB!important"  class="table table-condensed table-bordered dt-responsive text-left" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">
+                            Tracker
+                        </th>
+                        <th>
+                            Date From
+                        </th>
+                        <th>
+                            Date To
+                        </th>
+                        <th>
+                            IP
+                        </th>
+                        <th>
+                            Location (WH)
+                        </th>
+                        <th>
+                            Stock Item
+                        </th>
+                        <th>
+                            Batch No.
+                        </th>
+                        <th>
+                            Stock Quantity
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-left">
+
+                            <td>
+                                <a asp-action="Edit" asp-controller="scmDistributionMain" target="_blank" asp-route-id="@item.DistributionId">@Html.DisplayFor(modelItem => item.ID)</a>
+                            </td>
+                            <td class="text-nowrap">
+                                @Html.DisplayFor(modelItem => item.DateFrom )
+                            </td>
+                            <td class="text-nowrap">
+                                @Html.DisplayFor(modelItem => item.DateTo)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="scmDistributionMain" target="_blank" asp-route-id="@item.DistributionId">@Html.DisplayFor(modelItem => item.IP)</a>
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="scmDistributionMain" target="_blank" asp-route-id="@item.DistributionId">@Html.DisplayFor(modelItem => item.Location)</a>
+                            </td>
+                            <td class="text-nowrap">
+                                @Html.DisplayFor(modelItem => item.Item)
+                            </td>
+                            <td class="text-nowrap">
+                                @Html.DisplayFor(modelItem => item.BatchNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+</div>
+
+
+@section Scripts{
+}
+<script>
+
+</script>

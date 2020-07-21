@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Warehouses";
+}
+@{
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RegionSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "RegionId", Text = "RegionLong" }};
+    var ProvinceDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "ProvinceName" }};
+    var IPDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.IPSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpId", Text = "ImpName" }};
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Warehouse List</h3>
+            <br />
+            <br />
+
+            <ejs-grid id="scmWhGrid" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmWh/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmWh/Insert" updateUrl="/scmWh/Update" removeUrl="/scmWh/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="whId" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="regionId" foreignKeyField="RegionId" headerText="Region Name" validationRules="@(new { required=true})" foreignKeyValue="RegionLong" dataSource="ViewBag.RegionSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = DropDownList }"></e-grid-column>
+                    <e-grid-column field="provinceId" foreignKeyField="ProvinceId" headerText="Province" validationRules="@(new { required=true})" foreignKeyValue="ProvinceName" dataSource="ViewBag.ProvinceSource" editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = ProvinceDropDownList }"></e-grid-column>
+                    <e-grid-column field="impId" foreignKeyField="ImpId" headerText="IP" validationRules="@(new { required=true})" foreignKeyValue="ImpName" dataSource="ViewBag.IPSource" editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = IPDropDownList }"></e-grid-column>
+                    <e-grid-column field="location" headerText="Location" validationRules="@(new { required=true})" textAlign="Left" width="150"></e-grid-column>
+                    <e-grid-column field="active" headerText="IsActive" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean" width="120"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['WhId'] : 'New';
+        }
+    }
+
+</script>

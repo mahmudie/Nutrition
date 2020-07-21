@@ -1,0 +1,202 @@
+@model DataSystem.Models.ViewModels.QnrReview
+
+@{
+    ViewData["Title"] = "Verify";
+}
+<div class="container">
+    @if(Model.StatusId!=3){
+<button class="btn btn-success" data-toggle="modal" data-target="#verify">Verify</button>
+  <div class="modal fade " id="verify" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Verify Report</h4>
+        </div>
+        <div class="modal-body ">
+                  <form asp-action="VerifyQnr" id="verifyForm">
+                        <div class="form-horizontal">
+                            <div class=" text-danger" asp-validation-summary="All"></div>
+                            <input type="hidden" asp-for="Qnrid" />
+          <div class="form-group">
+            <label asp-for="StatusId" class="control-label col-xs-3"></label>
+            <div class="col-xs-7">
+                 <select asp-for="StatusId" id="Prov" class="form-control">
+                    <option value="3">Accept</option>
+                    <option value="4">Reject </option>
+                 </select>
+                  <span asp-validation-for="StatusId" class="text-danger" />            
+            </div>
+          </div>
+          <div class="form-group">
+            <label asp-for="message" class="control-label col-xs-3"></label>
+            <div class="col-xs-7">
+                <textarea asp-for="message" class="form-control"></textarea>
+                <span asp-validation-for="message" class="text-danger" />
+            </div>
+          </div>
+                        </div>
+                    </form>        
+                    </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success pull-left" data-dismiss="modal">Close</button>
+                <a onclick="event.preventDefault();document.getElementById('verifyForm').submit()" type="button" class="btn btn-success ">Save changes</a>
+              </div>
+      </div>
+      
+    </div>
+  </div>
+    }
+
+        <div class="form-horizontal">
+            <hr />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table class="table table-condensed table-responsive text-left dt-responsive">
+                <tbody>
+                <tr>
+                    <td>
+                        <p>Implementer:@Model.Implementer  </p>
+                    </td>
+                <td>Province:@Model.Province</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label asp-for="Year" class="control-label"></label>
+                        <input disabled asp-for="Year" class="form-control">
+                        </input>
+                    </td>
+                    <td>
+                        <label asp-for="Month" class="control-label"></label>
+                        <input disabled asp-for="Month" class="form-control">
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan ="2">
+                        1. Highlights for quarter (key issues such as stock and access problems, …)
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="Highlights" class="form-control"></textarea>
+                        <span asp-validation-for="Highlights" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2. In-patient program (IPD-SAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2a. Explain the trends of admissions during the quarter, any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="IpdsamAdmissionsTrend" class="form-control"></textarea>
+                        <span asp-validation-for="IpdsamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="IpdsamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="IpdsamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        3.SAM outpatient program (OPD-SAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        3a. Explain the trends of admissions (Jan to June 2015), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="OpdsamAdmissionsTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdsamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        2b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="OpdsamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdsamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4.MAM program (OPD-MAM)
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4a. Explain the trends of admissions (Jan to June 2015), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input disabled asp-for="OpdmamAdmissionsTrend" class="form-control"/>
+                        <span asp-validation-for="OpdmamAdmissionsTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        4b. Explain the performance and discharge trends of the program (cure, death and defaulter rates), any challenge?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="OpdmamPerformanceTrend" class="form-control"></textarea>
+                        <span asp-validation-for="OpdmamPerformanceTrend" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        5.IYCF, any issues? Challenges?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="Iycf" class="form-control"></textarea>
+                        <span asp-validation-for="Iycf" class="text-danger" />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        6.Micronutrient, any issues? Challenges?
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea disabled asp-for="Micronutrients" class="form-control"></textarea>
+                        <span asp-validation-for="Micronutrients" class="text-danger" />
+                    </td>
+                </tr>
+                <tr></tr>
+                </tbody>
+                </table>
+
+                <hr/>
+                </div>
+</div>
+
+<div>
+    <a asp-action="adminview">Back to List</a>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

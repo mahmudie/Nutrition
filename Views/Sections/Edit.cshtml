@@ -1,0 +1,44 @@
+﻿@model DataSystem.Models.GLM.SectionViewModel
+@{
+    ViewData["Title"] = "Edit Section";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Sections"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.SortOrder, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(m => m.SortOrder)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.DataFormId)
+                @Html.DropDownListFor(m => m.DataFormId, new SelectList(Model.DataForms, "Id", "Name"), "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DataFormId)
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Save</button>
+        }
+    </div>
+</div>
+

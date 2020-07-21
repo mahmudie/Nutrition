@@ -1,0 +1,86 @@
+@model DataSystem.Models.Nmr
+
+@{
+	ViewData["Title"] = "NMR Questions";
+}
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a asp-action="questions" asp-route-id="@Model.Nmrid">Screening</a> </li>
+        <li><a asp-controller="Nmr" asp-action="samin" asp-route-id="@Model.Nmrid">IPD-SAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="samout" asp-route-id="@Model.Nmrid">OPD-SAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="opdmam" asp-route-id="@Model.Nmrid">OPD-MAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="msformv" asp-route-id="@Model.Nmrid">GMP (Health Facility)</a></li>
+        <li><a asp-controller="Nmr" asp-action="submission" asp-route-id="@Model.Nmrid">Submit Report</a></li>
+        <li><a asp-controller="Feedback" asp-action="index" asp-route-nmrid="@Model.Nmrid">Feedback</a> </li>
+        <li><a href="/nmr/">Back To List</a> </li>
+    </ul>
+<div class="tab-content">
+	<div class="tab-pane active">
+
+		<form data-bind="submit:validateAndSave">
+			<div class="form-horizontal">
+				<hr/>
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="UserName" class="form-control"/>
+				<input type="hidden" asp-for="Nmrid" class="form-control"/>
+				@Html.AntiForgeryToken()
+				<div class="row">
+					<div class="col-sm-10 col-md-10 col-lg-10 col-md-offset-1 col-sm-offset-1 col-lg-offset-1">
+						<table class="table table-condensed table-responsive dt-responsive ">
+
+							<thead>
+							<tr>
+								<th colspan="8">How many children Under 5 years and PLW screened during the month at the health Facility?</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td colspan="10" class="text-right">1- Girls</td>
+								<td>
+									<input asp-for="GirlsScreened" class="form-control text-center" data-bind="textinput:form.GirlsScreened"/>
+									<span asp-validation-for="GirlsScreened" class="text-danger" />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="10" class="text-right">2- Boys</td>
+								<td>
+									<input asp-for="BoysScreened" class="form-control text-center" data-bind="textinput:form.BoysScreened"/>
+									<span asp-validation-for="BoysScreened" class="text-danger" />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="10" class="text-right">3- PLW</td>
+								<td>
+									<input asp-for="Plwreported" class="form-control text-center" data-bind="textinput:form.Plwreported"/>
+									<span asp-validation-for="Plwreported" class="text-danger" />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="10"></td>
+								<td>
+									<input type="submit" id="send" value="Save" class="btn btn-success btn-block" />
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+	</div>
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script src="~/js/notify.min.js"></script>
+	<script src="~/js/ViewModel/questions.js"></script>
+	<script>
+	 $(document).ready(function () {
+		$("#flash").hide();
+		$("#flash2").hide();
+		var model = new forms(@Json.Serialize(Model));
+		ko.applyBindings(model);
+
+	  });
+	</script>
+}

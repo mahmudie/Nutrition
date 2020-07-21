@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Upload HMIS Data";
+}
+    <div class="container-fluid">
+
+        <h2>HMIS Nutrition Indicators </h2>
+        <ejs-tab id="ej2Tab" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Scrollable" animation="ViewBag.animation"></ejs-tab>
+        <div style="display: none" id="Grid1">
+            <form method="post" enctype="multipart/form-data" asp-controller="HMISUploadFiles" asp-action="Index">
+                <div class="col-md-12">
+                    <p>Please use a single excel file to upload. Make sure you use the correct format:</p>
+                    <input type="file" name="files" />
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Upload" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <ejs-grid id="GridOne" allowSorting="true" allowResizing="true" allowPaging="true">
+                            <e-data-manager url="/hmisindicatorValues/UrlDataSource" insertUrl="/hmisindicatorValues/Insert"
+                                            updateUrl="/hmisindicatorValues/Update" adaptor="UrlAdaptor" removeUrl="/hmisindicatorValues/Remove"></e-data-manager>
+                            <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" mode="Dialog"></e-grid-editSettings>
+                            <e-grid-pagesettings pageCount="15" pageSizes="true" pageSize="20"></e-grid-pagesettings>
+                            <e-grid-columns>
+                                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" textAlign="Left" width="50"></e-grid-column>
+                                <e-grid-column field="facilityId" foreignKeyField="FacilityId" headerText="Facility" foreignKeyValue="FacilityName"
+                                               dataSource="ViewBag.FacilitySource" extAlign="Left" width="180"></e-grid-column>
+                                <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" headerText="Facility Type" foreignKeyValue="FacilityTypeName"
+                                               dataSource="ViewBag.FacilityTypes" extAlign="Left" width="130"></e-grid-column>
+                                <e-grid-column field="year" headerText="Year" textAlign="Left" width="70"></e-grid-column>
+                                <e-grid-column field="month" headerText="Month" textAlign="Left" width="70"></e-grid-column>
+                                <e-grid-column field="indicatorId" foreignKeyField="IndicatorId" headerText="Indicator Name" foreignKeyValue="IndicatorName"
+                                               dataSource="ViewBag.HMISIndicators" extAlign="Left" width="250"></e-grid-column>
+                                <e-grid-column field="num" headerText="Numerator" textAlign="Left" width="90"></e-grid-column>
+                                <e-grid-column field="denom" headerText="Denominator" textAlign="Left" width="90"></e-grid-column>
+                            </e-grid-columns>
+                        </ejs-grid>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="display: none" id="Grid2">
+            <div class="row">
+                <div class="col-md-12">
+                    <ejs-grid id="GridTwo" allowSorting="true" allowFiltering="true" allowResizing="true" allowPaging="true">
+                        <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                        <e-data-manager url="/hmisindicatorValues/PermUrlDataSource" insertUrl="/hmisindicatorValues/Insert"
+                                        updateUrl="/hmisindicatorValues/Update" adaptor="UrlAdaptor" removeUrl="/hmisindicatorValues/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-pagesettings pageCount="15" pageSizes="true" pageSize="20"></e-grid-pagesettings>
+                        <e-grid-columns>
+                            <e-grid-column field="id" headerText="ID" isPrimaryKey="true" textAlign="Left" width="80"></e-grid-column>
+                            <e-grid-column field="facilityId" foreignKeyField="FacilityId" headerText="Facility" foreignKeyValue="FacilityName"
+                                           dataSource="ViewBag.FacilitySource" extAlign="Left" width="180"></e-grid-column>
+                            <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" headerText="Facility Type" foreignKeyValue="FacilityTypeName"
+                                           dataSource="ViewBag.FacilityTypes" extAlign="Left" width="130"></e-grid-column>
+                            <e-grid-column field="year" headerText="Year" textAlign="Left" width="90"></e-grid-column>
+                            <e-grid-column field="month" headerText="Month" textAlign="Left" width="90"></e-grid-column>
+                            <e-grid-column field="indicatorId" foreignKeyField="IndicatorId" headerText="Indicator Name" foreignKeyValue="IndicatorName"
+                                           dataSource="ViewBag.HMISIndicators" extAlign="Left" width="250"></e-grid-column>
+                            <e-grid-column field="num" headerText="Numerator" textAlign="Left" width="90"></e-grid-column>
+                            <e-grid-column field="denom" headerText="Denominator" textAlign="Left" width="90"></e-grid-column>
+                        </e-grid-columns>
+                    </ejs-grid>
+
+                </div>
+            </div>
+        </div>
+
+    </div>

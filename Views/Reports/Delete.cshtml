@@ -1,0 +1,23 @@
+﻿@model  DataSystem.Models.GLM.Report
+@{
+    ViewData["Title"] = "Delete National Nutrition Quality Assurance Checklist";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Delete", "Reports"))
+        {
+            @Html.HiddenFor(m => m.Id);
+
+            <h5>Are you sure you want to delete this report?</h5>
+            <hr />
+
+            <button type="submit" class="btn btn-danger float-right">Confirm Delete</button>
+            <a asp-controller="Reports" asp-action="Index" class="btn btn-light float-right">Cancel</a>
+        }
+    </div>
+</div>

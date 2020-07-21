@@ -1,0 +1,94 @@
+@model DataSystem.Models.Implementers
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="container" style="padding-top:3em;">
+
+    <h2>Create</h2>
+    <form asp-action="Create">
+        <div class="form-horizontal">
+            <hr />
+            <div class="col-md-offset-1 text-danger" asp-validation-summary="ModelOnly" ></div>
+            <div class="form-group">
+                <label asp-for="ImpCode" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="ImpCode" class="form-control" />
+                    <span asp-validation-for="ImpCode" class="text-danger" />
+                </div>
+                <label asp-for="ImpAcronym" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="ImpAcronym" class="form-control" />
+                    <span asp-validation-for="ImpAcronym" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="ImpName" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="ImpName" class="form-control" />
+                    <span asp-validation-for="ImpName" class="text-danger" />
+                </div>
+                <label asp-for="ImpNameDari" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="ImpNameDari" class="form-control" />
+                    <span asp-validation-for="ImpNameDari" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="ImpNamePashto" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="ImpNamePashto" class="form-control" />
+                    <span asp-validation-for="ImpNamePashto" class="text-danger" />
+                </div>
+                <label asp-for="RegistrationDate" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="RegistrationDate" class="form-control" />
+                    <span asp-validation-for="RegistrationDate" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="OtherAddress" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="OtherAddress" class="form-control" />
+                    <span asp-validation-for="OtherAddress" class="text-danger" />
+                </div>
+                <label asp-for="AfghanistanAddress" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <input asp-for="AfghanistanAddress" class="form-control" />
+                    <span asp-validation-for="AfghanistanAddress" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="ImpStatus" />
+                            <label asp-for="ImpStatus"></label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    </div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

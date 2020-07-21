@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "IP to IP Transfer";
+}
+
+@{
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "e-flat" } });
+    commands.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
+    commands.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>@ViewData["Title"]</h3>
+
+            <ejs-grid id="scmTransferGrid" allowFiltering="true" actionComplete="actionComplete" actionBegin="Begin" allowTextWrap="true" allowSorting="true"  toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmTransfers/UrlDataSource" adaptor="UrlAdaptor"></e-data-manager>
+                <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="roundCode" headerText="Period Code" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="periodFrom" headerText="Date From" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="periodTo" headerText="Date To" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="warehouseName" headerText="Consignee" validationRules="@(new { required=true})" textAlign="Left" width="140"></e-grid-column>
+                    <e-grid-column field="item" headerText="Stock Item" textAlign="Left" width="160"></e-grid-column>
+                    <e-grid-column field="batchNumber" headerText="Batch No" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="quantity" headerText="Quantity" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column headerText="Manage" width="110" commands="commands"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+        }
+    }
+
+    var commandClick;
+    function toolbarClick(args) {
+        if (args.name === 'toolbarClick')
+            commandClick = true;
+    }
+
+    function Begin(args) {
+        var type = args.requestType;
+        if (type == "beginEdit" || type == "add") {
+            if (!commandClick) {
+                args.cancel = true;
+                if (args.rowIndex != undefined)
+                    var ID = this.currentViewData[args.rowIndex]["id"];
+                if (type == "beginEdit")
+                    var url = "/scmTransfers/Edit/" + ID;
+                else if (type == "add")
+                    var url = "/scmTransfers/Edit/" + 0;
+                location.assign(url);
+            }
+            commandClick = false;
+        }
+    }
+</script>

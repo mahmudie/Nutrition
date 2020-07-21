@@ -1,0 +1,143 @@
+﻿@*@{
+    ViewData["Title"] = "Home Page";
+}
+<h2>EJ2 Grid</h2>
+
+<div>
+    <ejs-grid id="Grid" load="load" queryCellInfo="queryCellInfo" actionBegin="actionBegin"  actionComplete="complete" allowPaging="true" toolbar="@(new List<string>() { "Add", "Edit", "Cancel", "Update" })">
+        <e-data-manager url="/Home/UrlDatasource" insertUrl="/Home/Insert" updateUrl="/Home/Update" adaptor="UrlAdaptor"></e-data-manager>
+        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" mode="Dialog"></e-grid-editSettings>
+        <e-grid-columns>
+            <e-grid-column field="OrderID" headerText="Order ID" isPrimaryKey="true" width="150"></e-grid-column>
+            <e-grid-column field="CustomerID" headerText="CustomerID" width="150"></e-grid-column>
+            <e-grid-column field="file" headerText="File" type="string" template="#template" edit="@(new {create="fileCreate", read="fileRead", destroy="fileDestroy", write="fileWrite"  })" width="120"></e-grid-column>
+            <e-grid-column field="fileName" headerText="File Name" visible="false"></e-grid-column>
+            <e-grid-column field="fileSize" headerText="File Size" visible="false"></e-grid-column>
+            <e-grid-column field="fileType" headerText="File Type" visible="false"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+<script id="template" type="text/x-template">
+    <a href=""></a>
+</script>
+
+<script>
+    var file;
+    var elem;
+    var rte;
+    var readfile;
+    var isEditable = false;
+    function queryCellInfo(args) {
+        if (args.column.field === 'file') {
+            if (args.data.file) {
+                var anchotEle = args.cell.getElementsByTagName('a')[0];
+                anchotEle.innerText = args.data.file.name;
+                anchotEle.onclick = function click(args) {
+                    args.target.setAttribute("href", "http://localhost:63371/Home/Download?filename=" + args.target.innerText);
+                };
+            }
+        }
+    }
+
+    function actionBegin(args) {
+        if (args.requestType == "save") {
+            var data = args.data;            
+            var file = data.file[0];
+            data.fileName = file.name.split(".")[0];
+            data.fileType = file.type;
+            data.fileSize = file.size;
+        }
+    }
+
+    function complete(args) {
+        if (args.requestType === 'add' || args.requestType === 'save') {
+            args.form.setAttribute('enctype', 'multipart/form-data');
+            args.form.setAttribute('encoding', 'multipart/form-data');
+        }
+    }
+    function fileCreate() {
+        elem = document.createElement('input');
+        return elem;
+    }
+    function fileRead(args) {        
+        readfile = uploadObj.filesData[0].rawFile instanceof File ? uploadObj.filesData : readfile;
+        return isEditable ? readfile : uploadObj.filesData;
+    }
+    function fileDestroy() {
+        uploadObj.destroy();
+    }
+    function fileWrite(args) {
+        isEditable = (args.requestType === 'beginEdit') ? true : false;
+        uploadObj = new ej.inputs.Uploader({
+            files: (args.requestType === 'beginEdit') ? [args.rowData.file] : [''],
+            asyncSettings: {
+             saveUrl: '/Home/Save',
+             removeUrl: '/Home/Remove'
+            },
+            removing: function (args) {
+                 args.postRawFile = false;
+            },
+
+        });
+        uploadObj.appendTo(elem);
+    }
+
+    function FileListItem(a) {
+        a = [].slice.call(Array.isArray(a) ? a : arguments)
+        for (var c, b = c = a.length, d = !0; b-- && d;) d = a[b] instanceof File
+        if (!d) throw new TypeError("expected argument to FileList is File or array of File objects")
+        for (b = (new ClipboardEvent("")).clipboardData || new DataTransfer; c--;) b.items.add(a[c])
+        return b.files
+    }
+
+    function load() {
+        this.dataSource = new ej.data.DataManager({
+            url: "/Home/UrlDatasource",
+            insertUrl: "/Home/Insert",
+            updateUrl: "/Home/Update",
+            adaptor: new custom
+        })
+    }
+    class custom extends ej.data.UrlAdaptor {
+
+        processResponse(data, ds, query, xhr, request, changes) {            
+            request.data = JSON.stringify(data);
+            return ej.data.UrlAdaptor.prototype.processResponse.call(this, data, ds, query, xhr, request, changes)
+        }
+        insert(dm, data, tableName) {            
+            var fd = new FormData();
+            for (var prop of data.file) {
+                fd.append('file', prop.rawFile);
+            }
+            fd.append('OrderID', data.OrderID);
+            fd.append('CustomerID', data.CustomerID);
+            fd.append('fileName', data.fileName);
+            fd.append('fileType', data.fileType);
+            fd.append('fileSize', data.fileSize);
+            return {
+                url: dm.dataSource.insertUrl || dm.dataSource.crudUrl || dm.dataSource.url,
+                type: "POST",
+                data: fd,
+                contentType: null
+            }
+        }
+        update(dm, keyField, value, tableName) {            
+            var fd = new FormData();
+            for (var prop of value.file) {
+                fd.append('file', prop.rawFile);
+            }
+            fd.append('OrderID', value.OrderID);
+            fd.append('CustomerID', value.CustomerID);
+            fd.append('fileName', value.fileName);
+            fd.append('fileType', value.fileType);
+            fd.append('fileSize', value.fileSize);
+            return {
+                url: dm.dataSource.updateUrl || dm.dataSource.crudUrl || dm.dataSource.url,
+                data: fd,
+                contentType: null
+            }
+        }
+    };
+
+</script>*@

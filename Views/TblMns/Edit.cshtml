@@ -1,0 +1,73 @@
+@model DataSystem.Models.TblMn
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>TblMn</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Mnid" />
+    <input type="hidden" asp-for="Nmrid" />
+        <div class="form-group">
+            <label asp-for="chu2m" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="chu2m" class="form-control" />
+                <span asp-validation-for="chu2m" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="chu2f" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="chu2f" class="form-control" />
+                <span asp-validation-for="chu2f" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Remarks" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UpdateDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="refbyCHW" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="refbyCHW" class="form-control" />
+                <span asp-validation-for="refbyCHW" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

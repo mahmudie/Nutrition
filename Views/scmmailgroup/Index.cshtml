@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Mail receivers";
+}
+    <div class="container-fluid">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Mail receivers</h3>
+                <br />
+                <br />
+
+            <ejs-grid id="MailreceiversGrid"  allowSorting="true"  actionComplete="actionComplete"   toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmmailgroup/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/scmmailgroup/Insert" updateUrl="/scmmailgroup/Update" removeUrl="/scmmailgroup/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="toemails" headerText="To Emails" textAlign="Left" width="250"></e-grid-column>
+                    <e-grid-column field="ccemails" headerText="CC Emails" validationRules="@(new { required=true})" textAlign="Left" width="250"></e-grid-column>
+                    <e-grid-column field="bccemails" headerText="BCC Emails" textAlign="Left" width="250"></e-grid-column>
+                    <e-grid-column field="isactive" headerText="Is Active" template="#activetemplate" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean" width="250"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script id="activetemplate" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 750;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+
+</script>

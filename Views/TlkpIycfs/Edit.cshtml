@@ -1,0 +1,53 @@
+@model DataSystem.Models.TlkpIycf
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container">
+    <h2>Edit</h2>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Iycfid" />
+            <div class="form-group">
+                <label asp-for="CauseShortName" class="col-md-2 control-label"></label>
+                <div class="col-md-5">
+                    <input asp-for="CauseShortName" class="form-control" />
+                    <span asp-validation-for="CauseShortName" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CauseConsultation" class="col-md-2 control-label"></label>
+                <div class="col-md-5">
+                    <input asp-for="CauseConsultation" class="form-control" />
+                    <span asp-validation-for="CauseConsultation" class="text-danger" />
+                </div>
+                <div class="col-md-5 col-md-offset-2">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Active" />
+                            <label asp-for="Active"></label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-5">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

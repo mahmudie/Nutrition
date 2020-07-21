@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Average Level Selector";
+}
+@{
+    var Dropaveragelevels = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.averagelevels, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "AveragelevelId", Text = "AverageLevelName" }};
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Select Average Estimation Level</h3>
+            <br />
+            <br />
+
+            <ejs-grid id="scmavglvl" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})">
+                <e-data-manager url="/scmavglvl/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmavglvl/Insert" updateUrl="/scmavglvl/Update" removeUrl="/scmavglvl/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="averagelevelId" foreignKeyField="AveragelevelId" headerText="Region Name" foreignKeyValue="AverageLevelName" dataSource="ViewBag.averagelevels"  editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = Dropaveragelevels }" ></e-grid-column>
+                    <e-grid-column field="isActive"  headerText="IsActive"  template="#activetemplate" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean" width="120" ></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 550;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['averagelevelId'] : 'New';
+        }
+    }
+
+</script>
+<script id="activetemplate" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>

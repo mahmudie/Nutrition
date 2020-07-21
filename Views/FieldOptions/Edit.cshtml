@@ -1,0 +1,34 @@
+﻿@model DataSystem.Models.GLM.FieldOptionViewModel
+@{
+    ViewData["Title"] = "Edit Field Option";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "FieldOptions"))
+        {
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.FieldId);
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Value, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Value)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Caption, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Caption, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Caption)
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn btn-success float-right">Save</button>
+        }
+    </div>
+</div>

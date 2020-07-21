@@ -1,0 +1,147 @@
+﻿@model DataSystem.Models.GLM.ReportViewModel
+@{
+    ViewData["Title"] = "Edit National Nutrition Quality Assurance Checklist";
+}
+
+<div class="nav-tabs-custom">
+    <div class="card-header">
+        <h2>@ViewData["Title"]</h2>
+        <p><a asp-controller="Reports" asp-action="Index">Back to list</a></p>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">Report Info</a></li>
+        <li><a asp-controller="Reports" asp-action="ReportDetails" asp-route-id="@Model.Id" class="btn btn-link btn-sm">Report Details</a> </li>
+    </ul>
+    <div>
+        <div class="tab-pane" id="tab_1">
+            @using (Html.BeginForm("Edit", "Reports"))
+            {
+                <div class="row">
+                    <div class="col col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DataFormId, new { @class = "control-label" })
+                            @Html.DropDownListFor(m => m.DataFormId, new SelectList(Model.DataForms, "Id", "Name"), new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.DataFormId)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ProvinceId, new { @class = "control-label" })
+                            <ejs-combobox id="province" placeholder="" ejs-for="ProvinceId" allowCustom="false" popupHeight="auto" dataSource="@ViewBag.provinces" change="provincechange">
+                                <e-combobox-fields text="ProvinceName" value="ProvinceId"></e-combobox-fields>
+                            </ejs-combobox>
+                            @Html.ValidationMessageFor(m => m.ProvinceId)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DistrictId, new { @class = "control-label" })
+                            <ejs-combobox id="district" placeholder="" ejs-for="DistrictId" allowCustom="false" popupHeight="auto" dataSource="@ViewBag.districts" change="districtchange">
+                                <e-combobox-fields text="DistrictName" value="DistrictId"></e-combobox-fields>
+                            </ejs-combobox>
+                            @Html.ValidationMessageFor(m => m.DistrictId)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FacilityId, new { @class = "control-label" })
+                            <ejs-combobox id="facility" placeholder="" ejs-for="FacilityId" allowCustom="false" popupHeight="auto" dataSource="@ViewBag.hfs">
+                                <e-combobox-fields text="FacilityName" value="FacilityId"></e-combobox-fields>
+                            </ejs-combobox>
+                            @Html.ValidationMessageFor(m => m.FacilityId)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ImpId, new { @class = "control-label" })
+                            <ejs-combobox id="implementer" placeholder="" ejs-for="ImpId" allowCustom="false" popupHeight="auto" dataSource="@ViewBag.imps">
+                                <e-combobox-fields text="ImpName" value="ImpId"></e-combobox-fields>
+                            </ejs-combobox>
+                            @Html.ValidationMessageFor(m => m.ImpId)
+                        </div>
+                    </div>
+
+                    <div class="col col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReportedBy, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.ReportedBy, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ReportedBy)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DataCollectorOffice, new { @class = "control-label" })
+                            @Html.DropDownListFor(m => m.DataCollectorOffice, new SelectList(Model.DataCollectorOffices, "Key", "Value"), "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DataCollectorOffice)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReportPreparedDate, new { @class = "control-label" })
+                            @*@Html.TextBoxFor(m => m.ReportPreparedDate, "{0:MM/dd/yyyy}", new { @class = "form-control js-datepicker" })*@
+                            <ejs-datepicker id="ReportPreparedDate" format="MM/dd/yyyy" min="@ViewBag.minDate" max="@ViewBag.maxDate" ejs-for="ReportPreparedDate"></ejs-datepicker>
+                            @Html.ValidationMessageFor(m => m.ReportPreparedDate)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReportReceivedDate, new { @class = "control-label" })
+                            <ejs-datepicker id="ReportReceivedDate" format="MM/dd/yyyy" min="@ViewBag.minDate" max="@ViewBag.maxDate" ejs-for="ReportReceivedDate"></ejs-datepicker>
+                            @Html.ValidationMessageFor(m => m.ReportReceivedDate)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReportLat, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.ReportLat, new { @class = "form-control", @readonly = "readonly"  })
+                            @Html.ValidationMessageFor(m => m.ReportLat)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReportLon, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.ReportLon, new { @class = "form-control", @readonly = "readonly"  })
+                            @Html.ValidationMessageFor(m => m.ReportLon)
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr />
+                <div class="col-md-offset-5">
+                    @inject SignInManager<ApplicationUser> SignInManager
+                    @inject UserManager<ApplicationUser> UserManager
+                    @using Microsoft.AspNetCore.Identity
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                    {
+                        <button type="submit" class="btn btn-success float-right">Save</button>
+                    }
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function provincechange() {
+            var district = document.getElementById('district').ej2_instances[0];
+            var facility = document.getElementById('facility').ej2_instances[0];
+            var province = document.getElementById('province').ej2_instances[0];
+            district.enabled = true;
+            // frame the query based on selected value in province DropDownList.
+            var tempQuery = new ej.data.Query().where('ProvinceId', 'equal', province.value);
+            // set the framed query based on selected value in province DropDownList.
+            district.query = tempQuery;
+            // set null value to district DropDownList text property
+            district.text = null;
+            // bind the property changes to district DropDownList
+            district.dataBind();
+            // set null value to facility DropDownList text property
+            facility.text = null;
+            // disable the facility DropDownList
+            facility.enabled = false;
+            // bind the property changes to facility DropDownList
+            facility.dataBind();
+        }
+        function districtchange() {
+            var facility = document.getElementById('facility').ej2_instances[0];
+            var district = document.getElementById('district').ej2_instances[0];
+            facility.enabled = true;
+            // Query the data source based on district DropDownList selected value
+            var tempQuery1 = new ej.data.Query().where('DistrictId', 'equal', district.value);
+            // set the framed query based on selected value in facility DropDownList.
+            facility.query = tempQuery1;
+            //clear the existing selection
+            facility.text = null;
+            // bind the property change to facility DropDownList
+            facility.dataBind();
+
+        }
+    </script>
+}

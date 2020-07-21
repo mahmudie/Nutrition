@@ -1,0 +1,164 @@
+@model DataSystem.Models.Ernmr
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@using MyProject.MyExtensions
+
+@{
+    ViewData["Title"] = "Edit ERR";
+}
+<div class="container">
+    <h2>Emergency Reporting</h2>
+
+    <form asp-action="Edit">
+        <div class="row col-md-10">
+            <div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div>
+            <div class="form-group">
+                <label for="fac" class="col-md-3 control-label">Current Facility</label>
+                <div class="col-md-6">
+                    <p id="currentfacility" class="form-control-static"></p>
+                </div>
+            </div>
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        <label asp-for="FacilityId" class="control-label">Facility</label>
+                    </th>
+                    <td colspan="3">
+                        <div>
+                            <select asp-for="FacilityId" asp-items="@ViewBag.FacilityId" id="Facility" class="form-control"></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Year" class=" control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-for="Year" class="form-control">
+                                <option>1398</option>
+                                <option>1399</option>
+                                <option>1400</option>
+                                <option>1401</option>
+                                <option>1402</option>
+                                <option>1403</option>
+                                <option>1404</option>
+                                <option>1405</option>
+                                <option>1406</option>
+                            </select>
+                            <span asp-validation-for="Year" class="text-danger" />
+                        </div>
+                    </td>
+
+                    <th>
+                        <label asp-for="Month" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-for="Month" class="form-control">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                            </select>
+                            <span asp-validation-for="Month" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Biweekly" class="control-label">Biweekly Option</label>
+                    </th>
+                    <td colspan="3">
+                        <div>
+                            <select asp-for="Biweekly" asp-items="@ViewBag.biweekly" class="form-control"></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>  <label asp-for="U5Screened" class=" control-label"></label></th>
+                    <td colspan="3">
+                        <input asp-for="U5Screened" class="form-control" />
+                        <span asp-validation-for="U5Screened" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-7">
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                    {
+                        <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                    }
+
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#Prov').change(function () {
+                var url = '@Url.Content("~/")' + "Ernmr/districts";
+                var ddlsource = '#Prov';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#District').empty();
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#District').html(items);
+                });
+            });
+           $('#District').change(function () {
+                var url = '@Url.Content("~/")' + "Ernmr/facilities";
+                var ddlsource = '#District';
+                $.getJSON(url, { DistCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#Facility').html(items);
+                });
+            });
+        });
+        @*$.getJSON('/Ernmr/fillHFID', function(data) {
+            $('#currentfacility').text(data[0].provCode +' '+data[0].distCode+' '+data[0].facilityId);
+        });
+
+        $.getJSON('/Ernmr/fillHFID', function (data) {
+         $('#Prov').val(data[0].provCode.substring(0,2)).blur(function () {
+                var url = '@Url.Content("~/")' + "Ernmr/districts";
+                var ddlsource = '#Prov';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#District').empty();
+                    $('#Facility').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#District').html(items);
+                });
+            });
+         $('#District').val(data[0].distCode.substring(0,4));
+     });*@
+    </script>
+}

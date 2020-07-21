@@ -1,0 +1,52 @@
+@model DataSystem.Models.Nmr
+
+@{
+	ViewData["Title"] = "Submission";
+}
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li><a asp-action="questions" asp-route-id="@Model.Nmrid">Screening</a> </li>
+        <li><a asp-controller="Nmr" asp-action="samin" asp-route-id="@Model.Nmrid">IPD-SAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="samout" asp-route-id="@Model.Nmrid">OPD-SAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="opdmam" asp-route-id="@Model.Nmrid">OPD-MAM</a> </li>
+        <li><a asp-controller="Nmr" asp-action="msformv" asp-route-id="@Model.Nmrid">GMP (Health Facility)</a></li>
+        <li   class="active"><a asp-controller="Nmr" asp-action="submission" asp-route-id="@Model.Nmrid">Submit Report</a></li>
+        <li><a asp-controller="Feedback" asp-action="index" asp-route-nmrid="@Model.Nmrid">Feedback</a> </li>
+        <li><a href="/nmr/">Back To List</a> </li>
+    </ul>
+<div class="tab-content">
+	<div class="tab-pane active">
+
+		<form data-bind="submit:validateAndSave">
+			<div class="form-horizontal">
+				<hr/>
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="UserName" class="form-control"/>
+				<input type="hidden" asp-for="Nmrid" class="form-control"/>
+				@Html.AntiForgeryToken()
+				<div class="row">
+					<div class="col-sm-10 col-md-10 col-lg-10 col-md-offset-7 col-sm-offset-7 col-lg-offset-7">
+
+					<input type="submit" id="send" value="Submit" class="btn btn-success" />
+
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+	</div>
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script src="~/js/notify.min.js"></script>
+	<script src="~/js/ViewModel/submission.js"></script>
+	<script>
+	 $(document).ready(function () {
+		$("#flash").hide();
+		$("#flash2").hide();
+		var model = new forms(@Json.Serialize(Model));
+		ko.applyBindings(model);
+
+	  });
+	</script>
+}

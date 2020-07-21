@@ -1,0 +1,367 @@
+﻿
+@model DataSystem.Models.SCM.scmDocs;
+@{
+    ViewData["Title"] = "Dashbord Page";
+}
+@Html.AntiForgeryToken()
+<div class="container-fluid">
+    <!--  DashboardLayout element declaration -->
+    @*<ejs-dashboardlayout id="defaultLayout" allowResizing="true" allowDragging="true" columns="100">
+            <e-dashboardlayout-panels>
+                <e-dashboardlayout-panel sizeX="99" sizeY="25" row="0" col="0">
+                    <e-content-template>
+                        <div class="e-panel-container">
+                            <div style="height:100%;width:100%;">
+                                <div class="e-panel-content">
+                                    @await Component.InvokeAsync("ScmRequeststatusWidget")
+                                </div>
+                            </div>
+                        </div>
+                    </e-content-template>
+                </e-dashboardlayout-panel>
+                <e-dashboardlayout-panel sizeX="45" sizeY="25" row="0" col="55">
+                    <e-content-template>
+                        <div class="e-panel-container">
+                            <div style="height:100%;width:100%">
+                                <div class="e-panel-content">
+                                    @await Component.InvokeAsync("ScmDashSubWidget")
+                                </div>
+                            </div>
+                        </div>
+                    </e-content-template>
+                </e-dashboardlayout-panel>
+                <e-dashboardlayout-panel sizeX="55" sizeY="15" row="1" col="0">
+                    <e-content-template>
+                        <div class="e-panel-container">
+                            <div style="height:100%;width:100%">
+                                <div class="e-panel-content">
+                                    @await Component.InvokeAsync("ScmDashDistWidget")
+                                </div>
+                            </div>
+                        </div>
+                    </e-content-template>
+                </e-dashboardlayout-panel>
+            </e-dashboardlayout-panels>
+        </ejs-dashboardlayout>*@
+    <!-- end of dashboardlayout element -->
+    <div id="chart_totalrequest" class="row">
+        <div class="col-md-4">
+            <ejs-chart id="container" title="Number of request managed per year" width="100%" pointRender="pointRender">
+                <e-chart-titlestyle size="18px"></e-chart-titlestyle>
+                <e-chart-border width="1" color="lightgrey"></e-chart-border>
+                <e-chart-primaryxaxis valueType="Category"
+                                      labelFormat="y"
+                                      tickPosition="Outside"
+                                      labelRotation="0"
+                                      labelPosition="Inside"
+                                      intervalType="Auto">
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-labelstyle color="#ffffff"></e-labelstyle>
+                </e-chart-primaryxaxis>
+                <e-chart-primaryyaxis>
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                    <e-linestyle width="0"></e-linestyle>
+                    <e-labelstyle color="transparent"></e-labelstyle>
+                </e-chart-primaryyaxis>
+                <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true"></e-chart-zoomsettings>
+                <e-chart-chartarea>
+                    <e-chartarea-border width="0"></e-chartarea-border>
+                </e-chart-chartarea>
+                <e-series-collection>
+                    <e-series dataSource="ViewBag.dataSource" xName="xValue" yName="yValue" width=2 type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column">
+                        <e-series-marker>
+                            <e-series-datalabel visible="true" position="Outer">
+                                <e-font color="#357cd2" fontWeight="600"></e-font>
+                            </e-series-datalabel>
+
+                        </e-series-marker>
+                        <e-series-cornerradius bottomLeft="3" bottomRight="3" topLeft="3" topRight="3"></e-series-cornerradius>
+                    </e-series>
+                </e-series-collection>
+                <e-chart-tooltipsettings enable="false"></e-chart-tooltipsettings>
+                <e-chart-legendsettings visible="false"></e-chart-legendsettings>
+            </ejs-chart>
+            <script>
+                document.getElementById('container').onclick = () => {
+                    var chart = document.getElementById('container').ej2_instances[0];
+                    chart.export('PNG', 'result');
+                };
+            </script>
+
+        </div>
+        <div class="col-md-4">
+            <ejs-chart id="container2" title="Number of distributions per year" width="100%" pointRender="pointRender2">
+                <e-chart-titlestyle size="18px"></e-chart-titlestyle>
+                <e-chart-border width="1" color="lightgrey"></e-chart-border>
+                <e-chart-primaryxaxis valueType="Category"
+                                      labelFormat="y"
+                                      tickPosition="Outside"
+                                      labelRotation="0"
+                                      labelPosition="Inside"
+                                      intervalType="Auto">
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-labelstyle color="#ffffff"></e-labelstyle>
+                </e-chart-primaryxaxis>
+                <e-chart-primaryyaxis >
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                    <e-linestyle width="0"></e-linestyle>
+                    <e-labelstyle color="transparent"></e-labelstyle>
+                </e-chart-primaryyaxis>
+                <e-chart-chartarea>
+                    <e-chartarea-border width="0"></e-chartarea-border>
+                </e-chart-chartarea>
+                <e-series-collection>
+                    <e-series dataSource="ViewBag.dataSourcedist" xName="xValue" yName="yValue" width=2 type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column">
+                        <e-series-marker>
+                            <e-series-datalabel visible="true" position="Outer">
+                                <e-font color="#357cd2" fontWeight="600"></e-font>
+                            </e-series-datalabel>
+
+                        </e-series-marker>
+                        <e-series-cornerradius bottomLeft="3" bottomRight="3" topLeft="3" topRight="3"></e-series-cornerradius>
+                    </e-series>
+                </e-series-collection>
+                <e-chart-tooltipsettings enable="false"></e-chart-tooltipsettings>
+                <e-chart-legendsettings visible="false"></e-chart-legendsettings>
+            </ejs-chart>
+        </div>
+        <div class="col-md-4">
+            <ejs-chart id="container3" title="# of health facilities per year" width="100%" load="load" pointRender="pointRender">
+                <e-chart-titlestyle size="18px"></e-chart-titlestyle>
+                <e-chart-border width="1" color="lightgrey"></e-chart-border>
+                <e-chart-primaryxaxis valueType="Category"
+                                      labelFormat="y"
+                                      tickPosition="Outside"
+                                      labelRotation="0"
+                                      labelPosition="Inside"
+                                      intervalType="Auto">
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-labelstyle color="#ffffff"></e-labelstyle>
+                </e-chart-primaryxaxis>
+                <e-chart-primaryyaxis minimum="0" >
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                    <e-linestyle width="0"></e-linestyle>
+                    <e-labelstyle color="transparent"></e-labelstyle>
+                </e-chart-primaryyaxis>
+                <e-chart-chartarea>
+                    <e-chartarea-border width="0"></e-chartarea-border>
+                </e-chart-chartarea>
+                <e-series-collection>
+                    <e-series dataSource="ViewBag.dataSourceFacilities" xName="xValue" yName="yValue" width=2 type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column">
+                        <e-series-marker>
+                            <e-series-datalabel visible="true" position="Outer">
+                                <e-font color="#357cd2" fontWeight="600"></e-font>
+                            </e-series-datalabel>
+
+                        </e-series-marker>
+                        <e-series-cornerradius bottomLeft="5" bottomRight="5" topLeft="5" topRight="5"></e-series-cornerradius>
+                    </e-series>
+                </e-series-collection>
+                <e-chart-tooltipsettings enable="false"></e-chart-tooltipsettings>
+                <e-chart-legendsettings visible="false"></e-chart-legendsettings>
+            </ejs-chart>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <input id="vstatusheightid" value="@ViewBag.statusheight" hidden />
+        <input id="distheightid" value="@ViewBag.distheight" hidden />
+        <input id="notificaitonheightid" value="@ViewBag.notificaitonheight" hidden />
+        <input id="wastetypeheightid" value="@ViewBag.wastetypeheight" hidden />
+        <input id="chartheightId" value="@ViewBag.chartheight" hidden />
+        <div>
+            @await Component.InvokeAsync("ScmRequeststatusWidget")
+        </div>
+        <hr />
+        <div>
+            @await Component.InvokeAsync("ScmDashDistWidget")
+        </div>
+        <hr />
+        <div>
+            @await Component.InvokeAsync("ScmDashSubWidget")
+        </div>
+        <hr />
+        <div>
+            @await Component.InvokeAsync("VscmstockwastagesWidget")
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+    <script>
+        var colors = ['#357cd2', '#357cd2', '#357cd2', '#357cd2', '#357cd2','#357cd2', '#357cd2'];
+        pointRender = function (args) {
+            args.fill = colors[args.point.index];
+        };
+
+        var colors2 = ['#9966ff', '#9966ff', '#9966ff', '#9966ff', '#9966ff', '#9966ff', '#9966ff'];
+        pointRender2 = function (args) {
+            args.fill = colors2[args.point.index];
+        };
+
+        var load = function (args) {
+            var val_chartheight = $('#chartheightId').val()*1+ $('#chartheightId').val() *0.11;
+            //var val_hcartheight2 = $('#chartheightId').val() *0.1;
+            //var val_height = (val_chartheight + val_hcartheight2);
+
+            args.chart.primaryYAxis.minimum = 0;
+            args.chart.primaryYAxis.maximum = (val_chartheight);
+            args.chart.primaryYAxis.interval = 1;
+        }
+
+        $(document).ready(function () {
+            var table = $('#request').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                "bPaginate": false,
+                "bInfo": false,
+                 dom: 'l<"toolbar">frtip',  
+                columnDefs: [{
+                    "targets": 8,
+                    "sorting": false,
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        if (data) {
+                            var mDate = moment(data);
+                            return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                        }
+                        return "";
+                    }
+                }],
+            });
+
+            var table2 = $('#distribution').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                "bPaginate": false,
+                "bInfo": false, 
+                columnDefs: [
+                    {
+                        "targets": 1,
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "targets": 2,
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                            }
+                            return "";
+                        }
+                    }
+
+                ],
+            });
+
+               var table3 = $('#wastetypes').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                "bPaginate": false,
+                "bInfo": false,
+                columnDefs: [
+                    {
+                        "targets": 7,
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                            }
+                            return "";
+                        }
+                    }
+
+                ],
+               });
+
+            var table4 = $('#tblnotifications').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                "bPaginate": false,
+                "bInfo": false,
+                columnDefs: [
+                    {
+                        "targets": 2,
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                            }
+                            return "";
+                        }
+                    },
+                                        {
+                        "targets":7,
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("YYYY-MM-DD") : "";
+                            }
+                            return "";
+                        }
+                    },
+
+                ],
+            });
+        });
+
+        var val_vstatushight = $('#vstatusheightid').val()+"px";
+        var val_distHeight = $('#distheightid').val()+"px";
+        var val_notificaitonheight = $('#notificaitonheightid').val() + "px";
+        var val_wastetypeheight = $('#wastetypeheightid').val() + "px";
+
+
+        document.getElementById("statusHeight").style.height = val_vstatushight;
+        document.getElementById("distHeight").style.height = val_distHeight;
+        document.getElementById("notificationHeight").style.height = val_notificaitonheight;
+        document.getElementById("wastetypeHeight").style.height = val_wastetypeheight;
+
+        document.getElementById("container").style.height = 250+"px";
+        document.getElementById("container2").style.height = 250+"px";
+        document.getElementById("container3").style.height = 250+"px";
+
+    </script>
+}
+<style>
+    .content-wrapper {
+        padding-top: 5px !important;
+    }
+
+    #dashboard_layout .e-panel .e-panel-container .content {
+        vertical-align: middle;
+        font-weight: 500;
+        font-size: 20px;
+        text-align: center;
+        line-height: 45px;
+    }
+
+    .titlesize {
+        font-size: large !important;
+        font-family: 'Segoe UI' !important;
+        color: #1a1818 !important;
+        padding: 0px !important;
+    }
+</style>

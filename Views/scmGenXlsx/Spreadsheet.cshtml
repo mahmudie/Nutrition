@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Excel File";
+}
+<div>
+    <ejs-spreadsheet id="spreadsheet" width="100%" height="600px" openUrl="/scmGenXlsx/Open" saveUrl="/scmGenXlsx/Save" created="createdHandler">
+
+    </ejs-spreadsheet>
+</div>
+
+<script>
+    function createdHandler() {
+        var host = window.location.host;
+        var spreadsheet = ej.base.getComponent(document.getElementById("spreadsheet"), "spreadsheet");
+        fetch(window.location.protocol+"/Template/" + "SCM_request.xlsx")
+            .then((response) => {
+                response.blob().then((fileBlob) => {
+                    var file = new File([fileBlob], "SCM_request.xlsx");
+                    spreadsheet.open({ file: file });
+                })
+            })
+        if (this.activeSheetIndex === 0 && this.sheets[this.activeSheetIndex].name === 'Requests IP Level') {
+            this.merge("A2:J2");
+        } 
+    } 
+</script>
+<style>
+    .box-header.with-border {
+        display:none!important;
+    }
+</style>

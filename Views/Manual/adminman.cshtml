@@ -1,0 +1,259 @@
+<style>
+    p{
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size:20px;
+    }
+    li{
+        line-height: 200%;
+        font-size: larger;
+    }
+    h4{
+        margin: 0px;
+        padding: 0px;
+    }
+    .small
+    {
+        font-size:large;
+    }
+</style>
+<div class="container">
+    <h2>Admin Manual</h2>
+    <hr>
+    <h2>Contents</h2>
+<ul>
+    <li><h4><a href="/Manual/adminman#introduction">Introduction</a></h4></li>
+    <li><h4><a href="/Manual/adminman#Adduser">Type of Users</a></h4>
+        <ul>
+            <li><h4><a href="/Manual/adminman#dataentry">Data Entry</a></h4></li>
+            <li><h4><a href="/Manual/adminman#guest">Guests</a></h4></li>
+        </ul>
+    </li>
+    <li><h4><b>User Management</b></h4>
+        <ul>
+            <li><h4><a href="/Manual/adminman#adding">Adding New User</a></h4>
+            <li><h4><a href="/Manual/adminman#Lockuser">Blocking a User</a></h4></li>
+            <li><h4><a href="/Manual/adminman#changeuserrole">Changing User Role</a></h4></li>
+        </ul>
+    </li>
+    <li>
+    <h4><a href="/Manual/adminman#verification">Verification of Reports</a></h4>
+        <ul>
+            <li><h4><a href="/Manual/adminman#nmrstatus">Approving a Report</a></h4></li>
+            <li><h4><a href="/Manual/adminman#nmrreject">Rejecting a Report</a></h4></li>
+        </ul>
+    </li>
+    <li><h4><a href="/Manual/adminman#more">Care for Quality of Data</a></h4></li>
+    <li><h4><a href="/Manual/adminman#master">Master Data</a></h4></li>
+</ul>
+<hr>
+
+<h2 id="introduction">Introduction</h4>
+<p>
+    This manual is a brief guide on helping administrator users in doing tasks that help properly manage and use database. This can be used only by administrators not other users.
+</p>
+<p>
+    The <strong> administrator </strong> group can do any of the following:
+    <ul>
+        <li>Add New User</li>
+        <li>Block/de-activate existing user(s)</li>
+        <li>View existing reports</li>
+        <li>Aprove/Reject reports</li>
+        <li>Add/Edit Master Data such as districts, health facilities, etc.</li>
+        <li>Create Pivot Table</li>
+    </ul>
+</p>
+<p>
+    <strong>But</strong> the <strong>administrators</strong> can not do:
+    <ul>
+        <li>Add and/or Edit reports</li>
+        <li>Delete Reports</li>
+    </ul>
+</p>
+<h2 id="Adduser">Type of Users</h2>
+<p>
+    The <strong>administrators</strong> can add the following two categories of users in addition to adminstrators category:
+    <ul>
+        <li><strong>Dataentry</strong></li>
+        <li><strong> Guest</strong></li>
+    </ul>
+</p>
+<img src="~/images/users/adduser.png" width="100%" alt="Users list">
+<p>
+    <br>
+<p>
+  <h2 id="dataentry">Dataentry</h2>
+  <p>
+      The dataentry category of user can do the following:
+      <ul>
+          <li>Add/Enter New Reports</li>
+          <li>Modify/update existing reports</li>
+          <li>View existing reports</li>
+          <li>Delete existing reports</li>
+          <li>Create Pivot Table</li>
+      </ul>
+  </p>
+    <h2 id="guest">Guest</h2>
+  <p>
+      The Guest category can do the following:
+      <ul>
+          <li>View Dashboard</li>
+          <li>View existing reports</li>
+          <li>Create Pivot Table</li>
+      </ul>
+  </p>
+<p>
+
+</p>
+</p>
+
+</p>
+<p>
+    <h2 id="adding">Add New User</h2>
+    <strong>To create/add</strong> a new user, follow below instructions:
+    <li>
+        As seen in the above screen, click on <strong>Create New</strong> button. After clicking on the button, the following screen will appear:<br>
+        <img src="~/images/users/newuser.png" width="100%" alt="Create New User">
+    </li>
+    <li>
+        Fill all the fields with proper details described below:<br>
+        <ul>
+            <li class="small"><strong> User Name: </strong> select a short name as UserName that is easy to remember. You can select the initials of First Name and Last Name of the intended user.</li>
+            <li class="small"><strong>First Name:</strong> type the First Name of the user.</li>
+            <li class="small"><strong>Last Name:</strong> type the Last Name of the user.</li>
+            <li class="small"><strong>Position:</strong> write the position of the user.</li>
+            <li class="small"><strong>Email:</strong> write the correct and working email of the user.</li>
+            <li class="small"><strong>Phone Number:</strong> write the correct and working phone number of the user.</li>
+            <li class="small"><strong>Password:</strong> write a unique and strong password for this user. Every password you select must not given to any other user and must by comination of
+            Numbers, characters, and symbols.</li>
+           <li class="small"><strong>Confirm Password:</strong> re-type the selected password for the user. <strong>Note:</strong> make sure you rember or writedown the password somewhere otherwise you will forget it. </li>
+            <li class="small"><strong>User Role:</strong> from here select the type of user.</li>
+        </ul>
+    </li>
+    <li>Now make sure you've filled the boxes with correct information.</li>
+    <li>Then click on <strong>Register</strong> to create the new user.</li> 
+</p>
+<br>
+<h2 id="Lockuser">Blocking a User</h2>
+<p>
+    If you want to block a user from accessing to the database, you can do so by using the following instructions:<br>
+    Situations when you decide to block a user:
+    <ul>
+        <li  class="small">A user is left the position to work on nutrition database</li>
+        <li  class="small">You decide to block a user based on reasons you judge to block</li>
+        <li class="small">A user is not following practices you recommend</li>
+    </ul>
+    <h4><strong>To block</strong> a user</h4>
+    <ul>
+        <li class="small">Opend users list like following screen shot</li>
+    <img src="~/images/users/adduser.png" width="100%" alt="Users list">
+        <li class="small">Click on the <strong>lock</strong> icon. This will lock the intended user and the icon will changed like following</li>
+    <img src="~/images/users/lockuser.png" width="100%" alt="Locking a user">
+    </ul>
+</p>
+
+<strong>Note:</strong>: It is very important to have a list of active users and block users that are no longer working on the database. You should create a proper mechanism to know when a user leave the program and then block the user so he cannot access the database when he is no longer with the program. This is critical because he may manipulate and change the data or even delete the records when he has access to the database.
+<h2 id="changeuserrole">Changing User Role</h2>
+<p>
+    As discussed earlier, there are three types of users: <strong>admin</strong>, <strong>dataentry</strong>, and <strong>guest</strong>. Each has some access to the database based on the its role.
+    <br><br>
+    There might be situations when you want to change the user role. For example, you may change a user role from <strong>guest</strong> to <strong>admin</strong>. In that case follow:
+    <ul>
+        <li class="small">Open list of users</li>
+        <li class="small">Click on edit icon (the pencil icon)</li>
+        <li class="small">Then change the User Role from <strong>guest</strong> to <strong>admin</strong></li>
+        <li class="small"> Then click on the save button</li>
+        <img src="~/images/users/changeuser.png" width="100%" alt="Change a user role">
+    </ul>
+</p>
+<h2 id="verification">Verification of reports</h2>
+<p>
+    It is important to check the data that is being entered into database is accurate and reliable. Having no data is better than inaccurate data. Erroneous data may lead to wrong decisions.
+</p>
+<p>
+Data accuracy or quality of data is not responsibility of one or two persons. It is everyone’s job. The typist, tally person, head of the project. But the accuracy of NUTRITION data is mostly dependent of tally person or the base where data is gathered namely the health facility is the base of accurate and inaccurate data. 
+</p>
+<p>
+The other person who is responsible for data quality is the person who enters data into database. He/she shall not only care about data entry while typing into database but he should make sure the data that enters into database is fine and make correction if there is any problem with the source data in the hard copy or tally. He should also make this ethic for him to double check data after every data entry of a report and regularly check quality of data using data entry forms, pivot table and provide feedback in order to minimize errors or mistakes in the data.
+</p>
+<p>
+In this paper we focus on the accuracy check of the data entered in the database. Database is not that wise to check if 4 odema for <6 children was recorded as 4 6-24 months. But it will check that duplicate record is not entered, alarm when total number of male and female is not matching with total number of new admission in MAM and do some other validation check.
+</p>
+<p>
+The database automatically checks that the data is entered correctly in the database and prevent errors that are already defined but it will not be sufficient then  
+You may do the following precautions during review of data to monitor the quality of data entered into database:
+</p>
+<ul>
+    <li class="small">Make sure a report is not empty or blank</li>
+    <li class="small">Make sure the time and period of entered report is correct</li>
+    <li class="small">Look at big number of refer in, deaths, defaulters and other</li>
+    <li class="small">Make sure the total number of exits is not bigger than total admissions</li>
+    <li class="small">Make sure total at the end of the month is not negative</li>
+    <li class="small">If the report is complete and accurate then approve the record</li>
+    <li class="small">But if the report is not complete and have error. Then reject it and provide reasons for rejection</li>
+</ul>
+</p>
+
+<h2 id="nmrstatus">Approving a Report</h2>
+<p>
+    Every report entered by users in the provinces will be listed in this list. As you can see in the list, the status column has some colored status. 
+    <p><strong style="background-color:#00C0EF;color:#FFFFFF">Processing </strong> means that the record is just entered by the user and is waiting for your review and approval</p>
+    <p>
+        <strong style="background-color:blue;color:#FFFFFF">Updaded</strong> means that the record was updated or modified by the user
+    </p>
+    <p>
+        <strong style="background-color:green;color:#FFFFFF">Verified</strong> means that the record was accepted and verified by you. In this case the user will not be to make any further modification to the report.
+    </p>
+    <p>
+        <strong style="background-color:red;color:#FFFFFF">Rejected</strong> means that the report had some problem and you have rejected. In this case the user will be notified of the rejection and he/she then can look and modify if needed.
+    </p>
+    <p>
+        <strong style="background-color:red;color:#FFFFFF">Uknown</strong> If there any unknown it means that the record is migrated from old database.
+    </p>
+    <img src="~/images/users/nmrstatus.png" width="100%" alt="Change a user role">   
+</p>
+
+<p>
+    To approve a report, click on the view icon <img src="~/images/users/viewicon.png"> of the target report. After clicking on the view icon, the following screen will appear. 
+    <img src="~/images/users/approvenmr.png" width="100%" alt="Approve NMR">   
+</p>
+<p>
+    As you can see in the above image, the data for the related report will appear but you will not be able to edit it.Go to <strong>Verify Report</strong> section. Select <strong>Accept</strong> and in the <strong>Message</strong> box type any note or comment you want. Then click on the <strong>Save</strong> button to save it. 
+</p>
+    <img src="~/images/users/verify.png" width="100%" alt="Verify Report">   
+
+<h2 id="nmrreject">Rejecting a Report</h2>
+<p>
+    You can reject an existing report from the same screen as shown above. You may reject a record when the report is not complete or there is error in data.
+</p>
+<p>
+    When rejecting a report, you should give enough details in the <strong>Message</strong> box so that the user can understand it. When there is error make sure you reference to the exact data point. For example, see following: 
+</p>
+    <img src="~/images/users/rejected.png" width="100%" alt="Rejection">   
+<h2 id ="more">Care for Quality of Data</h2>
+<p>
+    When analyzing data you may consider the following items:
+</p>
+<ul>
+    <li  class="small">Look for large gaps in the data</li>
+    <li  class="small">Look for unusual month to month variations</li>
+    <li  class="small">Question for duplication in reporting or repetitive values</li>
+    <li  class="small">Check for inconsistencies – unlikely values</li>
+    <li  class="small">Look for data present where there should not be</li>
+    <li  class="small">There might be typing errors if there is a very large data</li>
+    <li  class="small">Check that data is not entered in wrong places</li>
+    <li  class="small">Look for any other patterns that affects the quality of data</li>
+</ul>
+
+<h2 id="master">Master Data</h2>
+<p>
+<strong>Master Data</strong> are some pre-defined lists used with the database. The purpose of these list are to have a unified list and minimize spelling errors in the database. The lists include <strong>Provinces</strong>, <strong>Districts</strong>,<strong>Health Facilities</strong>, etc.
+</p>
+    <img src="~/images/users/masterlist.png" width="100%" alt="Master List">  <br>
+<p>
+    Using this feature of the database, you can inactivate, delete, edit or add a new list in the database. As soon as you change the list, it will be affected all over the database for all users and screens including data entry and report.
+</p> 
+<div class="text-center">
+    <h2>The End</h2>
+</div>
+
+</div>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataSystem.Models.GLM.Column>
+@{
+    ViewData["Title"] = "Columns";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+
+        <a asp-controller="Columns" asp-action="Create" asp-route-SectionId="@ViewData["SectionId"]" class="btn btn-success btn-sm float-right">Add Column</a>
+        <a asp-controller="Sections" asp-action="Index" class="btn btn-link btn-sm">Back to Sections</a>
+    </div>
+
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Section</th>
+                    <th>Sort Order</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model)
+                {
+                <tr>
+                    <td>
+                        <a asp-controller="Columns" asp-action="Edit" asp-route-id="@row.Id">
+                            @row.Title
+                        </a>
+                    </td>
+                    <td>@row.Section.Title</td>
+                    <td>@row.SortOrder</td>
+                    <td>
+                        <a asp-controller="Columns"
+                           asp-action="Delete"
+                           asp-route-id="@row.Id"
+                           class="btn btn-danger btn-sm float-right">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

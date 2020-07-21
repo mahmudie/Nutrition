@@ -1,0 +1,1171 @@
+@model DataSystem.Models.Nmr
+
+
+@{ ViewData["Title"] = "Monthly Report View"; }
+@Html.AntiForgeryToken()
+@using MyProject.MyExtensions
+
+<script src="~/js/ckeditor/ckeditor.js"></script>
+
+<hr />
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_6" data-toggle="tab">Screening</a></li>
+        <li><a href="#tab_1" data-toggle="tab">IPD-SAM</a></li>
+        <li><a href="#tab_2" data-toggle="tab">OPD-SAM</a></li>
+        <li><a href="#tab_4" data-toggle="tab">OPD-MAM</a></li>
+        <li><a href="#tab_3" data-toggle="tab">GMP (Health Facility)</a></li>
+        <li><a asp-controller="Feedback" asp-action="list" asp-route-nmrid="@Model.Nmrid">Feedback</a> </li>
+        <li><a href="#tab_7" data-toggle="tab">Verify Report</a></li>
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="tab_7">
+
+            @if (User.IsInRole("administrator") && User.MyProperty() == "1")
+            {
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-3">
+                        <form asp-action="verifyNmr" id="form1">
+                            <div class="form-horizontal">
+                                <div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div>
+                                <input type="hidden" asp-for="Nmrid" />
+                                <div class="form-group">
+                                    <label asp-for="StatusId" class="col-md-2 control-label"></label>
+                                    <div class="col-md-5">
+                                        <select asp-for="StatusId" id="Prov" class="form-control">
+                                            <option value="4">Reject </option>
+                                            <option value="3">Accept</option>
+                                        </select>
+                                        <span asp-validation-for="StatusId" class="text-danger" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="message" class="col-md-2 control-label">Message</label>
+                                    <div class="col-md-5">
+                                        <textarea asp-for="message" class="form-control" rows="6"></textarea>
+                                        <span asp-validation-for="message" class="text-danger" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-5">
+                                        <input type="submit" value="Submit" onclick="return confirm('Are your sure you want to proceed?');" class="btn btn-primary btn-block" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="container">
+                    <form asp-action="verifyNmr">
+                        <div class="form-horizontal">
+                            <div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div>
+                            <input type="hidden" asp-for="Nmrid" />
+                            <div class="form-group">
+                                <label asp-for="StatusId" class="col-md-2 control-label"></label>
+                                <div class="col-md-5">
+                                    <select asp-for="StatusId" id="Prov" class="form-control">
+                                        <option value="4">Reject </option>
+                                    </select>
+                                    <span asp-validation-for="StatusId" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="message" class="col-md-2 control-label">Message</label>
+                                <div class="col-md-5">
+                                    <textarea asp-for="message" class="form-control" rows="6" readonly></textarea>
+                                    <span asp-validation-for="message" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-5">
+                                    <input type="submit" value="Reject" onclick="return confirm('Are your sure you want to Reject?');" class="btn btn-danger btn-block" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+        <div class="tab-pane " id="tab_1">
+            <div class="table-responsive" data-bind="visible:checkNum()!=0" style="font-size:12px;">
+                <table id="dt" class="table table-striped table-bordered table-hover text-center dt-responsive nowrap" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-center">Age Groups</th>
+                            <th rowspan="2" class="text-center">Beginning</th>
+                            <th colspan="6" class="text-center">New Admissions</th>
+                            <th colspan="3" class="text-center">Refer In</th>
+                            <th rowspan="2" class="text-center">Total ReferIn</th>
+                            <th rowspan="2" class="text-center">Total Admissions</th>
+                            <th colspan="6" class="text-center">Exits</th>
+                            <th rowspan="2" class="text-center">Ending</th>
+                        </tr>
+                        <tr>
+                            <th>Oedema</th>
+                            <th>
+                                W/H&lt;-3ZScore
+                            </th>
+                            <th>MUAC&lt;115mm</th>
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Total</th>
+
+                            <th>From IPD-SAM&#47;OPD-SAM</th>
+                            <th>From SFP</th>
+                            <th>Return Default</th>
+
+                            <th>Cured</th>
+                            <th>Death</th>
+                            <th>Defaulters</th>
+                            <th>Refer Out </th>
+                            <th>Non Cured</th>
+                            <th>total Exits</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <td>
+                                <strong>Sum</strong>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[0]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[1]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[2]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[3]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[4]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[5]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[6]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[7]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[8]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[9]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[10]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[11]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: total().sum[12]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[13]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[14]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[15]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[16]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[17]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[18]"></span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th colspan="13">Cured, Death ,Default,Non Cured and Transfer Rates </th>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[19]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[20]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[21]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[22]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:total().sum[23]"></span>
+                            </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="11" rowspan="3"> Standard (Sphere)</th>
+                            <td colspan="2">IP</td>
+                            <td>&gt;80%</td>
+                            <td>&lt;5%</td>
+                            <td>&lt;15%</td>
+                            <td colspan="5"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">IPD-SAM</td>
+                            <td>&gt;75%</td>
+                            <td>&lt;10%</td>
+                            <td>&lt;15%</td>
+                            <td colspan="5"></td>
+                        </tr>
+                    </tfoot>
+                    <tbody data-bind="foreach: rep">
+                        <tr class="text-center">
+                            <td data-bind="text:ageGroup"></td>
+                            <td data-bind="text:totalbegin"></td>
+                            <td data-bind="text:odema"></td>
+                            <td data-bind="text:z3score"></td>
+                            <td data-bind="text:muac115"></td>
+                            <td data-bind="text:tMale"></td>
+                            <td data-bind="text:tFemale"></td>
+                            <td data-bind="text:muac115+z3score+odema"> </td>
+                            <td data-bind="text:fromscotp"> </td>
+                            <td data-bind="text:fromsfp"></td>
+                            <td data-bind="text:defaultreturn"></td>
+                            <td data-bind="text:fromscotp+defaultreturn+fromsfp"></td>
+                            <td data-bind="text:fromscotp+defaultreturn+fromsfp+muac115+z3score+odema"></td>
+                            <td data-bind="text:cured"></td>
+                            <td data-bind="text:death"></td>
+                            <td data-bind="text:defaulters"></td>
+                            <td data-bind="text:refOut"></td>
+                            <td data-bind="text:nonCured"></td>
+                            <td data-bind="text:nonCured+refOut+defaulters+death+cured"></td>
+                            <td data-bind="text:(totalbegin+fromscotp+defaultreturn+fromsfp+muac115+z3score+odema)-(nonCured+refOut+defaulters+death+cured)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="display: none" data-bind="visible:checkNum()==0" class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button> There are no reports to display.
+
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table class="table table-condensed table-responsive text-center dt-responsive">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Kwashiorkor (Oedema)</th>
+                                    <th>Marasmus(W/H and MUAC)</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Average Weight Gain (AWG):</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="IawgKwashiorkor" readonly />
+                                        <span asp-validation-for="IawgKwashiorkor" class="text-danger" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="IawgMarasmus" readonly />
+                                        <span asp-validation-for="IawgMarasmus" class="text-danger" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Average Length of Stay (ALS):</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="IalsKwashiorkor" readonly />
+                                        <span asp-validation-for="IalsKwashiorkor" class="text-danger" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="IalsMarasmus" readonly />
+                                        <span asp-validation-for="IalsMarasmus" class="text-danger" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form id="questions" class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div class="col-sm-12 col-md-10 col-lg-12 ">
+                                <table class="table table-condensed table-responsive dt-responsive ">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="11">In IPD-SAM:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="10">
+                                                1- How many weeks did the site encountered stock out of RUTF?
+                                            </td>
+                                            <td>
+                                                <input for="IpdRutfstockOutWeeks" class="form-control text-center" asp-for="IpdRutfstockOutWeeks" readonly />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10">2- Number of new admissions referred by CHWs?</td>
+                                            <td>
+                                                <input for="IpdAdmissionsByChws" class="form-control text-center" asp-for="IpdAdmissionsByChws" readonly />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table data-bind="visible:stocks().length!=0" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>beginning </th>
+                                    <th>Received</th>
+                                    <th>Used</th>
+                                    <th>Expired</th>
+                                    <th>Damaged</th>
+                                    <th>Loss</th>
+                                    <th>Ending</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:stocks">
+                                <tr>
+                                    <td class="text-left" data-bind="text:item"></td>
+                                    <td data-bind="text:openingbalance"></td>
+                                    <td data-bind="text:received"></td>
+                                    <td data-bind="text:used"></td>
+                                    <td data-bind="text:expired"> </td>
+                                    <td data-bind="text:damaged"> </td>
+                                    <td data-bind="text:loss"></td>
+                                    <td data-bind="text:$parent.stockAthand($data)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+
+            <div class="table-responsive" data-bind="visible:samouts()!=0" style="font-size:12px;">
+                <table id="dt" class="table table-striped table-bordered table-hover text-center dt-responsive nowrap" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-center">Age Groups</th>
+                            <th rowspan="2" class="text-center">Beginning</th>
+                            <th colspan="6" class="text-center">New Admissions</th>
+                            <th colspan="3" class="text-center">Refer In</th>
+                            <th rowspan="2" class="text-center">Total ReferIn</th>
+                            <th rowspan="2" class="text-center">Total Admissions</th>
+                            <th colspan="6" class="text-center">Exits</th>
+                            <th rowspan="2" class="text-center">Ending</th>
+                        </tr>
+                        <tr>
+                            <th>Oedema</th>
+                            <th>
+                                W/H&lt;-3ZScore
+                            </th>
+                            <th>MUAC&lt;115mm</th>
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Total</th>
+
+                            <th>From IPD-SAM&#47;OPD-SAM</th>
+                            <th>From SFP</th>
+                            <th>Return Default</th>
+
+                            <th>Cured</th>
+                            <th>Death</th>
+                            <th>Defaulters</th>
+                            <th>Refer Out </th>
+                            <th>Non Cured</th>
+                            <th>total Exits</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <td>
+                                <strong>Sum</strong>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[0]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[1]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[2]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[3]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[4]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[5]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[6]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[7]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[8]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[9]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[10]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[11]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalout().sum[12]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[13]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[14]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[15]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[16]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[17]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[18]"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="13">Cured, Death ,Default,Non Cured and Transfer Rates </th>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[19]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[20]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[21]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[22]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalout().sum[23]"></span>
+                            </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="11" rowspan="3"> Standard (Sphere)</th>
+                            <td colspan="2">IP</td>
+                            <td>&gt;80%</td>
+                            <td>&lt;5%</td>
+                            <td>&lt;15%</td>
+                            <td colspan="5"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">OPD-SAM</td>
+                            <td>&gt;75%</td>
+                            <td>&lt;10%</td>
+                            <td>&lt;15%</td>
+                            <td colspan="5"></td>
+                        </tr>
+                    </tfoot>
+                    <tbody data-bind="foreach: samouts">
+                        <tr class="text-center">
+                            <td data-bind="text:ageGroup"></td>
+                            <td data-bind="text:totalbegin"></td>
+                            <td data-bind="text:odema"></td>
+                            <td data-bind="text:z3score"></td>
+                            <td data-bind="text:muac115"></td>
+                            <td data-bind="text:tMale"></td>
+                            <td data-bind="text:tFemale"></td>
+                            <td data-bind="text:muac115+z3score+odema"> </td>
+                            <td data-bind="text:fromscotp"> </td>
+                            <td data-bind="text:fromsfp"></td>
+                            <td data-bind="text:defaultreturn"></td>
+                            <td data-bind="text:fromscotp+defaultreturn+fromsfp"></td>
+                            <td data-bind="text:fromscotp+defaultreturn+fromsfp+muac115+z3score+odema"></td>
+                            <td data-bind="text:cured"></td>
+                            <td data-bind="text:death"></td>
+                            <td data-bind="text:defaulters"></td>
+                            <td data-bind="text:refOut"></td>
+                            <td data-bind="text:nonCured"></td>
+                            <td data-bind="text:nonCured+refOut+defaulters+death+cured"></td>
+                            <td data-bind="text:(totalbegin+fromscotp+defaultreturn+fromsfp+muac115+z3score+odema)-(nonCured+refOut+defaulters+death+cured)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: none" data-bind="visible:samouts()==0" class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button> There are no reports to display.
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table class="table table-condensed table-responsive text-center dt-responsive">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Kwashiorkor (Oedema)</th>
+                                    <th>Marasmus(W/H and MUAC)</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Average Weight Gain (AWG):</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="OawgKwashiorkor" readonly />
+                                        <span asp-validation-for="OawgKwashiorkor" class="text-danger" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="OawgMarasmus" readonly />
+                                        <span asp-validation-for="OawgMarasmus" class="text-danger" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Average Length of Stay (ALS):</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="OalsKwashiorkor" readonly />
+                                        <span asp-validation-for="OalsKwashiorkor" class="text-danger" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="OalsMarasmus" readonly />
+                                        <span asp-validation-for="OalsMarasmus" class="text-danger" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="col-sm-12 col-md-10 col-lg-12 ">
+                        <table class="table table-condensed table-responsive dt-responsive ">
+                            <thead>
+                                <tr>
+                                    <th colspan="11">In OPD-SAM:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="10">
+                                        1- How many weeks did the site encountered stock out of RUTF?
+                                    </td>
+                                    <td>
+                                        <input for="OpdRutfstockOutWeeks" class="form-control text-center" asp-for="OpdRutfstockOutWeeks" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10">2- Number of new admissions referred by CHWs?</td>
+                                    <td>
+                                        <input for="OpdAdmissionsByChws" class="form-control text-center" asp-for="OpdAdmissionsByChws" readonly />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table data-bind="visible:samoutstocks().length!=0" class="table table-striped table-bordered table-hover text-center dt-responsive nowrap"
+                               cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>beginning </th>
+                                    <th>Received</th>
+                                    <th>Used</th>
+                                    <th>Expired</th>
+                                    <th>Damaged</th>
+                                    <th>Loss</th>
+                                    <th>Ending</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:samoutstocks">
+                                <tr>
+                                    <td class="text-left" data-bind="text:item"></td>
+                                    <td data-bind="text:openingbalance"></td>
+                                    <td data-bind="text:received"></td>
+                                    <td data-bind="text:used"></td>
+                                    <td data-bind="text:expired"> </td>
+                                    <td data-bind="text:damaged"> </td>
+                                    <td data-bind="text:loss"></td>
+                                    <td data-bind="text:$parent.stockAthand($data)"></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3">
+
+
+
+            <div class="table-responsive">
+                <table id="mn" class="table table-striped table-hover table-bordered table-condensed" data-bind="visible:all().length!= 0">
+                    <thead>
+                        <tr>
+                            <th>
+                                Item
+                            </th>
+
+                            <th class="text-center">
+                                No of children U2 male
+                            </th>
+
+                            <th class="text-center">
+                                No of children U2 female
+                            </th>
+                            <th class="text-center">
+                                Referred by CHWs
+                            </th>
+
+                            <th class="text-center">
+                                Remarks
+                            </th>
+
+                            <th class="text-center">
+                                Availability
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <td colspan="1">
+                                <strong>Sum</strong>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalw()"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalc()"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalp()"></span>
+                            </td>
+                            <td colspan="4"></td>
+                        </tr>
+                    </tfoot>
+
+                    <tbody data-bind="foreach:all">
+                        <tr class="text-center">
+                            <td class="text-left" data-bind="text:mnitems"></td>
+                            <td data-bind="text:chu2m"></td>
+                            <td data-bind="text:chu2f"></td>
+                            <td data-bind="text:refbyCHW"></td>
+                            <td data-bind="text:remarks"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="display: none" data-bind="visible:all().length==0" class="alert alert-warning alert-dismissible" role="alert">
+                    There are no reports to display.
+
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane" id="tab_4">
+            <div class="table-responsive" data-bind="visible:opds()!=0" style="font-size:12px;">
+                <table id="dt" class="table table-striped table-bordered table-hover text-center dt-responsive nowrap" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-center">Beneficiaries</th>
+                            <th rowspan="2" class="text-center">Total Beginning</th>
+                            <th colspan="6" class="text-center">New Admissions</th>
+                            <th rowspan="2" class="text-center">Refer In</th>
+                            <th rowspan="2" class="text-center">Total Admissions</th>
+                            <th rowspan="2" class="text-center">Absents</th>
+                            <th colspan="6" class="text-center">Exits</th>
+                            <th rowspan="2" class="text-center">Total food recipients</th>
+                            <th rowspan="2" class="text-center">Total at the end of the month</th>
+                        </tr>
+                        <tr>
+                            <th>W/H&lt;-3 to -2 ZScore</th>
+                            <th>
+                                MUAC&gt;115
+                            </th>
+                            <th>MUAC&lt;230mm</th>
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Total</th>
+
+                            <th>Cured</th>
+                            <th>Deaths</th>
+                            <th>Defaulter</th>
+
+                            <th>Refer Out</th>
+                            <th>Non-cured</th>
+                            <th>Total Exits</th>
+
+                        </tr>
+                    </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <td>
+                                <strong>Sum</strong>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[0]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[1]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[2]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[3]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[4]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[5]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[6]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[7]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[8]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[9]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[10]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[11]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text: totalopd().sum[12]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[13]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[14]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[15]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[16]"></span>
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[17]"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="9" rowspan="3">Performance indicators</th>
+                            <td colspan="2">MAM-CH</td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[19]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[20]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[21]"></span>
+
+                            </td>
+                            <td></td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[22]"></span>
+
+                            </td>
+                            <td colspan="4"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">AM-PLW</td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[23]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[24]"></span>
+
+                            </td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[25]"></span>
+
+                            </td>
+                            <td></td>
+                            <td>
+                                <span class="label label-info" data-bind="text:totalopd().sum[26]"></span>
+
+                            </td>
+                            <td colspan="4"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">SPHERE Standards</td>
+                            <td>&gt;75%</td>
+                            <td>&lt;3%</td>
+                            <td>&lt;15%</td>
+                            <td></td>
+                            <td>&lt;15%</td>
+                            <td colspan="4"></td>
+                        </tr>
+                    </tfoot>
+                    <tbody data-bind="foreach: opds">
+                        <tr class="text-center">
+                            <td class="text-left" data-bind="text:ageGroup"></td>
+                            <td data-bind="text:totalbegin"></td>
+                            <td data-bind="text:zscore23"></td>
+                            <td data-bind="text:muac12"></td>
+                            <td data-bind="text:muac23"></td>
+                            <td data-bind="text:tMale"></td>
+                            <td data-bind="text:tFemale"></td>
+                            <td data-bind="text:tMale+tFemale"> </td>
+                            <td data-bind="text:referIn"> </td>
+                            <td data-bind="text:tMale+tFemale+referIn"></td>
+                            <td data-bind="text:absents"></td>
+                            <td data-bind="text:cured"></td>
+                            <td data-bind="text:deaths"></td>
+                            <td data-bind="text:defaulters"></td>
+                            <td data-bind="text:transfers"></td>
+                            <td data-bind="text:nonCured"></td>
+                            <td data-bind="text:transfers+nonCured+defaulters+deaths+cured"></td>
+                            <td data-bind="text:(totalbegin+tMale+tFemale+referIn)-(transfers+defaulters+deaths+absents)"></td>
+                            <td data-bind="text:(totalbegin+tMale+tFemale+referIn)-(cured+nonCured+transfers+defaulters+deaths)"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: none" data-bind="visible:opds()==0" class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button> There are no reports to display.
+
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table class="table table-condensed table-responsive text-center dt-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Average length-of-stay (ALS) for children only</th>
+                                    <th>Average Weight Gain (AWG) for children only</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="SfpAls" readonly />
+                                        <span asp-validation-for="SfpAls" class="text-danger" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="SfpAwg" readonly />
+                                        <span asp-validation-for="SfpAwg" class="text-danger" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-sm-12 col-md-10 col-lg-12 ">
+                        <table class="table table-condensed table-responsive dt-responsive ">
+                            <thead>
+                                <tr>
+                                    <th colspan="11">In OPD-MAM:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="10">1- How many weeks did the site encountered stock out of RUSF?</td>
+                                    <td>
+                                        <input for="MamRusfstockoutWeeks" class="form-control text-center" asp-for="MamRusfstockoutWeeks" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10">2- Number of new admissions referred by CHWs?</td>
+                                    <td>
+                                        <input for="MamAddminsionByChws" class="form-control text-center" asp-for="MamAddminsionByChws" readonly />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table data-bind="visible:opdstocks().length!=0" class="table table-bordered table-hover table-condensed" style="font-size:12px;">
+                            <thead>
+                                <tr>
+                                    <th>Item description</th>
+                                    <th>Opening Balance</th>
+                                    <th>Quantity Received</th>
+                                    <th>Quantity Distributedated</th>
+                                    <th>Quantity Transferred</th>
+                                    <th>Losses</th>
+                                    <th>Quantity Returned</th>
+                                    <th>Closing Balance</th>
+                                    <th>Expected Recepients</th>
+                                    <th>Need</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:opdstocks">
+                                <tr>
+                                    <td data-bind="text:item"></td>
+                                    <td data-bind="text:openingBalance"></td>
+                                    <td data-bind="text:quantityReceived"></td>
+                                    <td data-bind="text:quantityDistributed"></td>
+                                    <td data-bind="text:quantityTransferred"></td>
+                                    <td data-bind="text:losses"></td>
+                                    <td data-bind="text:quantityReturned"></td>
+                                    <td data-bind="text:$parent.closingBalance($data)"></td>
+                                    <td data-bind="text:expectedRecepients"></td>
+                                    <td data-bind="text:$parent.stockAthandopd($data)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_5">
+
+
+            <div class="table-responsive" data-bind="visible:dataArray().length>0">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Cause short name</th>
+                            <th class="text-center">
+                                Mother with Children
+                                < 6 month
+                            </th>
+                            <th class="text-center">Mother with Children 6-24month</th>
+                            <th class="text-center">Pregnant women</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">First Visit</th>
+                            <th class="text-center">Re-Visit</th>
+                            <th class="text-center">Refer In</th>
+                            <th class="text-center">Refer Out</th>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="text-center">Sum</th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[1]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[2]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[3]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[0]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[4]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[5]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[6]"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="label label-info" data-bind="text:totaliycf().sum[7]"></span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody class="text-center" data-bind="foreach:dataArray">
+                        <tr>
+                            <td data-bind="text:causeShortName"></td>
+                            <td data-bind="text:mChildU5months"></td>
+                            <td data-bind="text:mChild524months"></td>
+                            <td data-bind="text:pregnanatwomen"></td>
+                            <td data-bind="text:pregnanatwomen+mChild524months+mChildU5months"></td>
+                            <td data-bind="text:firstvisit"></td>
+                            <td data-bind="text:revisit"></td>
+                            <td data-bind="text:referIn"></td>
+                            <td data-bind="text:referOut"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: none" data-bind="visible:dataArray().length==0" class="alert alert-warning " role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button> There are no reports to display.
+            </div>
+        </div>
+
+        <div class="tab-pane active" id="tab_6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-md-offset-1 col-sm-offset-1 col-lg-offset-1">
+                        <table class="table table-condensed table-responsive dt-responsive ">
+                            <thead>
+                                <tr>
+                                    <th colspan="8">How many children Under 5 years and PLW screened during the month at the health Facility?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="10" class="text-right">1- Girls</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="GirlsScreened" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10" class="text-right">2- Boys</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="BoysScreened" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10" class="text-right">3- PLW</td>
+                                    <td>
+                                        <input class="form-control text-center" asp-for="Plwreported" readonly />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+        <style>
+            .pb-cmnt-container {
+                font-family: Lato;
+                margin-top: 100px;
+            }
+
+            .form-group {
+                margin-left: 10px !important;
+                margin-top: 20px !important;
+                margin-right: 10px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .pb-cmnt-textarea {
+                resize: vertical;
+                padding: 20px;
+                padding-left: 20px;
+                padding-right: 20px;
+                background-color: #F5F5F5;
+                height: 120px;
+                width: 100%;
+                border: 1px solid #F2F2F2;
+            }
+
+            .fa-user, .fa-clock-o {
+                font-size: 1.5em;
+                color: #1d68ee;
+            }
+        </style>
+
+
+        <script src="~/js/notify.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+        <script src="~/js/ViewModel/View.js"></script>
+        <script>
+		$(document).ready(function () {
+			var model = new FormViewModel(@Json.Serialize(Model),"@User.Identity.Name");
+			ko.applyBindings(model);
+		});
+        </script>
+    }
+    <style>
+        .pb-cmnt-container {
+            font-family: Lato;
+            margin-top: 100px;
+        }
+
+        .form-group {
+            margin-left: 10px !important;
+            margin-top: 20px !important;
+            margin-right: 10px !important;
+            margin-bottom: 20px !important;
+        }
+
+        .pb-cmnt-textarea {
+            resize: vertical;
+            padding: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: #F5F5F5;
+            height: 120px;
+            width: 100%;
+            border: 1px solid #F2F2F2;
+        }
+
+        .fa-user, .fa-clock-o {
+            font-size: 1.5em;
+            color: #1d68ee;
+        }
+    </style>

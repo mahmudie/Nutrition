@@ -1,0 +1,48 @@
+@model DataSystem.Models.Feedback
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container">
+    <h2>Edit Question</h2>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Nmrid" />
+            <div class="form-group">
+                <label asp-for="Message" class="col-md-2 control-label"></label>
+                <div class="col-md-8">
+                    <textarea asp-for="Message" class="form-control"></textarea>
+                    <span asp-validation-for="Message" class="text-danger" />
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </form>
+
+    <div>
+    <div>
+        @if(User.IsInRole("administrator")){
+            <div>
+                  <a asp-controller="nmr" asp-action="reports" asp-route-nmrid="@Model.Nmrid">Back </a>
+            </div>
+        }else{
+            <div>
+                 <a asp-action="Index" asp-route-nmrid="@Model.Nmrid">Back </a>
+            </div>
+        }
+    </div>
+        </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,404 @@
+@model DataSystem.Models.SurveyInfovm
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Edit Survey Details";
+}
+<div class="container-fluid">
+    <h2>Edit Survey Details</h2>
+    <ejs-tab id="ej2Tab" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Popup" animation="ViewBag.animation"></ejs-tab>
+    <div style="display: none" id="Grid1">
+        <div class="col-md-12">
+            <h3>Surveys Result</h3>
+            @using (Html.BeginForm("Edit", "SurInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="hidden" id="SurveyId" asp-for="SurveyId" />
+                <input type="hidden" id="FilePath" asp-for="FilePath" />
+                <div class="row col-md-12">
+                    <table id="erfacilities" class="table table-condensed">
+                        <tr>
+                            <th>
+                                <label asp-for="SurveyAccro" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="SurveyAccro" class="form-control" />
+                                    <span asp-validation-for="SurveyAccro" class="text-danger" />
+                                </div>
+                            </td>
+                            <th>
+                                <label asp-for="SurveyFull" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="SurveyFull" class="form-control" />
+                                    <span asp-validation-for="SurveyFull" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label asp-for="LeadBy" class=" control-label"></label>
+
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="LeadBy" class="form-control" />
+                                    <span asp-validation-for="LeadBy" class="text-danger" />
+                                </div>
+                            </td>
+                            <th>
+                                <label asp-for="ImpBy" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="ImpBy" class="form-control" />
+                                    <span asp-validation-for="ImpBy" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label asp-for="SurveyYear" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="SurveyYear" class="form-control" />
+                                    <span asp-validation-for="SurveyYear" class="text-danger" />
+                                </div>
+                            </td>
+                            <th>
+                                <label asp-for="Month" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div >
+                                    <select asp-for="Month" class="form-control">
+                                        <option></option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                        <option>11</option>
+                                        <option>12</option>
+                                    </select>
+                                    <span asp-validation-for="Month" class="text-danger" />
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <th>
+                                <label asp-for="Writers" class="control-label">Author Names</label>
+
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="Writers" class="form-control" />
+                                    <span asp-validation-for="Writers" class="text-danger" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label asp-for="Attachment" class="control-label"></label>
+                            </th>
+                            <td>
+                                <div>
+                                    <input asp-for="FileName" class="form-control" disabled />
+                                    @*@if (Model.FileName != null || !String.IsNullOrEmpty(Model.FileName))
+                {
+                    var filepath ="~/wwwroot/survey/"+ Model.FilePath +"/"+ Model.FileName;
+                    <a href=@filepath class="btn btn-primary btn-sm">Download</a>
+                }*@
+                                    <input asp-for="Attachment" class="form-control" />
+                                    <span asp-validation-for="Attachment" class="text-danger" />
+                                    <input asp-for="DeleteAttachement" /> Delete Attachement
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">
+                                <label asp-for="Abstract" class="control-label"></label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div>
+                                    <div class="form-group">
+                                        <ejs-richtexteditor ejs-for="Abstract" id="Abstract">
+                                        </ejs-richtexteditor>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-md-6">
+                            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+                            {
+                                <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                            }
+                            </div>
+                        <div>
+                            <a asp-action="Index">Back to List</a>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            }
+        </div>
+    </div>
+    <div style="display:none" id="Grid2">
+        <div class="row">
+            <ejs-grid id="SurveyResultGrid" allowResizing="true" actionComplete="actionComplete" allowSorting="true" allowExcelExport="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search","ExcelExport" })" allowPaging="true">
+                <e-data-manager url="/SurInfo/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/SurInfo/Insert"
+                                updateUrl="/SurInfo/Update" removeUrl="/SurInfo/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="indResultId" isIdentity="true" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=false, number=true})"
+                                   textAlign="Left" width="70"></e-grid-column>
+                    <e-grid-column field="themeId" foreignKeyField="ThemeId" foreignKeyValue="ThematicArea" headerText="Thematic Area" dataSource="ViewBag.ThemesSource" validationRules="@(new { required=true, number=true})" textAlign="Left" width="120"></e-grid-column>
+                    <e-grid-column field="categoryId" foreignKeyField="CategoryId" foreignKeyValue="CategoryName" headerText="Equity" dataSource="ViewBag.CategoriesSource" editType="dropdownedit" validationRules="@(new { required=true, number=true})" textAlign="Left"
+                                   width="120" edit="@(new {create="CategoryCreate",read="CategoryRead",
+                                        write ="CategoryWrite",destroy="CategoryDestroy" })"></e-grid-column>
+                    <e-grid-column field="disaggregId" foreignKeyField="DisaggregId" foreignKeyValue="Disaggregation" headerText="Disaggregation" dataSource="ViewBag.DisaggregationSource" validationRules="@(new { required=true, number=true})" textAlign="Left"
+                                   width="120" editType="dropdownedit" edit="@(new {create="DisaggregationCreate",
+                                   read="DisaggregationRead",write="DisaggregationWrite",destroy="DisaggregationDestroy" })"></e-grid-column>
+                    <e-grid-column field="indicatorId" headerText="Indicator" foreignKeyField="IndicatorId" foreignKeyValue="IndicatorName" dataSource="ViewBag.IndicatorSource" editType="dropdownedit"  validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                    <e-grid-column field="indicatorValue" headerText="Result" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Ricktext editor
+
+        var elem;
+        var ele;
+        var dObj;
+
+        function create(args) {
+            ele = document.createElement('textarea');
+            // elem.id = "gridRTE";
+            return ele;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+                showCharCount: true, maxLength: 100000, placeholder: 'write abstracts here',
+                value: args.rowData.abstract == undefined ? "" : args.rowData.abstract,
+            });
+            dObj.appendTo(ele);
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+        //Sub form
+        var categoryElem;
+        var categoryObj;
+        var disaggregationElem;
+        var disaggregationObj;
+
+        var categoryData;
+        function CategoryCreate() {
+            categoryData = new ej.data.DataManager({
+                url: '/SurInfo/Categories',
+                adaptor: new ej.data.UrlAdaptor(),
+            });
+
+            categoryElem = document.createElement('input');
+            return categoryElem;
+        }
+        function CategoryRead() {
+            return categoryObj.value;
+        }
+        function CategoryDestroy() {
+            categoryObj.destroy();
+        }
+        function CategoryWrite(e) {
+            categoryObj = new ej.dropdowns.DropDownList({
+                dataSource: categoryData,
+                value: e.rowData.categoryId,
+
+                fields: { value: 'categoryId', text: 'categoryName' },
+                change: function () {
+                    disaggregationObj.enabled = true;
+                    //for filter of dissggregation based on categoryId
+                    // This part seems not be working and filtering
+                    var tempQuery = new ej.data.Query().where('CategoryId', 'equal', categoryObj.value);
+                    disaggregationObj.query = tempQuery;
+                    disaggregationObj.text = null;
+                    disaggregationObj.dataBind();
+                },
+                placeholder: 'Select an item',
+                floatLabelType: 'Never'
+            });
+            categoryObj.appendTo(categoryElem);
+        }
+
+        function actionComplete(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 650;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['indicatorName2'] : 'New';
+            }
+        };
+        function actionComplete2(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 800;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['surveyAccro'] : 'New';
+            }
+        }
+        function load(args) {
+            this.getColumnByField('abstract').disableHtmlEncode = false;
+        }
+        var disaggregationData
+        function DisaggregationCreate() {
+            disaggregationData = new ej.data.DataManager({
+                url: '/SurInfo/Disaggregation',
+                adaptor: new ej.data.UrlAdaptor(),
+            });
+
+            disaggregationElem = document.createElement('input');
+            return disaggregationElem;
+        }
+        function DisaggregationRead() {
+            return disaggregationObj.value;
+        }
+        function DisaggregationDestroy() {
+            disaggregationObj.destroy();
+        }
+        function DisaggregationWrite(e) {
+            disaggregationObj = new ej.dropdowns.DropDownList({
+                value: e.rowData.disaggregId,
+                dataSource: disaggregationData,
+                fields: { value: 'disaggregId', text: 'disaggregation' },
+                enabled: false,
+                placeholder: 'Select an item',
+                floatLabelType: 'Never'
+            });
+            disaggregationObj.appendTo(disaggregationElem);
+        }
+
+        function browseClick() {
+            document.getElementById('browse')[0].querySelector('button').click();
+            return false;
+        };
+
+        function onFileSelect(args) {
+            var inputElement = document.getElementById('upload');
+            inputElement.value = args.filesData[0].name;
+        }
+
+
+        //File manipultion/download
+        var file;
+        function queryCellInfo(args) {
+            if (args.column.field === 'fileName') {
+                var paraid = $('#DistId').val();
+                var host = window.location.host;
+
+                if (args.data.fileName) {
+                    var anchotEle = args.cell.getElementsByTagName('a')[0];
+                    anchotEle.innerText = args.data.fileName;
+                    anchotEle.onclick = function click(args) {
+                        args.target.setAttribute("href", window.location.protocol + "//" + host + "/scmDistributionMain/Download?filename=" + args.target.innerText + "&id=" + paraid);
+                    };
+                }
+            }
+        }
+
+        function fileCreate() {
+            elem = document.createElement('input');
+            return elem;
+        }
+        function fileRead(args) {
+            return (file) ? file : uploadObj.filesData;
+        }
+        function fileDestroy() {
+            uploadObj.destroy();
+        }
+        function fileWrite(args) {
+            uploadObj = new ej.inputs.Uploader({
+                files: (args.requestType === 'beginEdit') ? [args.rowData.fileName] : ['']
+            });
+            uploadObj.appendTo(elem)
+        }
+
+        function load() {
+            this.dataSource = new ej.data.DataManager({
+                url: "/scmDistributionMain/DocUrlDatasource",
+                insertUrl: "/scmDistributionMain/DocInsert",
+                updateUrl: "/scmDistributionMain/DocUpdate",
+                removeUrl: "/scmDistributionMain/DocRemove",
+                adaptor: new custom
+            })
+        }
+
+        class custom extends ej.data.UrlAdaptor {
+            processResponse(data, ds, query, xhr, request, changes) {
+                request.data = JSON.stringify(data);
+                return ej.data.UrlAdaptor.prototype.processResponse.call(this, data, ds, query, xhr, request, changes)
+            }
+            insert(dm, data, tableName) {
+                var fd = new FormData();
+                // error here
+                for (var prop of data.fileName) {
+                    fd.append('UploadFiles', prop.rawFile);
+                }
+                var para = $('#DistId').val();
+                //fd.append('id', data.id);
+                fd.append('distributionId', para);
+                //fd.append('distributionId', data.distributionId);
+                // data.File = fd;
+                fd.append('value', JSON.stringify({ data }));
+                return {
+                    url: dm.dataSource.insertUrl || dm.dataSource.crudUrl || dm.dataSource.url || dm.dataSource.removeUrl,
+                    type: "POST",
+                    data: fd,
+                    contentType: null
+                }
+            }
+            update(dm, data, tableName) {
+                var fd = new FormData();
+                // error here
+                for (var prop of data.fileName) {
+                    fd.append('UploadFiles', prop.rawFile);
+                }
+                var para = $('#DistId').val();
+                fd.append('id', data.id);
+                fd.append('distributionId', para);
+                //fd.append('distributionId', data.distributionId);
+                // data.File = fd;
+                fd.append('value', JSON.stringify({ data }));
+                return {
+                    url: dm.dataSource.insertUrl || dm.dataSource.crudUrl || dm.dataSource.url,
+                    type: "POST",
+                    data: fd,
+                    contentType: null
+                }
+            }
+        };
+    </script>
+}

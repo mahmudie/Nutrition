@@ -1,0 +1,43 @@
+@model IEnumerable<DataSystem.Models.LkpDisaggregation>
+
+@{
+    ViewData["Title"] = "Disaggregations";
+}
+@{
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.CategSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "CategoryId", Text = "CategoryName" }};
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h3>Disaggregations</h3>
+            <br />
+            <br />
+
+            <ejs-grid id="DisaggregationGrid" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/Disaggregation/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/Disaggregation/Insert" updateUrl="/Disaggregation/Update" removeUrl="/Disaggregation/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="disaggregId" headerText="ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="categoryId" foreignKeyField="CategoryId" headerText="Category Name" validationRules="@(new { required=true})" foreignKeyValue="CategoryName" dataSource="ViewBag.CategSource"  editType="dropdownedit" textAlign="Left" width="150" edit="new {@params = DropDownList }" ></e-grid-column>
+                    <e-grid-column field="disaggregation" headerText="Disaggregation" validationRules="@(new { required=true})" textAlign="Left" width="200"></e-grid-column>
+                    <e-grid-column field="ordno" headerText="Order No" validationRules="@(new { required=true})" textAlign="Left" width="80"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['disaggregation'] : 'New';
+        }
+    }
+
+</script>

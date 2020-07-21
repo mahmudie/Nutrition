@@ -1,0 +1,537 @@
+@model DataSystem.Models.SCM.scmDistributionMain
+
+@{
+    ViewData["Title"] = "Stock Issued to IP";
+}
+
+@{
+    var drpDocItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.DocSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "DocId", Text = "DocumentType" } };
+    var drpItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ItemSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ItemId", Text = "ItemName" } };
+    var drpWarehouses = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.WarehouseSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "WhId", Text = "WarehouseName" } };
+    var drpStockItems = new Syncfusion.EJ2.DropDowns.DropDownList() { Change = "Changstock", DataSource = ViewBag.StockSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "StockId", Text = "StockItem" } };
+    var drpUserUniItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.UserSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "UniUserId", Text = "UniUserName" } };
+    var drpImpUserItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpUserSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpUserId", Text = "ImpUserName" } };
+    var drpFacilityItems= new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilitySource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityId", Text = "FacilityName" } };
+
+}
+<style>
+    .e-tab .e-tab-header .e-toolbar-item.e-active.e-ileft .e-tab-text, .e-tab .e-tab-header .e-toolbar-item.e-active.e-iright .e-tab-text {
+        color: #e3165b !important;
+        font-weight: bolder;
+    }
+
+    .e-tab .e-tab-header .e-toolbar-item.e-active.e-ileft .e-tab-icon, .e-tab .e-tab-header .e-toolbar-item.e-active.e-iright .e-tab-icon {
+        color: #690f0f !important;
+        font-size: 70pt;
+        font-weight: bolder;
+    }
+
+    .e-tab1:before {
+        content: "\F085";
+        font-family: "fontawesome" !important;
+        font-size: 50pt;
+    }
+
+    .e-tab2:before {
+        content: "\F00B";
+        font-family: "fontawesome" !important;
+        font-size: 50pt;
+    }
+
+    .e-tab3:before {
+        content: "\F012";
+        font-family: "fontawesome" !important;
+        font-size: 50pt;
+    }
+
+    .e-tab4:before {
+        content: "\F012";
+        font-family: "fontawesome" !important;
+        font-size: 50pt;
+    }
+
+    .e-eye:before {
+        content: "\F06E";
+        font-family: "fontawesome" !important;
+        font-size: 15pt;
+    }
+</style>
+<div class="container-fluid">
+    <h3>@ViewData["Title"]</h3>
+    <ejs-tab id="ej2Tab" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Scrollable" created="tabCreated" animation="ViewBag.animation"></ejs-tab>
+    <script>
+        var tabObj;
+        function tabCreated(args) {
+            tabObj = document.getElementById("ej2Tab").ej2_instances[0];
+        }
+
+    </script>
+    <div style="display: none" id="Grid1">
+        <form asp-action="Edit">
+            <div class="row col-md-12">
+                <input type="hidden" id="DistId" asp-for="DistributionId" />
+                <table id="erfacilities" class="table table-condensed">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="DistributionId" class="form-control" />
+                                <span asp-validation-for="DistributionId" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Dist. Quarter
+                        </th>
+                        <td>
+                            <div>
+                                <select asp-items="ViewBag.RoundSource" asp-for="RoundId" class="form-control"></select>
+                                <span asp-validation-for="RoundId" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Implementer
+                        </th>
+                        <td>
+                            <div>
+                                <select asp-items="ViewBag.ImpSource" asp-for="ImpId" class="form-control"></select>
+                                <span asp-validation-for="ImpId" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Province
+                        </th>
+                        <td>
+                            <div>
+                                <select asp-items="@ViewBag.ProvSources" asp-for="ProvinceId" class="form-control"></select>
+                                <span asp-validation-for="ProvinceId" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date From
+
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="DistributionDate" type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#DistributionDate"
+                                       data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                                <span asp-validation-for="DistributionDate" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                <div class="form-group">
+                    <div class="col-lg-offset-4 col-md-6">
+                        <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                    </div>
+                    <div>
+                        <a asp-action="Index">Back </a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </form>
+    </div>
+
+    <div style="display:none" id="Grid2">
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add(new { text = "View Estimation", tooltipText = "View estimated amount", prefixIcon = "e-eye", id = "viewestimation" });
+        }
+        <ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" allowTextWrap="true" load="loaddata" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/scmDistributionsIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsIP/Insert" updateUrl="/scmDistributionsIP/Update" removeUrl="/scmDistributionsIP/Remove"></e-data-manager>
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="distributionId" headerText="MID" allowEditing="false" visible="false" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="stockId" allowFiltering="false" foreignKeyField="StockId" allowResizing="true" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="StockItem"
+                               dataSource="ViewBag.StockSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpStockItems }"></e-grid-column>
+                <e-grid-column field="batchNumber" allowFiltering="false" allowEditing="true" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="quantity" allowFiltering="false" headerText="Qty" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="whId" foreignKeyField="WhId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
+                               dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
+
+                <e-grid-column field="issueTo" foreignKeyField="ImpUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued To" foreignKeyValue="ImpUserName"
+                               dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
+
+                <e-grid-column field="issueDate" headerText="Issue Date" allowFiltering="false" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="issueBy" foreignKeyField="UniUserId"  allowFiltering="false"validationRules="@(new { required=true})" headerText="Issued By" foreignKeyValue="UniUserName"
+                               dataSource="ViewBag.UserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpUserUniItems }"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+
+    </div>
+
+    <div style="display:none" id="Grid3">
+        <ejs-grid id="MainDist_GridThree" allowTextWrap="true" allowFiltering="true" load="load" queryCellInfo="queryCellInfo" allowSorting="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <e-data-manager url="/scmDistributionMain/DocUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmDistributionMain/DocInsert" updateUrl="/scmDistributionMain/DocUpdate" removeUrl="/scmDistributionMain/DocRemove"></e-data-manager>
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="50"></e-grid-column>
+                <e-grid-column field="distributionId" allowFiltering="false" allowEditing="false" headerText="MID" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="documentName" allowFiltering="false" headerText="Document Name" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="message" allowFiltering="false" headerText="Email Message" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                <e-grid-column field="dateSent"  allowFiltering="false" allowEditing="false" headerText="Date Sent" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="110"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div style="display:none" id="Grid4">
+        <div class="col-md-12">
+            <ejs-grid id="MainDist_Grid4" allowTextWrap="true" allowSorting="true" load="load" allowFiltering="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmEmail/EmailUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmEmail/EmailInsert" updateUrl="/scmEmail/Update" removeUrl="/scmEmail/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="distributionId" allowEditing="false" visible="false" headerText="Main ID" textAlign="Left" width="70"></e-grid-column>
+                    <e-grid-column field="emailToUser" allowFiltering="false"foreignKeyField="ImpUserId" validationRules="@(new { required=true})" headerText="To" foreignKeyValue="ImpUserName"
+                                   dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
+                    <e-grid-column field="emailToEmail" allowFiltering="false" allowEditing="false" headerText="Email" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="emailFrom" allowFiltering="false"allowEditing="false" headerText="Email From" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="message" allowFiltering="false" headerText="Email Message" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                    <e-grid-column field="dateSent" allowFiltering="false" headerText="Date Sent" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+        <div style="display:none" id="Grid5">
+            <div class="col-md-12">
+                <ejs-grid id="MainDist_Grid5" allowTextWrap="true" actionBegin="actionBegin2" allowSorting="true" load="load" allowFiltering="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                    <e-data-manager url="/scmIPAcknowledge/UrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmIPAcknowledge/Insert" updateUrl="/scmIPAcknowledge/Update" removeUrl="/scmIPAcknowledge/Remove"></e-data-manager>
+                    <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" mode="Dialog"></e-grid-editSettings>
+                    <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                    <e-grid-columns>
+                        <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="50"></e-grid-column>
+                        <e-grid-column field="distributionId" allowEditing="false" visible="false" headerText="MID" textAlign="Left" width="60"></e-grid-column>
+                        <e-grid-column field="acknowledgeBy" allowEditing="true" allowFiltering="false"headerText="Acknowledged By" textAlign="Left" width="150"></e-grid-column>
+                        <e-grid-column field="dateOfAcknoledge" allowEditing="false" allowFiltering="false"headerText="Date Acknowledged" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="150"></e-grid-column>
+                        <e-grid-column field="message" allowFiltering="false" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                        <e-grid-column field="acknowledge"  allowFiltering="false" allowEditing="true" defaultValue="0" template="#acknowledgebyip" headerText="Sign" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+
+                    </e-grid-columns>
+                </ejs-grid>
+
+            </div>
+        </div>
+
+        <div style="display:none" id="Grid6">
+            <div class="col-md-12">
+                <ejs-grid id="MainDist_Grid6" allowTextWrap="true" actionBegin="actionBegin2" allowSorting="true" load="load" allowFiltering="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                    <e-data-manager url="/scmHFsAcknowledge/UrlDatasource" adaptor="UrlAdaptor" batchUrl="/scmHFsAcknowledge/BatchUpdate"></e-data-manager>
+                    <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" ></e-grid-editSettings>
+                    <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                    <e-grid-columns>
+                        <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="50"></e-grid-column>
+                        <e-grid-column field="distributionId" allowEditing="false" visible="false" headerText="MID" textAlign="Left" width="60"></e-grid-column>
+                        <e-grid-column field="facilityId" foreignKeyField="FacilityId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Facility" foreignKeyValue="FacilityName"
+                                       dataSource="ViewBag.FacilitySource"  editType="dropdownedit" textAlign="Left" width="300" edit="new {@params = drpFacilityItems }"></e-grid-column>
+                        <e-grid-column field="waybillNumber" allowEditing="true"  allowFiltering="false" headerText="Waybill Number" textAlign="Left" width="150"></e-grid-column>
+                        <e-grid-column field="acknowledgeBy" allowEditing="true"  allowFiltering="false" headerText="Acknowledged By" textAlign="Left" width="150"></e-grid-column>
+                        <e-grid-column field="dateOfAcknoledge" allowEditing="false"  allowFiltering="false" headerText="Date Acknowledged" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="140"></e-grid-column>
+                        <e-grid-column field="message" headerText="Remarks"  allowFiltering="false" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="250"></e-grid-column>
+                        <e-grid-column field="acknowledge" allowEditing="true"  allowFiltering="false" defaultValue="0" template="#acknowledgebyhfs" headerText="Sign" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="acknowledgebyip" type="text/x-template">
+    ${if(acknowledge==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>
+
+<script id="acknowledgebyhfs" type="text/x-template">
+    ${if(acknowledge==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script id="template" type="text/x-template">
+        <a href=""></a>
+    </script>
+
+    <script type="text/javascript">
+        //Filter sub grids
+        $(document).ready(function () {
+            var distributionID = $('#DistId').val();
+            var grid2 = document.getElementById('MainDist_GridTwo').ej2_instances[0];
+            var grid3 = document.getElementById('MainDist_GridThree').ej2_instances[0];
+            var grid4 = document.getElementById('MainDist_Grid4').ej2_instances[0];
+
+            grid2.filterByColumn("distributionId", "equal", distributionID);
+            grid3.filterByColumn("distributionId", "equal", distributionID);
+            grid4.filterByColumn("distributionId", "equal", distributionID);
+        });
+
+        function actionComplete(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 850;
+                args.dialog.enableResize = true;
+                args.dialog.position.X = "center";
+                args.dialog.position.Y = "top";
+            }
+            //File upload
+            if (args.requestType === 'add') {
+                args.form.setAttribute('enctype', 'multipart/form-data');
+                args.form.setAttribute('encoding', 'multipart/form-data');
+            }
+
+            //Filtering of sub grids
+            if (args.requestType === 'filtering') {
+                var gridObj = document.getElementById('MainDist_GridTwo').ej2_instances[0];
+                var item = gridObj.getColumnByField(args.currentFilteringColumn);
+                item.allowFiltering = false;
+                gridObj.refreshColumns();
+
+                var gridObj2 = document.getElementById('MainDist_GridThree').ej2_instances[0];
+                var item2 = gridObj2.getColumnByField(args.currentFilteringColumn);
+                item2.allowFiltering = false;
+                gridObj2.refreshColumns();
+
+                var gridObj3 = document.getElementById('MainDist_Grid4').ej2_instances[0];
+                var item3 = gridObj3.getColumnByField(args.currentFilteringColumn);
+                item3.allowFiltering = false;
+                gridObj3.refreshColumns();
+            }
+        }
+
+        var balance = 0;
+        function click(args) {
+            //balance = +args.column.columnData[0].StockItem.split(",")[3].split("=")[1].trim();
+            balance = this.getColumnByField("stockId").columnData[0]["StockItem"].split(",")[3].split("=")[1].trim();
+        }
+        function Changstock(args) {
+            var grid = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+            var arr = args.itemData.StockItem.split(",");
+            balance2 = arr[3];
+            balance = balance2.split("=")[1].trim();
+            var regExp = /\(([^)]+)\)/;
+            var batno = regExp.exec(arr[0]);                           //export the number by using regular expression
+            var batno2 = batno[1].split("=")[1];;
+            grid.editModule.formObj.element[2].value = batno2.trim();          //Update the value to grid form
+        }
+
+        function loaddata(args) {
+            this.columns[4].validationRules = { required: true, minLength: [customFn, 'Quantity is greater than balance'] };
+        }
+
+        function customFn(args) {
+            return args['value'] < balance + 1;
+        };
+
+        function actionBegin(args) {
+            //HERE IS THE ERROR
+            if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+                //assign value to corresponding key which helps to remove duplicate/conflicts
+                if (this.query.params[0] && this.query.params[0].key === 'ID') {   //Here you have to define the key property
+                    this.query.params[0].value = document.getElementById('DistId').value
+                } else {
+                    //if you want to send only to controller then use addparams
+                    this.query.addParams("ID", document.getElementById('DistId').value)  // initial time
+                    //Key             //Value
+                }
+            }
+
+            if (args.requestType == "save") {
+                var dialogEditForm = args.form.closest(".e-dialog");
+                ej.popups.createSpinner({ target: dialogEditForm, width: '20px' });
+                ej.popups.showSpinner(dialogEditForm);
+            }
+        }
+
+
+        var ele;
+        var dObj;
+
+        function create(args) {
+            ele = document.createElement('textarea');
+            // elem.id = "gridRTE";
+            return ele;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 100000, placeholder: 'Message something',
+                value: args.rowData.message == undefined ? "" : args.rowData.message,
+            });
+            dObj.appendTo(ele);
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+
+        //File download
+        var file;
+        var elem;
+        var rte;
+        var readfile;
+        var isEditable = false;
+
+        function queryCellInfo(args) {
+            if (args.column.field === 'file') {
+                var paraid = $('#DistId').val();
+                var host = window.location.host;
+
+                if (args.data.fileName) {
+                    var anchotEle = args.cell.getElementsByTagName('a')[0];
+                    anchotEle.innerText = args.data.fileName;
+                    anchotEle.onclick = function click(args) {
+                        args.target.setAttribute("href", window.location.protocol + "//" + host + "/scmDistributionMain/Download?filename=" + args.target.innerText + "&id=" + paraid);
+                    };
+                }
+            }
+        }
+
+        function actionBegin2(args) {
+            if (args.requestType == "save") {
+                var data = args.data;
+                var file = data.file[0];
+                data.fileName = file.name.split(".")[0];
+                data.fileType = file.type;
+                data.fileSize = file.size;
+            }
+        }
+        function complete2(args) {
+            if (args.requestType === 'add' || args.requestType === 'save') {
+                args.form.setAttribute('enctype', 'multipart/form-data');
+                args.form.setAttribute('encoding', 'multipart/form-data');
+            }
+        }
+
+        function fileCreate() {
+            elem = document.createElement('input');
+            return elem;
+        }
+        function fileRead(args) {
+            return (file) ? file : uploadObj.filesData;
+        }
+
+        function fileRead(args) {
+            readfile = uploadObj.filesData[0].rawFile instanceof File ? uploadObj.filesData : readfile;
+            return isEditable ? readfile : uploadObj.filesData;
+        }
+
+        function fileDestroy() {
+            uploadObj.destroy();
+        }
+
+        function fileWrite(args) {
+            isEditable = (args.requestType === 'beginEdit') ? true : false;
+            uploadObj = new ej.inputs.Uploader({
+                files: (args.requestType === 'beginEdit') ? [args.rowData.file] : [''],
+                asyncSettings: {
+                    saveUrl: '/Home/Save',
+                    removeUrl: '/Home/Remove'
+                },
+                removing: function (args) {
+                    args.postRawFile = false;
+                },
+
+            });
+            uploadObj.appendTo(elem);
+        }
+
+        function load() {
+            this.dataSource = new ej.data.DataManager({
+                url: "/scmDistributionMain/DocUrlDatasource",
+                insertUrl: "/scmDistributionMain/DocInsert",
+                updateUrl: "/scmDistributionMain/DocUpdate",
+                removeUrl: "/scmDistributionMain/DocRemove",
+                adaptor: new custom
+            })
+        }
+
+        class custom extends ej.data.UrlAdaptor {
+            processResponse(data, ds, query, xhr, request, changes) {
+                request.data = JSON.stringify(data);
+                return ej.data.UrlAdaptor.prototype.processResponse.call(this, data, ds, query, xhr, request, changes)
+            }
+            insert(dm, data, tableName) {
+                var fd = new FormData();
+                // error here
+                for (var prop of data.fileName) {
+                    fd.append('UploadFiles', prop.rawFile);
+                }
+                var para = $('#DistId').val();
+                //fd.append('id', data.id);
+                fd.append('distributionId', para);
+                //fd.append('distributionId', data.distributionId);
+                // data.File = fd;
+                fd.append('value', JSON.stringify({ data }));
+                return {
+                    url: dm.dataSource.insertUrl || dm.dataSource.crudUrl || dm.dataSource.url || dm.dataSource.removeUrl,
+                    type: "POST",
+                    data: fd,
+                    contentType: null
+                }
+            }
+            update(dm, data, tableName) {
+                var fd = new FormData();
+                // error here
+                for (var prop of data.fileName) {
+                    fd.append('UploadFiles', prop.rawFile);
+                }
+                var para = $('#DistId').val();
+                fd.append('id', data.id);
+                fd.append('distributionId', para);
+                //fd.append('distributionId', data.distributionId);
+                // data.File = fd;
+                fd.append('value', JSON.stringify({ data }));
+                return {
+                    url: dm.dataSource.insertUrl || dm.dataSource.crudUrl || dm.dataSource.url,
+                    type: "POST",
+                    data: fd,
+                    contentType: null
+                }
+            }
+        };
+        function load(args) {
+            this.getColumnByField('message').disableHtmlEncode = false;
+        }
+
+        function toolbarClick(args) {
+            if (args.item.id === 'viewestimation') {
+                var url = "/reqview/Index/";
+                window.open(url, '_blank');
+            }
+        }
+
+    </script>
+}
+

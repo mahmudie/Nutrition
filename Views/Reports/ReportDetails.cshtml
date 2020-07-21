@@ -1,0 +1,186 @@
+﻿@model DataSystem.Models.GLM.ReportDetailsFormViewModel
+
+@{
+    ViewData["Title"] = "National Nutrition Quality Assurance Checklist Details";
+}
+
+<div class="nav-tabs-custom">
+    <div class="card-header">
+        <h2>@ViewData["Title"]</h2>
+        <p><a asp-controller="Reports" asp-action="Index">Back to list</a></p>
+
+    </div>
+    <ul class="nav nav-tabs">
+        <li><a asp-controller="Reports" asp-action="Edit" asp-route-id="@ViewBag.reportId" class="btn btn-link btn-sm">Report Info</a> </li>
+        <li class="active"><a href="#tab_1" data-toggle="tab">Report Details</a></li>
+    </ul>
+    <div>
+        <div class="tab-pane" id="tab_1">
+            <div class="card-body">
+                @using (Html.BeginForm("ReportDetails", "Reports"))
+                {
+                    @Html.HiddenFor(m => m.ReportId);
+
+                    @foreach (var sg in Model.SectionGrids)
+                    {
+                        <div class="card mb-3">
+                            <div class="card-header" style="background-color:#F9FAFC"> <h3>@sg.Title</h3></div>
+
+                            <div class="card-body">
+                                @if (sg.Description != "" && sg.Description != null)
+                                {
+                                    <p class="card-text font-italic">@sg.Description</p>
+                                    <hr />
+                                }
+                                @{
+                                    var tableid = "tbl";
+                                }
+                                @if (sg.Title == "Three Key findings and recommended actions")
+                                {
+                                    tableid = "tblfindings";
+                                }
+
+                                <table class="table table-sm" id="@tableid">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            @foreach (var column in sg.Grid.Columns)
+                                            {
+                                                <th class="font-weight-normal">@column.Title</th>
+                                            }
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var question in sg.Grid.Questions)
+                                        {
+                                            <tr>
+                                                <td>@question.QuestionTitle</td>
+
+                                                @foreach (var field in question.Fields)
+                                                {
+                                                    <td>
+                                                        @if (field.DataType == "yesno")
+                                                        {
+                                                            <select name="@field.Id" class="form-control" style="min-width: 90px;"@field.RequiredAttr>
+                                                                <option></option>
+                                                                @foreach (var option in field.YesNoOptions)
+                                                                {
+                                                                    @if (option.Key.ToString() == field.Data)
+                                                                    {
+                                                                        <option value="@option.Key" selected="selected">@option.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@option.Key">@option.Value</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        }
+                                                        else
+                                                        {
+                                                            @if (field.InputType == "dropdown")
+                                                            {
+                                                                <select name="@field.Id" class="form-control">
+                                                                    <option></option>
+                                                                    @foreach (var option in field.FieldOptions)
+                                                                    {
+                                                                        @if (option.Value == field.Data)
+                                                                        {
+                                                                            <option value="@option.Value" selected="selected">@option.Caption</option>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="@option.Value">@option.Caption</option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            }
+                                                            else
+                                                            {
+                                                                @if (field.InputType == "textarea")
+                                                                {
+                                                                    <textarea name="@field.Id" id="rowfindings@field.Id" class="form-control"@field.RequiredAttr>@field.Data</textarea>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (field.DataType == "date")
+                                                                    {
+                                                                        var myid = "td" + field.Id;
+                                                                        <input type="text" name="@field.Id" id="@myid" value="@field.Data" class="form-control js-datepicker" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="@field.DataType" name="@field.Id" value="@field.Data" data-value="@field.Data" class="form-control" />
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    }
+
+                    <hr />
+                    <div class="col-md-offset-5">
+                        @inject SignInManager<ApplicationUser> SignInManager
+                        @inject UserManager<ApplicationUser> UserManager
+                        @using Microsoft.AspNetCore.Identity
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                        {
+                            <button type="submit" class="btn btn-success float-right">Save Details</button>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        //$('.js-datepicker').datepicker({
+        //     maxDate:new Date()
+        //});
+        $(function () {
+            var today = new Date();
+            var todayplus = new Date();
+            today.setDate(today.getDate()+10);
+            todayplus.setDate(today.getDate()+90);
+
+            var rows = document.getElementById('tblfindings').rows;
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                for (var j = 1; j < row.cells.length; j++) {
+                    if (j == 5 || j == 7) {
+                        var value = row.cells[j].getElementsByTagName('input')[0].value;
+                        var id = row.cells[j].getElementsByTagName('input')[0].id;
+                        var datepicker = new ej.calendars.DatePicker({
+                            max: todayplus,
+                            min: today,
+                            value: value,
+                            format:'MM/dd/yyyy',
+                            focus: function (e) {
+                                this.show();
+                            }
+                        });
+                        datepicker.appendTo("#" + id);
+                    }
+                };
+            };
+        });
+
+    </script>
+}
+
+<style>
+    .e-control-wrapper .e-input-group-icon.e-date-icon {
+        display: none;
+    }
+</style>

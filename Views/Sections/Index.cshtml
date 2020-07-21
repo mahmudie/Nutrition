@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DataSystem.Models.GLM.Section>
+@{
+    ViewData["Title"] = "Form Sections";
+}
+
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+
+        <a asp-controller="Sections" asp-action="Create" class="btn btn-success btn-sm float-right">Add Section</a>
+    </div>
+
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Data Form</th>
+                    <th>Sort Order</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Sections" asp-action="Edit" asp-route-id="@row.Id">
+                                @row.Title
+                            </a>
+                        </td>
+                        <td>@row.DataForm.Name</td>
+                        <td class="text-center">@row.SortOrder</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-light btn-sm dropdown-toggle" href="#" data-toggle="dropdown">Actions</a>
+
+                                <div class="dropdown-menu">
+                                    <a asp-controller="Columns" asp-action="Index" asp-route-SectionId="@row.Id" class="dropdown-item">Columns</a><br />
+                                    <a asp-controller="Questions" asp-action="Index" asp-route-SectionId="@row.Id" class="dropdown-item">Questions</a><br />
+                                    <a asp-controller="Fields" asp-action="Index" asp-route-SectionId="@row.Id" class="dropdown-item">Fields</a>
+                                                                                                                                               <hr />
+                                    <div class="dropdown-divider"></div>
+                                    <a asp-controller="Sections" asp-action="Delete"  asp-route-id="@row.Id" class="dropdown-item btn-danger btn-sm">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

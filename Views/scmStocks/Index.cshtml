@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "Stocks";
+}
+@{
+    var drpItems = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ItemSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ItemId", Text = "ItemName" } };
+    var drpWarehouses = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.WarehouseSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "WhId", Text = "WarehouseName" } };
+
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Stocks</h3>
+
+            <ejs-grid id="scmStocksGrid" allowTextWrap="true" load="load" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+                <e-data-manager url="/scmStocks/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmStocks/Insert" updateUrl="/scmStocks/Update" removeUrl="/scmStocks/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="stockId" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="itemId" foreignKeyField="ItemId" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="ItemName"
+                                   dataSource="ViewBag.ItemSource" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpItems }"></e-grid-column>
+                    <e-grid-column field="quantity" headerText="Quantity" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="batchNumber" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="dateReceived" headerText="Date Received" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="expiryDate" headerText="Expiry Date" validationRules="@(new { required=true})" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="100"></e-grid-column>
+                    <e-grid-column field="whId" foreignKeyField="WhId" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
+                                   dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
+                    <e-grid-column field="comment" headerText="Remarks/Comments" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+
+
+                </e-grid-columns>
+            </ejs-grid>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+        }
+    }
+
+    //Encode HTML message
+    function load(args) { 
+        this.getColumnByField('comment').disableHtmlEncode = false;  
+    } 
+
+    var elem;
+    var ele;
+    var dObj;
+
+    function create(args) {
+        ele = document.createElement('textarea');
+       // elem.id = "gridRTE";
+        return ele;
+    }
+
+    function write(args) {
+        debugger;
+        div.innerText = args.column.headerText;
+        dObj = new ej.richtexteditor.RichTextEditor({
+            // here you can customize your textEditor
+
+            showCharCount: true, maxLength: 100000, placeholder: 'Type remark/comment here, if any.',
+            value: args.rowData.comment == undefined ? "" : args.rowData.comment,
+        });
+        dObj.appendTo(ele);
+    }
+    function destroy() {
+        dObj.destroy();
+    }
+
+    function read(args) {
+        return dObj.value;
+    }
+</script>

@@ -1,0 +1,47 @@
+@model IEnumerable<DataSystem.Models.TblkpStatus>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+    <h2>Status</h2>
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    @if(Model.Any()){ 
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusDescription)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusDescription)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.StatusId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.StatusId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else { 
+        <div class="alert alert-info">No Record Available.</div>
+    }
+
+</div>

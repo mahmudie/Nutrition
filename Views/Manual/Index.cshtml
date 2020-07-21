@@ -1,0 +1,238 @@
+<style>
+    p{
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size:20px;
+    }
+    li{
+        line-height: 200%;
+        font-size: larger;
+    }
+    h4{
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<div class="container">
+    <h2>User Manual</h2>
+    <hr>
+    <h2>Contents</h2>
+<ul>
+    <li><h4><a href="/Manual#introduction">Introduction</a></h4></li>
+    <li><h4><a href="/Manual#login">Login</a></h4></li>
+    <li><h4><a href="/Manual#dashboard">Dashboard</a></h4></li>
+    <li><h4><a href="/Manual#">Reports</a></h4>
+        <ul>
+            <li><h4><a href="/Manual#pivot">Pivot Table</a></h4></li>
+             <li><h4><a href="/Manual#createpivot">Create Pivot Table</a></h4></li>
+        </ul>
+    </li>
+
+    <li><h4><a href="/Manual#Entry">Data Entry</a></h4>
+        <ul>
+    <li><h4><a href="/Manual#Monthly">Data Entry of Monthly Reports</a></h4></li>
+    <li><h4><a href="/Manual#Quarterly">Data Entry of Quarterly Reports</a></h4></li>
+        </ul>
+    </li>
+    <li><h4><a href="/Manual#Pass">Change Password</a></h4>
+</ul>
+<hr>
+
+<h2 id="introduction">Introduction</h4>
+<p>
+This brief guide is used to help the online Nutrition database users on how to use the different parts of the database.
+</p>
+
+<h2 id="login">Login</h2>
+<p>After typing <strong> <a href="http://nutritionmoph.gov.af">imam.nutritionmoph.gov.af</a></strong>, the database will load with the first screen. This screen will ask you for <strong>User Name</strong> and <strong>Password</strong>.
+To login, you must get the User Name and Password from related Focal Person in Public Nutrition Department (PND).
+</p>
+<img src="~/images/manual/login.png" width="100%" alt="Login Screen">
+<br>
+<h2 id ="dashboard">Dashboard</h2>
+<p>The dashboard is a visual display of the some selected information needed to achieve one or more objectives; consolidated and arranged on a single screen so the information can be monitored at a glance.
+</p>
+<img src="~/images/manual/dashboard.png" width="100%" alt="Dashboard"/><br>
+
+<br>
+<h2 id="pivot">Pivot Table</h2>
+<p>
+    In database and statistics, reports are what you use to <strong> summarize</strong> and <strong> present</strong> data in the tables. A report usually answers a specific question, such as "How many under 5 children cured during this year?" or "Which provinces have the highest death rate?”. Each report can be formatted to present the information in the most readable way possible.
+A report can be run at any time, and will always reflect the current data in the database. </p>
+<p>
+The nutrition reports are supposed to be viewed using <strong> Excel pivot table</strong> it is because of the flexibility of the program and convenience of users in working with Excel.
+</p>
+<p>
+A pivot table report is an interactive table that quickly combines and compares large amounts of data. You can rotate its rows and columns to see different summaries of the source data, and you can display the details for areas of interest. In order to facilitate customized data analysis, the nutrition database has feature that the pivot table will be created automatically in Excel. This allows looking and examining data closely and doing different analysis from different angles. 
+</p>
+<p>
+The data tabulation, frequency and percentage tables will be prepared automatically using the database in excel pivot table with just a single click. You can have full access to the data where you can simply copy and paste them with a little formatting that may be required. In addition, you can create your own simple and complex charts and graphs by arranging or organizing the data. 
+</p>
+<h2 id="createpivot">Create Pivot Table</h2>
+<p>
+The following screen shot is where you can create pivot table. You can create pivot for all <strong>Provinces</strong> and all <strong>Years</strong> for 
+a single <strong>Pivot Type</strong> or create pivot table for single <strong>Province</strong> and/or single <strong> Year</strong>.
+</p>
+<p>
+To create a <strong>Pivot Table</strong>, select a <strong>Province</strong> or <strong>All</strong> from the dropdown and then select a <strong>Year</strong> or leave <strong>All</strong> from the <strong>Year</strong> dropdown.
+Then select a report from the <strong>Pivot Type</strong> dropdown and then click on the <strong>Generate</strong> button.</p>
+<p>
+Generating pivot table will take sometime. It depends on the size of data, internet speed and filter option.
+</p>
+<img src="~/images/manual/pivot.png" width="100%" alt="Pivot Table"/> <br>
+
+<h2 id="Entry">Data Entry</h2>
+<p>
+The data entry of the online Nutrition Database is easy. You can enter data for <strong>Monthly Reports</strong> and <strong>Quarterly Reports</strong>.
+</p>
+
+<h2 id ="Monthly">Monthly Reports</h2>
+<p>To start data entry of Nutrition Monthly Reports (NMR), go to <strong>Data Entry</strong> then click on <strong>Monthly Reports</strong>.
+After clicking on the <strong>Monthly Reports</strong>, the following screen will appear:
+</p>
+<img src="~/images/manual/nmrindex.png" width="100%" alt="Monthly Reports"/> <br>
+<br>
+<p>
+    This screen shows list of entered records, it also allows to add new report, edit an existing and delete a report.
+</p>
+<p>
+    To add a new record, click on the green button <strong>Create New</strong>. As soon as you click the following screen will appear:
+</p>
+<img src="~/images/manual/nmrcreate.png" width="100%" alt="Create"/> <br><br>
+<p>
+    As you see above fill all the fields.For example:<br>
+    <ol>
+        <li>First select <strong> Kabul </strong> from the Province. <strong>Note:</strong><span>selecting a province will enable to select a district otherwise you a <strong>district</strong> cannot be selected.</span></li>
+        <li>Then select <strong>Paghman</strong> district from the district dropdown.</li> 
+        <li>Now select <strong>12 Emam Clinic</strong> from <strong>Facility</strong> dropdown.</li>
+        <li><strong>Humantarian</strong>: by default it is No.</li>
+        <li><strong>Health Facility Status</strong>: by default it is open but if you select other then you will not be able to enter data.</li>
+        <li><strong>Implementer</strong>: select the Implementer organization who is providing service</li>
+        <li><strong>Year</strong>: select <strong>1396</strong></li>
+        <li><strong>Month</strong>: select month <strong>3</strong> from the list of months.</li>
+        <li><strong>Prepared by</strong>: type the name the person who prepared the hardcopy of the data. It is not the person who do the data entry but if the data entry person and data collector the same then you can type the name of data entry person.</li>
+        <li><strong>Comment</strong>:type if you have any comment about data entry. </li>
+    </ol>
+</p>
+
+<img src="~/images/manual/nmrfilled.png" width="100%" alt="Filled NMR"/> <br><br>
+<p>
+    Then click on the <strong>Create</strong> button. After clicking the data will be created and listed in the following list.
+</p>
+<img src="~/images/manual/nmrllist.png" width="100%" alt="NMR List"/> <br><br>
+
+<p>
+    <strong>Now</strong> click on the edit button, the pencil sign, to add the rest of report into database. The following screen will appear now. The first tab is the screning, fill the data and then click on the save button.Then go to <strong>IPD-SAM</strong> tab.
+</p>
+<img src="~/images/manual/screening.png" width="100%" alt="Screening"/> <br><br>
+<p>
+    Following is an empty screen of <strong>IPD-SAM</strong>
+</p>
+<img src="~/images/manual/ipdsam.png" width="100%" alt="IPD-SAM"/> <br><br>
+<p>
+    As you can see in the above screen, the list are not visible and you cannot enter data for children. To do to that click on <strong>Create New</strong> button that the following screen will appear.
+</p>
+<img src="~/images/manual/ipdsam2.png" width="100%" alt="IPD-SAM"/> <br><br>
+<p>
+    Now you can enter the data for IPD-SAM and the stocks and the rest of data for IPD-SAM. To enter click on edit Icon (pencil sign). The followingn screen will pop up.
+</p>
+
+<img src="~/images/manual/ipssamentry.png" width="100%" alt="IPD-SAM"/> <br><br>
+<p>
+    While entering data in this screen, please consider the following:
+    <ul>
+        <li>The <strong>Total at the begining of the month</strong> will come automatically if there is data from previous month in the database. Otherwise you can enter it.</li>
+        <li>The <strong>sum </strong> of <strong>odema</strong>, <strong>W/H <-3 Z Score </strong>, and <strong>MUAC<115mn</strong> must be equal to <strong>sum</strong> of <strong>Male</strong> and <strong>Female</strong>.</li>
+        <li>The value for any of <strong>Cured</strong>, <strong>Deaths</strong>, <strong>Defaulters</strong>, <strong>Refer Out</strong>, and <strong>Non Cured</strong> should not be bigger than total admissions including new, beggning and refer in.</li>
+        <li>The <strong>Total Exits</strong> should not be bigger than <strong> total admissions</strong>.</li>
+    </ul>
+</p>
+<p>
+    Then enter and save the following section of <strong>IPD-SAM</strong>.
+</p>
+<img src="~/images/manual/ipdsamavg.png" width="100%" alt="IPD-SAM"/> <br><br>
+
+<p>
+    After that enter data for the stock per the following image.
+</p>
+<img src="~/images/manual/ipdsamstock.png" width="100%" alt="IPD-SAM"/> <br><br>
+<p>
+    <strong>Note:</strong> All the data entry for the rest of the tabs and list can be done with the same manner. Make sure you are not entering invalid data, click on save button and enter only those for which data is available.
+</p>
+
+<h2 id="Quarterly">Quarterly Reports</h2>
+<p>
+    The <strong>Quarterly Report</strong> is newly added to the database. The purpose of this report is that <strong>Implementing</strong> partners report their progress during the past quarter.
+</p>
+<img src="~/images/manual/qnrindex.png" width="100%" alt="Quarterly Narrative Report"/> <br><br>
+<p>
+As shown in the above image, you can add new report, edit or delete an existing report.<br>
+To add new report, just clieck on <strong>Create New</strong> button available on top of the list. After clicking on the Create New button the following screen will appear.
+</p>
+<img src="~/images/manual/qntentry.png" width="100%" alt="Quarterly Narrative Report"/> <br><br>
+<p>
+    Fill all the above fields and then click on <strong>Save</strong> button to store the data in the database. The rest of field is normal but in case of <strong>district</strong>, select the center of the province.<br><br>
+    <strong>Note</strong> that you shoul enter one report for each project and each province. You cannot combine multiple provinces into one report. However, you can combine the report of several facilities of the same province. 
+</p>
+<h2 id="Pass">Change Password</h2>
+<p>
+    In order to keep your data and database save, you need to change your database after every 3 months and be carefull not to distribute your database to any other person.
+</p>
+<p>
+    To change the password, you must be first logged in otherwise your cannot change it and then click on highligted area in the below screen and then click on <strong>Change Password</strong>.
+</p>
+<img src="~/images/manual/changepass.png" width="100%" alt="Change Password"/> <br><br>
+<p>
+    After clicking, the following screen will appear.<br>
+    in the <strong>Current Password</strong> type your existing password<br>
+    in the <strong>New Password</strong> type a new password<br>
+    and in the <strong>Confirm New Password</strong> re-type your new passowrd<br>
+</p>
+<img src="~/images/manual/changepass2.png" width="100%" alt="Change Password"/> <br><br>
+<p>
+    <strong>Note</strong> that your password should be combination of <strong>number</strong>, <strong>alphabet</strong>, and <strong>symbols</strong> otherwise the database will not accept it.
+</p>
+<h2 id="quality">Care for Quality of Data</h2>
+<p>
+    It is important to check the data that is being entered into database is accurate and reliable. Having no data is better than inaccurate data. Erroneous data may lead to wrong decisions. For example, an inaccurate record of patient’s reaction to penicillin may lead to a doctor to harm the patient while believing that she/he is helping him.
+</p>
+<p>
+    Data accuracy or quality of data is not responsibility of one or two persons. It is everyone’s job. The typist, tally person, head of the project. But the accuracy of NUTRITION data is mostly dependent of tally person or the base where data is gathered namely the health facility is the base of accurate and inaccurate data. 
+</p>
+<p>
+    The other person who is responsible for data quality is the person who enters data into database. He/she shall not only care about data entry while typing into database but he should make sure the data that enters into database is fine and make correction if there is any problem with the source data in the hard copy or tally. He should also make this ethic for him to double check data after every data entry of a report and regularly check quality of data using pivot table and provide feedback in order to minimize errors or mistakes in the data.
+</p>
+<p>
+    In this paper we focus on the accuracy check of the data entered in the database. Database is not that wise to check if 4 odema for <6 children was recorded as 4 6-24 months. But it will check that duplicate record is not entered, alarm when total number of male and female is not matching with total number of new admission in MAM and do some other validation check.
+</p>
+<p>
+    You may do the following checking and precautions during data entry or after data entry to monitor the quality of data entered into database:
+</p>
+
+<ul>
+ <li>Before you enter data into database, check that the data you have collected is correct and complete</li>
+ <li>Try to fill all of the blank fields</li>
+ <li>While typing be very careful not to type 222 instead of 2</li>
+ <li>Give full attention when typing and make sure you type on the right place and is not entered in the wrong place</li>
+ <li>Have glance on data that is very big or seems unusual and correct if any</li>
+ <li>Big number of refer in, deaths, defaulters and other requires full attention</li>
+ <li>Make sure the total number of exits is not bigger than total admission</li>
+ <li>Make sure total at the end is not negative number</li>
+ <li>Make full attention to red colors in the data entry screens</li>
+ <li>Make sure data is complete</li>
+</ul>
+
+<p>
+    When analyzing data you may consider the following items:</p>
+    <li>Look for large gaps in the data</li>
+    <li>Look for unusual month to month variations</li>
+    <li>Check for duplication in reporting or repetitive</li>
+    <li>Check for inconsistencies – unlikely values</li>
+    <li>Look for data present where there should not be</li>
+    <li>There might be typing errors if there is a very large data</li>
+    <li>Check that data is not entered in wrong places</li>
+
+
+<div class="text-center">
+    <h2>The End</h2>
+</div>
+</div>

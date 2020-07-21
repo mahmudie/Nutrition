@@ -1,0 +1,101 @@
+﻿@model IEnumerable<DataSystem.Models.GLM.ReportsView>
+@{
+    ViewData["Title"] = "National Nutrition Quality Assurance Checklist";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewData["Title"]</h2>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+        {
+            <a asp-controller="Reports" asp-action="Create" class="btn btn-success btn-sm float-right">Add Report</a>
+        }
+    </div>
+
+    <div class="card-body">
+        <table class="table" id="report">
+            <thead>
+                <tr>
+                    <th>ReportID</th>
+                    <th>Province</th>
+                    <th>District</th>
+                    <th>Implementer</th>
+                    <th>HF ID</th>
+                    <th>HF Name/Type</th>
+                    <th>Data Collector</th>
+                    <th>Collection Date</th>
+                    <th>Collector's Office</th>
+                    <th>Data Form</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                            {
+                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.Id">
+                                    @row.Id
+                                </a>
+                            }
+                            else
+                            {
+                                    @row.Id
+                            }
+                        </td>
+                        <td>@row.Province</td>
+                        <td>@row.District</td>
+                        <td>@row.Implementer</td>
+                        <td>@row.FacilityID</td>
+                        <td>@row.Facility</td>
+                        <td>@row.ReportedBy</td>
+                        <td>@row.DataCollectorOffice</td>
+                        <td>  @String.Format("{0:yyyy-MM-dd}", @row.ReportPreparedDate)</td>
+                        <td>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                            {
+                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.Id">
+                                    @row.Dataforms.Name
+                                </a>
+                            }
+                            </td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-light btn-sm dropdown-toggle" href="#" data-toggle="dropdown">Actions</a>
+
+                                <div class="dropdown-menu">
+                                    <a asp-controller="Reports" asp-action="ShowReport" asp-route-id="@row.Id" class="dropdown-item">Show Report</a>
+                                    <div class="dropdown-divider"></div>
+                                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                                    {
+                                        <a asp-controller="Reports" asp-action="Delete" asp-route-id="@row.Id" class="dropdown-item">Delete</a>
+                                    }
+                                    </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#report').DataTable({
+                responsive: true,
+                fixedHeader: true,
+                "bPaginate": false,
+                "bInfo": false,
+            });
+        });
+    </script>
+}

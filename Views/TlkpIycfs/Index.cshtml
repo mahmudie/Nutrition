@@ -1,0 +1,80 @@
+@model IEnumerable<DataSystem.Models.TlkpIycf>
+
+@{
+    ViewData["Title"] = "Infant and Young Child Feeding";
+}
+<div class="container">
+    <h2>Infant and Young Child Feeding</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    @if (Model.Any())
+    {
+        <table id="dt" class="table table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <thead>
+                <tr >
+                    <th class="text-center" >
+                        @Html.DisplayNameFor(model => model.Iycfid)
+                    </th>
+                    <th class="text-center" data-priority="1">
+                        @Html.DisplayNameFor(model => model.CauseShortName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.CauseConsultation)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.Active)
+                    </th>
+
+                    <th class="text-center" data-priority="1">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Iycfid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CauseShortName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CauseConsultation)
+                        </td>
+
+                        <td>
+                            @if (item.Active.Equals(true))
+                            {
+                                <span class="label label-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">No</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <div style="display: inline-block; float: none; white-space: nowrap;">
+                                <a asp-action="Delete" asp-route-id="@item.Iycfid" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                | <a asp-action="Edit" asp-route-id="@item.Iycfid" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else { <div class="alert alert-info">No Record Available.</div> }
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $('#dt').DataTable({
+                responsive: true,
+                paging:false
+            });
+        });
+    </script>
+}

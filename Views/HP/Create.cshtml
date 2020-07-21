@@ -1,0 +1,219 @@
+@model DataSystem.Models.HP.HpMonitoring
+
+@{
+    ViewData["Title"] = "Community Monitoring";
+}
+<div class="container">
+    <h2>New Community(HP) Monitoring</h2>
+    <br />
+    <form asp-action="Create" method="post">
+        <div class="row col-md-10">
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="HpmId" class="form-control" disabled />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Monitoring Date
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-datepicker id="DateOfMonitoring" format="MM/dd/yyyy" placeholder="Pick a date" min="@ViewBag.minDate" max="@ViewBag.maxDate" ejs-for="DateOfMonitoring"></ejs-datepicker>
+                            <span asp-validation-for="DateOfMonitoring" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        Data Collector Name
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="DataCollectorName" type="text" class="form-control" placeholder="type name of data collector(s) here" />
+                            <span asp-validation-for="DataCollectorName" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Respondent Name
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="RespondentName" type="text" class="form-control" placeholder="type name of respondent here" />
+                            <span asp-validation-for="RespondentName" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Respondent Contact #
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="RespondentContactNo" type="text" class="form-control" placeholder="type phone number of respondent here" />
+                            <span asp-validation-for="RespondentContactNo" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Province
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="Province" ejs-for="ProvinceId" autofill="true" dataSource="@ViewBag.Provinces" allowCustom="false" placeholder="Select a Province"  change="provincechange" popupHeight="auto">
+                                <e-combobox-fields text="Name" value="ProvinceId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        District
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="District" ejs-for="DistrictId" autofill="true" enabled="false" dataSource="@ViewBag.Districts" placeholder="Select a District" popupHeight="auto" change="districtchange">
+                                <e-combobox-fields text="Name" value="DistrictId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Facility Id and Name
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="Facility" ejs-for="FacilityId" autofill="true"  enabled="false" dataSource="@ViewBag.Facilities" placeholder="Select a Facility" change="facilitychange" popupHeight="auto">
+                                <e-combobox-fields text="Name" value="FacilityId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        BPHS NGO Name
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="Implementers" ejs-for="ImpId" autofill="true" enabled="false" dataSource="@ViewBag.NGOs" placeholder="Primary NGO will be auto detected" popupHeight="auto">
+                                <e-combobox-fields text="Name" value="ImpId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Other IPs/NGO Name
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="OtherImpId" ejs-for="OtherImpId" autofill="true" dataSource="@ViewBag.NGOs2" placeholder="Select another NGO" popupHeight="300px">
+                                <e-combobox-fields text="Name" value="OtherImpId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Health Post Name
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="HPName" type="text" class="form-control"  placeholder="Type Health Post Name"  />
+                            <span asp-validation-for="HPName" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Health Post Code
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="HPCode" type="text" class="form-control"  placeholder="Type Health Post Code" />
+                            <span asp-validation-for="HPCode" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-5 col-md-6">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ 
+
+}
+   <script>
+          function provincechange() {
+            var facility = document.getElementById('Facility').ej2_instances[0];
+            var district = document.getElementById('District').ej2_instances[0];
+            var province = document.getElementById('Province').ej2_instances[0];
+            // disable the state DropDownList
+            district.enabled = true;
+            // frame the query based on selected value in Province DropDownList.
+            var tempQuery = new ej.data.Query().where('ProvinceId', 'equal', province.value);
+            // set the framed query based on selected value in province DropDownList.
+            district.query = tempQuery;
+            // set null value to state DropDownList text property
+            district.text = null;
+            // bind the property changes to state DropDownList
+            district.dataBind();
+            // set null value to city DropDownList text property
+            facility.text = null;
+            // disable the city DropDownList
+            facility.enabled = false;
+            // bind the property changes to City DropDownList
+            facility.dataBind();
+        }
+
+       function districtchange() {
+           var facility = document.getElementById('Facility').ej2_instances[0];
+           var district = document.getElementById('District').ej2_instances[0];
+           facility.enabled = true;
+           // Query the data source based on state DropDownList selected value
+           var tempQuery1 = new ej.data.Query().where('DistrictId', 'equal', district.value);
+           // set the framed query based on selected value in city DropDownList.
+           facility.query = tempQuery1;
+           //clear the existing selection
+           facility.text = null;
+           // bind the property change to city DropDownList
+           facility.dataBind();
+       }
+
+        function facilitychange() {
+           var implementers = document.getElementById('Implementers').ej2_instances[0];
+           var facility = document.getElementById('Facility').ej2_instances[0];
+           implementers.enabled = true;
+           // Query the data source based on state DropDownList selected value
+           var tempQuery1 = new ej.data.Query().where('FacilityId', 'equal', facility.value);
+           // set the framed query based on selected value in city DropDownList.
+           implementers.query = tempQuery1;
+           //clear the existing selection
+           implementers.text = null;
+           // bind the property change to city DropDownList
+           implementers.dataBind();
+       }
+
+   </script>

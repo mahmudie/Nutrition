@@ -1,0 +1,136 @@
+@model DataSystem.Models.SCM.scmRequest
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@using MyProject.MyExtensions
+@{
+    ViewData["Title"] = "Delete Request";
+}
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<div class="container">
+    <h2>Delete Quarterly Supply Requisition</h2>
+    <br />
+    <form asp-action="Delete">
+        <br />
+        <div class="row col-md-12">
+
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        Implementer
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.imps" asp-for="impId" class="form-control"></select>
+                            <span asp-validation-for="impId" class="text-danger" />
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Province
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.Provinces" asp-for="provinceId" class="form-control"></select>
+                            <span asp-validation-for="provinceId" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Request Period
+                    </th>
+                    <td>
+                        <div>
+                            <ejs-combobox id="RequestPeriod" ejs-for="requestPeriod" placeholder="Select a ReqPeriod " popupHeight="@ViewBag.popupHeight" dataSource="@ViewBag.rounds">
+                                <e-combobox-fields text="RoundName" value="RoundId"></e-combobox-fields>
+                            </ejs-combobox>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Request Date
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="requestDate" type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#RequestDate"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                            <span asp-validation-for="requestDate" class="text-danger" />
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>
+                        Requested By
+                    </th>
+                    <td colspan="3">
+                        <div>
+                            <input asp-for="requestBy" type="text" class="form-control" />
+                            <span asp-validation-for="requestBy" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-5 col-md-8">
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("administrator") && (user.Unicef != 1 && user.Pnd != 1))
+                    {
+                        <input type="submit" value="Delete" class="btn  btn-danger" />
+                    }
+                    <a asp-action="Index">Back</a>
+                    @*<button type="button" id="tabTwo" class="btn btn-success" onclick="tabCreated();">Next</button>*@
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+<script>
+    function provincechange() {
+        var facility = document.getElementById('Facility').ej2_instances[0];
+        var district = document.getElementById('District').ej2_instances[0];
+        var province = document.getElementById('Province').ej2_instances[0];
+        // disable the state DropDownList
+        district.enabled = true;
+        // frame the query based on selected value in Province DropDownList.
+        var tempQuery = new ej.data.Query().where('ProvinceId', 'equal', province.value);
+        // set the framed query based on selected value in province DropDownList.
+        district.query = tempQuery;
+        // set null value to state DropDownList text property
+        district.text = null;
+        // bind the property changes to state DropDownList
+        district.dataBind();
+        // set null value to city DropDownList text property
+        facility.text = null;
+        // disable the city DropDownList
+        facility.enabled = false;
+        // bind the property changes to City DropDownList
+        facility.dataBind();
+    }
+
+    function districtchange() {
+        var facility = document.getElementById('Facility').ej2_instances[0];
+        var district = document.getElementById('District').ej2_instances[0];
+        facility.enabled = true;
+        // Query the data source based on state DropDownList selected value
+        var tempQuery1 = new ej.data.Query().where('DistrictId', 'equal', district.value);
+        // set the framed query based on selected value in city DropDownList.
+        facility.query = tempQuery1;
+        //clear the existing selection
+        facility.text = null;
+        // bind the property change to city DropDownList
+        facility.dataBind();
+    }
+</script>

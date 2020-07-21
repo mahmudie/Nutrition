@@ -1,0 +1,96 @@
+@model DataSystem.Models.TblBnaq
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TblBnaq</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BoysScreened)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BoysScreened)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ChwstrainedScreening)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ChwstrainedScreening)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GirlsScreened)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GirlsScreened)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IpdAdmissionsByChws)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IpdAdmissionsByChws)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IpdRutfstockOutWeeks)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IpdRutfstockOutWeeks)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MamAddminsionByChws)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MamAddminsionByChws)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MamRusfstockoutWeeks)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MamRusfstockoutWeeks)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NoHealthWorkers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoHealthWorkers)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdAdmissionsByChws)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdAdmissionsByChws)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpdRutfstockOutWeeks)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpdRutfstockOutWeeks)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Plwreported)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Plwreported)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Bnaqid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<key id="05328853-40b6-4018-8442-21fbf22aa931" version="1">
+  <creationDate>2018-04-12T12:04:32.9676462Z</creationDate>
+  <activationDate>2018-04-12T12:04:32.3692767Z</activationDate>
+  <expirationDate>2018-07-11T12:04:32.3692767Z</expirationDate>
+  <descriptor deserializerType="Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+    <descriptor>
+      <encryption algorithm="AES_256_CBC" />
+      <validation algorithm="HMACSHA256" />
+      <encryptedSecret decryptorType="Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" xmlns="http://schemas.asp.net/2015/03/dataProtection">
+        <encryptedKey xmlns="">
+          <!-- This key is encrypted with Windows DPAPI. -->
+          <value>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAvsbMMRVEzE28IUFzUOfRFgAAAAACAAAAAAAQZgAAAAEAACAAAABnBkpW3y1zk9O0T3m7UHE2Ck0ZmERpJ9GSZvzVkGZ4BwAAAAAOgAAAAAIAACAAAAC5lzJhKdI6+G6IeWUrTADinN2W69oh0hiwJGIXPlCR31ABAAAbE+lVAal1mRRiNq4bEJ6WJVCgF0XtfaYk2IGo+r8w2kQc7sNxq9WxNNWNi8T1O7lYUAxjo6xajyppIyoJnhvwIsicYh8U/2Oak3mAyFZ6WFjt6hl378ixVZlDoz7rPidUb50MM7UnAQpkCkIJpv9doucTUb3UW2iwFRbyazzyJsvMk3I1XjDu+h7yH4gMzkyHXmEqbMGAttIfWTz6LUbhCX7f/X+r4uvnCG927pwrUbE92et7d/XYZaVWsE76heja80+s4JQjZb2x1LdgFqUjtXy9hbsQ18VOkmxZ6kgsLIKWmr8UOzGvBxxW0RMqA767XlZMqghUbfUAGv3DaSNTSvBbOrgndBWNI7crZ5AkEkFIamniCLeMaB9nmP3OYNDzxwjvducuglmgLGuc6TctwNjMUzFF0jK+TqajYjljzxyMZ4164Do0TUCDAlVCcYZAAAAAxFdi06aj5b6mo+o2cgKXK83vTM3fZB9rEmkxAsoMfj6oWB3WkiWBuq030xDTWaJdeBciyz82X50uR3Ro1RzHAg==</value>
+        </encryptedKey>
+      </encryptedSecret>
+    </descriptor>
+  </descriptor>
+</key>

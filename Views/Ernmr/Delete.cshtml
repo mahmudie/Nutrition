@@ -1,0 +1,100 @@
+@model DataSystem.Models.Ernmr
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@using MyProject.MyExtensions
+@{
+    ViewData["Title"] = "Delete ERR";
+}
+<div class="container">
+    <h2>Emergency Reporting</h2>
+
+    <div class="row col-md-10">
+        <div class="col-md-offset-1 text-danger" asp-validation-summary="All"></div>
+        <table id="erfacilities" class="table table-condensed">
+            <tr>
+                <th>
+                    <label asp-for="FacilityId" class="control-label">Facility</label>
+                </th>
+                <td colspan="3">
+                    <div>
+                        <input asp-for="FacilityId" id="Facility" class="form-control" disabled="disabled" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="Year" class=" control-label"></label>
+                </th>
+                <td>
+                    <div>
+                        <select asp-for="Year" class="form-control" disabled="disabled">
+                            <option>1398</option>
+                            <option>1399</option>
+                            <option>1400</option>
+                            <option>1401</option>
+                            <option>1402</option>
+                            <option>1403</option>
+                            <option>1404</option>
+                            <option>1405</option>
+                            <option>1406</option>
+                        </select>
+                        <span asp-validation-for="Year" class="text-danger" />
+                    </div>
+                </td>
+
+                <th>
+                    <label asp-for="Month" class="control-label"></label>
+                </th>
+                <td>
+                    <div>
+                        <select asp-for="Month" disabled="disabled" class="form-control">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        <span asp-validation-for="Month" class="text-danger" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="Biweekly" class="control-label">Biweekly Option</label>
+                </th>
+                <td colspan="3">
+                    <div>
+                        <select asp-for="Biweekly" disabled="disabled" asp-items="@ViewBag.biweekly" class="form-control"></select>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <form asp-action="Delete">
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-7">
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+                    {
+                        <input type="submit" value="Delete" class="btn btn-primary btn-block" />
+                    }
+
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,1084 @@
+@model DataSystem.Models.SCM.scmRequest
+@using Syncfusion.EJ2.Schedule
+@using Syncfusion.EJ2.Navigations;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = ViewBag.title;
+}
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+@{
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilitySource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityId", Text = "FacilityName" } };
+    var DistrictDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.DistrictSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "DistrictId", Text = "DistrictName" } };
+    var ProvinceDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "ProvinceName" } };
+    var FacilityTypeDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilityTypeSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityTypeId", Text = "FacilityTypeName" } };
+    var SuppliesDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.SupplySource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "SupplyId", Text = "Item" } };
+    var drpFacilityTypeSource = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.FacilityTypeSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "FacilityTypeId", Text = "FacilityTypeName" } };
+    var drpRequestReasonSource = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RequestReasonSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ReasonId", Text = "ReasonName" } };
+    var drpRequestStatusItemsSource = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RequestStatusItemsSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "StatusId", Text = "StatusName" } };
+
+}
+
+<div class="box-header">
+    <div class="box-tools pull-right movetop">
+        <button type="button" id="mainrequest" class="btn btn-box-tool" data-widget="add" data-toggle="tooltip" title="Help">
+            <i class="fa fa-question"></i>
+        </button>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <h3>@ViewData["Title"]</h3>
+    <div class="webnutnote" id="mainreqnote" style="display:none">
+        @Html.Raw(ViewBag.mainpage)
+     </div>
+
+    <ejs-tab id="ej2Tab" items="ViewBag.headeritems" heightAdjustMode="Content" overflowMode="Popup" animation="ViewBag.animation"></ejs-tab>
+    <div style="display: none" id="Grid1">
+        <form asp-action="Edit">
+            <br />
+            <div class="row col-md-12">
+                <input type="hidden" id="ReqId" asp-for="requestId" />
+                <input type="hidden" id="userlevel" value="@ViewBag.userlevel" />
+                <input type="hidden" id="adminlevel" value="@ViewBag.adminlevel" />
+                <table id="erfacilities" class="table table-condensed">
+                    <tr>
+                        <th>
+                            Implementer
+                        </th>
+                        <td>
+                            <div>
+                                <select asp-items="ViewBag.imps" asp-for="impId" class="form-control"></select>
+                                <span asp-validation-for="impId" class="text-danger" />
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Province
+                        </th>
+                        <td>
+                            <div>
+                                <select asp-items="ViewBag.Provinces" asp-for="provinceId" class="form-control"></select>
+                                <span asp-validation-for="provinceId" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Request Period
+                        </th>
+                        <td>
+                            <div>
+                                <ejs-combobox id="RequestPeriod" ejs-for="requestPeriod" placeholder="Select a ReqPeriod " popupHeight="@ViewBag.popupHeight" dataSource="@ViewBag.rounds">
+                                    <e-combobox-fields text="RoundName" value="RoundId"></e-combobox-fields>
+                                </ejs-combobox>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Request Date
+
+                        </th>
+                        <td>
+                            <div>
+                                <input asp-for="requestDate" type="text" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#RequestDate"
+                                       data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                                <span asp-validation-for="requestDate" class="text-danger" />
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th>
+                            Requested By
+                        </th>
+                        <td colspan="3">
+                            <div>
+                                <input asp-for="requestBy" type="text" class="form-control" />
+                                <span asp-validation-for="requestBy" class="text-danger" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="form-group">
+                    <div class="col-lg-offset-5 col-md-8">
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("administrator") && (user.Unicef != 1 || user.Pnd != 1))
+                        {
+                            <input type="submit" value="Save" class="btn  btn-primary" />
+                        }
+                        <a asp-action="Index">Back</a>
+                        @*<button type="button" id="tabTwo" class="btn btn-success" onclick="tabCreated();">Next</button>*@
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </form>
+    </div>
+    <div style="display:none" id="Grid2">
+        @{
+            List<object> toolbarItems1 = new List<object>();
+            toolbarItems1.Add("Delete");
+            toolbarItems1.Add("Cancel");
+            toolbarItems1.Add("Search");
+            toolbarItems1.Add(new { text = "", tooltipText = "Help", prefixIcon = "e-help", id = "pocHelp" });
+        }
+        <div class="webnutnote" id="srfacilities" style="display:none">
+            @Html.Raw(ViewBag.poctab)
+        </div>        
+        <ejs-grid id="GridTwo" allowSorting="true" allowFiltering="true" toolbarClick="toolbarClickHelp" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" toolbar=toolbarItems1 allowPaging="true">
+            <e-data-manager url="/scmpoc/UrlDataSource" adaptor="UrlAdaptor" removeUrl="/scmpoc/Remove"></e-data-manager>
+            @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="false" mode="Dialog"></e-grid-editSettings>*@
+            <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="pocId" headerText="ID" isPrimaryKey="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="facilityId" headerText="FacilityID" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="facilityId" foreignKeyField="FacilityId" headerText="Facility" foreignKeyValue="FacilityName"
+                               dataSource="ViewBag.FacilitySource" editType="dropdownedit" textAlign="Left" width="260" edit="new {@params = FacilityTypeDropDownList }"></e-grid-column>
+                <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" headerText="Facility Type" foreignKeyValue="FacilityTypeName"
+                               dataSource="ViewBag.FacilityTypeSource" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpFacilityTypeSource }"></e-grid-column>
+                <e-grid-column field="districtId" foreignKeyField="DistrictId" headerText="District" foreignKeyValue="DistrictName"
+                               dataSource="ViewBag.DistrictSource" editType="dropdownedit" textAlign="Left" width="110" edit="new {@params = DistrictDropDownList }"></e-grid-column>
+                <e-grid-column field="provinceId" foreignKeyField="ProvinceId" headerText="Province" foreignKeyValue="ProvinceName"
+                               dataSource="ViewBag.ProvinceSource" editType="dropdownedit" textAlign="Left" width="110" edit="new {@params = ProvinceDropDownList }"></e-grid-column>
+                <e-grid-column field="updateDate" headerText="Update Date" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="80"></e-grid-column>
+
+            </e-grid-columns>
+        </ejs-grid>
+        <div class="col-lg-offset-5 col-md-8">
+            @*<button type="button" id="prevTab1" class="btn btn-primary" onclick="tabCreated();">Back</button>
+            <button type="button" id="tabThree" class="btn btn-success" onclick="tabCreated();">Next</button>*@
+        </div>
+    </div>
+    @*THIS GRID IS ALSO REQUIRED TO BE FILTERED*@
+<div style="display: none" id="Grid3">
+    @{
+        List<object> toolbarItems = new List<object>();
+        toolbarItems.Add("Add");
+        toolbarItems.Add("Edit");
+        toolbarItems.Add("Delete");
+        toolbarItems.Add("Update");
+        toolbarItems.Add("Cancel");
+        toolbarItems.Add("ExcelExport");
+        toolbarItems.Add("Search");
+        toolbarItems.Add(new { text = "", tooltipText = "Help", prefixIcon = "e-help", id = "hfconsumption" });
+        toolbarItems.Add(new { text = "Approve", tooltipText = "Approve this request", prefixIcon = "e-approved", id = "Approve" });
+        toolbarItems.Add(new { text = "Delete All", tooltipText = "Delete All", prefixIcon = "e-expand", id = "Deletes" });
+    }
+    @*//Update and delete not workign*@
+    <div class="webnutnote" id="srhfconsumption" style="display:none">
+        @Html.Raw(ViewBag.poctab)
+    </div>
+    <ejs-grid id="GridThree" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowSorting="true" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+        <e-data-manager url="/scmrequest/HFUrlDatasource" adaptor="UrlAdaptor" batchUrl="/scmrequest/BatchUpdateConsumption"></e-data-manager>
+        @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Batch"></e-grid-editSettings>*@
+        <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+        <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+        <e-grid-columns>
+            <e-grid-column field="id" headerText="ID" allowFiltering="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
+            <e-grid-column field="requestId" headerText="RID" allowEditing="false" textAlign="Left" width="70"></e-grid-column>
+            <e-grid-column field="facilityId" foreignKeyField="FacilityId" allowEditing="false" headerText="Facility Id and Name" foreignKeyValue="FacilityName"
+                           dataSource="ViewBag.FacilitySource" editType="dropdownedit" textAlign="Left" width="230" edit="new {@params = DropDownList }"></e-grid-column>
+            <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" allowEditing="false" headerText="Facility Type" foreignKeyValue="FacilityTypeName"
+                           dataSource="ViewBag.FacilityTypeSource" editType="dropdownedit" textAlign="Left" width="110" edit="new {@params = FacilityTypeDropDownList }"></e-grid-column>
+            <e-grid-column field="program" allowFiltering="false" allowEditing="false" headerText="Prgrm" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="supplyId" foreignKeyField="SupplyId" allowEditing="false" headerText="Supply Item" foreignKeyValue="Item"
+                           dataSource="ViewBag.SupplySource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = SuppliesDropDownList }"></e-grid-column>
+            <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="116"></e-grid-column>
+            <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
+            <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
+
+        </e-grid-columns>
+    </ejs-grid>
+    <div class="col-lg-offset-5 col-md-8">
+        @*<button type="button" id="prevTab2" class="btn btn-primary" onclick="tabCreated();">Back</button>
+            <button type="button" id="tabFour" class="btn btn-success" onclick="tabCreated();">Next</button>*@
+    </div>
+</div>
+
+    <div style="display: none" id="Grid5">
+        @{
+            List<object> toolbarItemsAvg = new List<object>();
+            toolbarItemsAvg.Add("Add");
+            toolbarItemsAvg.Add("Edit");
+            toolbarItemsAvg.Add("Delete");
+            toolbarItemsAvg.Add("Update");
+            toolbarItemsAvg.Add("Cancel");
+            toolbarItemsAvg.Add("Search");
+            toolbarItemsAvg.Add(new { text = "Add Avg-based Estimation", tooltipText = "Add average-based estimation", prefixIcon = "e-approved", id = "Add_average" });
+            toolbarItemsAvg.Add(new { text = "Approve", tooltipText = "Approve this request", prefixIcon = "e-approved", id = "Approve" });
+            toolbarItemsAvg.Add(new { text = "Delete All", tooltipText = "Delete All", prefixIcon = "e-expand", id = "Deletes2" });
+        }
+
+        <ejs-grid id="GridFiveReq" allowSorting="true" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowTextWrap="true" allowFiltering="true" allowResizing="true" toolbarClick="toolbarClick2" allowReordering="true" toolbar=toolbarItemsAvg allowPaging="true">
+            <e-data-manager url="/scmrequest/HFUrlDatasourceAvg" adaptor="UrlAdaptor" insertUrl="/scmrequest/InsertAvg" updateUrl="/scmrequest/UpdateAvg" removeUrl="/scmrequest/RemoveAvg"></e-data-manager>
+            @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Batch"></e-grid-editSettings>*@
+            <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" allowFiltering="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="requestId" headerText="RID" allowEditing="false" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="facilityId" foreignKeyField="FacilityId" allowEditing="false" headerText="Facility Id and Name" foreignKeyValue="FacilityName"
+                               dataSource="ViewBag.FacilitySource" editType="dropdownedit" textAlign="Left" width="230" edit="new {@params = DropDownList }"></e-grid-column>
+                <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" allowEditing="false" headerText="Facility Type" foreignKeyValue="FacilityTypeName"
+                               dataSource="ViewBag.FacilityTypeSource" editType="dropdownedit" textAlign="Left" width="110" edit="new {@params = FacilityTypeDropDownList }"></e-grid-column>
+                <e-grid-column field="program" allowFiltering="false" allowEditing="false" headerText="Prgrm" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="supplyId" foreignKeyField="SupplyId" allowEditing="false" headerText="Supply Item" foreignKeyValue="Item"
+                               dataSource="ViewBag.SupplySource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = SuppliesDropDownList }"></e-grid-column>
+                <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="116"></e-grid-column>
+                <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
+
+            </e-grid-columns>
+        </ejs-grid>
+        @*<div class="col-lg-offset-5 col-md-8">
+                <button type="button" id="prevTab3" class="btn btn-primary" onclick="tabCreated();">Back</button>
+                <button type="button" id="tabFive" class="btn btn-success" onclick="tabCreated();">Next</button>
+            </div>*@
+    </div>
+    @* THE GRID TO BE TESTED AND HAVE ERROR IS HERE *@
+    <div style="display:none" id="Grid4">
+        @{
+            List<object> toolbarItems2 = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+        }
+
+        <ejs-grid id="GridFours" allowSorting="true" load="loadmessage" actionComplete="actionComplete" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog, Template="#dialogtemplate"})" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+            <e-data-manager url="/scmIPRequest/RUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmIPRequest/RInsert" updateUrl="/scmIPRequest/RUpdate" removeUrl="/scmIPRequest/RRemove"></e-data-manager>
+            @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>*@
+            <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" allowFiltering="false" isPrimaryKey="true" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="requestId" headerText="RID" textAlign="Left" width="70"></e-grid-column>
+                <e-grid-column field="supplyId" foreignKeyField="SupplyId" headerText="Item" foreignKeyValue="Item"
+                               dataSource="ViewBag.SupplySource" textAlign="Left" width="180"></e-grid-column>
+                <e-grid-column field="program" headerText="Prgrm" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="children" allowFiltering="false" headerText="Children" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="stockForChildren" allowFiltering="false" headerText="Estim." textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="currentBalance" allowFiltering="false" headerText="Balance" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="adjustment" allowFiltering="false" headerText="Adj." textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="adjustmentReason" headerText="Adj.cmnt" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
+                <e-grid-column field="emergency" allowFiltering="false" headerText="Emerg." textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="emergencyReason" allowFiltering="false" headerText="Emerg. Reason" textAlign="Left" width="200"></e-grid-column>
+                <e-grid-column field="commentByPnd" headerText="Cmnt. PND" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
+                <e-grid-column field="commentByUnicef" headerText="Cmnt. UNICEF" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
+                <e-grid-column field="approveByPnd" defaultValue="0" editType="booleanedit" template="#approveByPnd" allowFiltering="false" type="boolean" headerText="Aprv. PND" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="approveByUnicef" defaultValue="0" editType="booleanedit" template="#approveByUnicef" allowFiltering="false" type="boolean" headerText="Aprv. UNICEF" textAlign="Left" width="120"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+
+        <script id='dialogtemplate' type="text/x-template">
+            <div id="dialogTemp">
+            </div>
+        </script>
+
+        <div class="col-lg-offset-5 col-md-8">
+            @*<button type="button" id="prevTab4" class="btn btn-success" onclick="tabCreated();">Back</button>*@
+
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("administrator") && (user.Unicef != 1 || user.Pnd != 1))
+            {
+
+                <button type="button" id="SaveIpRequest" class="btn btn-primary">Save</button>
+            }
+        </div>
+    </div>
+
+    @if (ViewBag.userlevel == 1)
+    {
+        <div style="display:none" id="Grid6">
+            <ejs-grid id="RequesStatGrid2" allowFiltering="true" actionComplete="actionCompleterequestStatus" actionBegin="actionBegin2" allowTextWrap="true" allowSorting="true" load="disableHtmlEncoding" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmrequest/UrlDataSourceReqststus" adaptor="UrlAdaptor" insertUrl="/scmrequest/ReqstatInsert" updateUrl="/scmrequest/ReqstatUpdate" removeUrl="/scmrequest/ReqstatRemove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" allowFiltering="false" visible="false" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="40"></e-grid-column>
+                    <e-grid-column field="requestId" headerText="RID" allowEditing="false" textAlign="Left" width="50"></e-grid-column>
+                    <e-grid-column field="statusId" allowFiltering="false" foreignKeyField="StatusId" headerText="Stage/Status" foreignKeyValue="StatusName"
+                                   dataSource="ViewBag.RequestStatusItemsSource" editType="dropdownedit" textAlign="Left" width="180" edit="new {@params = drpRequestStatusItemsSource }"></e-grid-column>
+                    <e-grid-column field="confirmed" allowFiltering="false" defaultValue="0" template="#confirmed" headerText="Confirmed" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+                    <e-grid-column field="statusUpdateDate" allowFiltering="false" headerText="Confirm Date" editType="datepickeredit" customFormat="@(new { type = "datetime", format = "M/d/y" })" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="finalizeandemail" allowFiltering="false" defaultValue="0" template="#finalizeandemail" headerText="Email to IP" textAlign="Left" editType="booleanedit" type="Boolean" width="110"></e-grid-column>
+                    <e-grid-column field="remarks" allowFiltering="false" headerText="Remarks/comments" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="250"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    }
+    @if (ViewBag.adminlevel == 1)
+    {
+        <div style="display:none" id="Grid7">
+            <ejs-grid id="scmipRequestConGrid" allowSorting="true" allowFiltering="true" allowResizing="true" actionBegin="actionBegin2" actionComplete="actionCompletesubmission" load="disableHtmlforemailMessage" allowTextWrap="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/scmipRequestConf/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmipRequestConf/Insert" updateUrl="/scmipRequestConf/Update" removeUrl="/scmipRequestConf/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="60"></e-grid-column>
+                    <e-grid-column field="requestId" headerText="RID" allowEditing="false" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="emailMessage" headerText="Email message" allowFiltering="false" validationRules="@(new { required = true })" edit="@(new { create = "create2", read = "read2", destroy = "destroy2", write = "write2" })" textAlign="Left" width="300"></e-grid-column>
+                    <e-grid-column field="reasonId" foreignKeyField="ReasonId" headerText="Submission reason" foreignKeyValue="ReasonName"
+                                   dataSource="ViewBag.RequestReasonSource" allowFiltering="false" editType="dropdownedit" textAlign="Left" width="130" edit="new {@params = drpRequestReasonSource }"></e-grid-column>
+                    <e-grid-column field="isSubmitted" headerText="Want to submit" allowFiltering="false" defaultValue="0" template="#isSubmitted" editType="booleanedit" type="Boolean" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="submissionDate" headerText="Submission date" allowFiltering="false" validationRules="@(new { required = true })" textAlign="Left" width="110" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })"></e-grid-column>
+                    <e-grid-column field="sendEmail" headerText="Send email" allowFiltering="false" textAlign="Left" width="110" defaultValue="0" template="#sendEmail" editType="booleanedit" type="Boolean"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    }
+    <div style="display:none" id="Grid8">
+        @{
+            List<object> toolbarItems3 = new List<object>();
+            toolbarItems3.Add("Add");
+            toolbarItems3.Add("Edit");
+            toolbarItems3.Add("Delete");
+            toolbarItems3.Add("Update");
+            toolbarItems3.Add("Cancel");
+            toolbarItems3.Add("Search");
+            toolbarItems3.Add(new { text = "Update Contact", tooltipText = "Update contact list", prefixIcon = "e-approved", id = "UpdateContact" });
+        }
+
+        <ejs-grid id="GridEight" allowSorting="true" actionBegin="actionBegin2" toolbarClick="toolbarClickcontact" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbar=toolbarItems3 allowPaging="true">
+            <e-data-manager url="/scmContacts/UrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmContacts/Insert" updateUrl="/scmContacts/Update" removeUrl="/scmContacts/Remove"></e-data-manager>
+            <e-grid-pagesettings pageSizes="true" pageSize="10"></e-grid-pagesettings>
+            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" visible="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="requestId" headerText="RID" allowEditing="false" textAlign="Left" width="50"></e-grid-column>
+                <e-grid-column field="position" headerText="Position" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field="firstName" headerText="First Name" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="lastName" headerText="Last Name" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="phone1" headerText="Phone 1" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="phone2" headerText="Phone 2" allowFiltering="false" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="email" headerText="Email(s)" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*Change value of check*@
+    <script id="approveByPnd" type="text/x-template">
+        ${if(approveByPnd==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="approveByUnicef" type="text/x-template">
+        ${if(approveByUnicef==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="finalizeandemail" type="text/x-template">
+        ${if(finalizeandemail==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="sendEmail" type="text/x-template">
+        ${if(sendEmail==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="isSubmitted" type="text/x-template">
+        ${if(isSubmitted==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="isFacilityIPMaching" type="text/x-template">
+        ${if(isFacilityIPMaching==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="revievedByPnd" type="text/x-template">
+        ${if(revievedByPnd==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="reviewedByUnicef" type="text/x-template">
+        ${if(reviewedByUnicef==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="requestViewed" type="text/x-template">
+        ${if(requestViewed==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="distributionCompleted" type="text/x-template">
+        ${if(distributionCompleted==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script id="confirmed" type="text/x-template">
+        ${if(confirmed==1)}
+        <img src="/images/app/tick.png" /> Yes
+        ${else}
+        <img src="/images/app/cross.png" /> No
+        ${/if}
+    </script>
+    <script>
+// Send Id to sub forms
+
+    function actionBegin2(args) {
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            //assign value to corresponding key which helps to remove duplicate/conflicts
+            if (this.query.params[0] && this.query.params[0].key === 'ID') {   //Here you have to define the key property
+                this.query.params[0].value = document.getElementById('ReqId').value
+            } else {
+                //if you want to send only to controller then use addparams
+                //this.query = this.query.addParams("ID", document.getElementById('ReqId').value)  // initial time
+                this.query.addParams("ID", document.getElementById('ReqId').value)  // initial time
+                //Key             //Value
+            }
+        }
+    }
+
+    function disableHtmlEncoding(args) {
+        this.getColumnByField('remarks').disableHtmlEncode = false;
+        }
+
+    function disableHtmlforemailMessage(args) {
+        this.getColumnByField('emailMessage').disableHtmlEncode = false;
+    }
+// Adding Richtexeditor to grid
+        var elem;
+        var dObj;
+
+        function create(args) {
+            elem = document.createElement('textarea');
+            return elem;
+        }
+
+        function write(args) {
+            div.innerText = args.column.headerText;
+            dObj = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 800, placeholder: 'Type reason for delay, etc here',
+                value: args.rowData.remarks
+            });
+            dObj.appendTo(elem);
+        }
+        function destroy() {
+            dObj.destroy();
+        }
+
+        function read(args) {
+            return dObj.value;
+        }
+
+// Adding Richtexeditor to grid
+        var elem2;
+        var dObj2;
+
+        function create2(args) {
+            elem2 = document.createElement('textarea');
+            return elem2;
+        }
+
+        function write2(args) {
+            div.innerText = args.column.headerText;
+            dObj2 = new ej.richtexteditor.RichTextEditor({
+                // here you can customize your textEditor
+
+                showCharCount: true, maxLength: 800, placeholder: 'Type the message here',
+                value: args.rowData.emailMessage
+            });
+            dObj2.appendTo(elem2);
+        }
+        function destroy2() {
+            dObj2.destroy();
+        }
+
+        function read2(args) {
+            return dObj2.value;
+        }
+// disable request encoding for message
+        function loadmessage(args) {
+            this.getColumnByField('adjustmentReason').disableHtmlEncode = false;
+            this.getColumnByField('emergencyReason').disableHtmlEncode = false;
+            this.getColumnByField('commentByPnd').disableHtmlEncode = false;
+            this.getColumnByField('commentByUnicef').disableHtmlEncode = false;
+        }
+//Resize request status
+        function actionCompleterequestStatus(args) {
+            var requestId = $('#ReqId').val();
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 450;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['statusId'] : 'New';
+                //this.query = this.query.addParams("ID", requestId)  // initial time
+                args.dialog.enableResize = true;
+            args.dialog.position.X = "center";
+            args.dialog.position.Y = "top";
+            }
+        }
+
+        function actionCompletesubmission(args) {
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 650;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+                args.dialog.enableResize = true;
+            args.dialog.position.X = "center";
+            args.dialog.position.Y = "top";
+            }
+            //Filtering child records based on this main RequestId
+            if (args.requestType === 'filtering') {
+                var adminlevel = document.getElementById("adminlevel").value;
+                if (adminlevel == 1) {
+                    var gridObj55 = document.getElementById('scmipRequestConGrid').ej2_instances[0];
+                    var item55 = gridObj55.getColumnByField(args.currentFilteringColumn);
+                    item55.allowFiltering = false;
+                    gridObj55.refreshColumns();
+                }
+            }
+        }
+//Action complete to adjust size, etc
+  function actionComplete(args) {
+      if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+                var dialog = args.dialog;
+                  dialog.width = 750;
+                  args.dialog.enableResize = true;
+                  args.dialog.position.X = "center";
+                  args.dialog.position.Y = "top";
+                let spinner = ej.popups.createSpinner({ target: args.dialog.element });
+                ej.popups.showSpinner(args.dialog.element);
+                if (args.requestType === 'beginEdit') {
+                    var ajax = new ej.base.Ajax({
+                        url: "@Url.Action("Editpartial", "scmrequest")", //render the partial view
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ value: args.rowData })
+                    });
+                    ajax.send().then(function (data) {
+                        appendElement(data, args.form); //Render the edit form with selected record
+                        args.form.elements.namedItem('requestId').focus();
+                        ej.popups.hideSpinner(args.dialog.element);
+                    }).catch(function (xhr) {
+                        console.log(xhr);
+                        ej.popups.hideSpinner(args.dialog.element);
+                    });
+                }
+                if (args.requestType === 'add') {
+                    var ajax = new ej.base.Ajax({
+                        url: "@Url.Action("Addpartial","scmrequest")", //render the partial view
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ value: args.rowData })
+                    });
+                    ajax.send().then(function (data) {
+                        appendElement(data, args.form); //Render the edit form with selected record
+                        args.form.elements.namedItem('id').focus();
+                        ej.popups.hideSpinner(args.dialog.element);
+                    }).catch(function (xhr) {
+                        ej.popups.hideSpinner(args.dialog.element);
+                    });
+                }
+      }
+
+//Filtering child records based on this main RequestId
+      if (args.requestType === 'filtering') {
+          var gridObj = document.getElementById('GridThree').ej2_instances[0];
+          var item = gridObj.getColumnByField(args.currentFilteringColumn);
+          item.allowFiltering = false;
+          gridObj.refreshColumns();
+
+          var gridObj3 = document.getElementById('GridFiveReq').ej2_instances[0];
+          var item3 = gridObj3.getColumnByField(args.currentFilteringColumn);
+          item3.allowFiltering = false;
+          gridObj3.refreshColumns();
+
+          var gridObj2 = document.getElementById('GridFours').ej2_instances[0];
+          var item2 = gridObj2.getColumnByField(args.currentFilteringColumn);
+          item2.allowFiltering = false;
+          gridObj2.refreshColumns();
+
+          var gridObj8 = document.getElementById('GridEight').ej2_instances[0];
+          var item8 = gridObj8.getColumnByField(args.currentFilteringColumn);
+          item8.allowFiltering = false;
+          gridObj8.refreshColumns();
+
+          var userlevel = document.getElementById("userlevel").value;
+          if (userlevel == 1) {
+              var gridObj4 = document.getElementById('RequesStatGrid2').ej2_instances[0];
+              var item4 = gridObj4.getColumnByField(args.currentFilteringColumn);
+              item4.allowFiltering = false;
+              gridObj4.refreshColumns();
+          }
+
+          var adminlevel = document.getElementById("adminlevel").value;
+          if (adminlevel == 1) {
+              var gridObj5 = document.getElementById('scmipRequestConGrid').ej2_instances[0];
+              var item5 = gridObj5.getColumnByField(args.currentFilteringColumn);
+              item5.allowFiltering = false;
+              gridObj5.refreshColumns();
+          }
+      }
+     }
+
+
+    function appendElement(elementString, form) {
+        form.querySelector("#dialogTemp").innerHTML = elementString;
+        var script = document.createElement('script');
+        script.type = "text/javascript";
+        var serverScript = form.querySelector("#dialogTemp").querySelector('script');
+        script.textContent = serverScript.innerHTML;
+        document.head.appendChild(script);
+        serverScript.remove();
+    }
+
+    //Filter sub grids
+    $(document).ready(function () {
+        var requesteID = $('#ReqId').val();
+
+        var grid3 = document.getElementById('GridThree').ej2_instances[0];
+        var grid5 = document.getElementById('GridFiveReq').ej2_instances[0];
+        var grid4 = document.getElementById('GridFours').ej2_instances[0];
+        var grid8 = document.getElementById('GridEight').ej2_instances[0];
+
+        grid4.filterByColumn("requestId", "equal", requesteID);
+        grid3.filterByColumn("requestId", "equal", requesteID);
+        grid5.filterByColumn("requestId", "equal", requesteID);
+        grid8.filterByColumn("requestId", "equal", requesteID);
+
+
+        var userlevel = document.getElementById("userlevel").value;
+        if (userlevel == 1) {
+            var grid6 = document.getElementById('RequesStatGrid2').ej2_instances[0];
+            grid6.filterByColumn("requestId", "equal", requesteID);
+        }
+
+        var adminlevel = document.getElementById("adminlevel").value;
+        if (adminlevel == 1) {
+            var grid7 = document.getElementById('scmipRequestConGrid').ej2_instances[0];
+            grid7.filterByColumn("requestId", "equal", requesteID);
+        }
+    });
+
+   $("#SaveIpRequest").click(function (e) {
+
+            ////e.preventDefault();
+            var para = $('#ReqId').val();
+            var url = "/scmrequest/SaveIPRequest/" + para;
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'id': para },
+                success: function (data) {
+                    //$("#loading").hide();
+                    new Noty({
+                        type: "success",
+                        layout: "bottomRight",
+                        text: 'IP successfully saved.',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show();
+                },
+
+            }).fail(function () {
+                new Noty({
+                    type: "error",
+                    layout: "bottomRight",
+                    text: 'Save failed',
+                    visibilityControl: true,
+                    timeout: 3000,
+                }).show()
+            }
+            );
+
+            var grid = document.getElementById("GridThree").ej2_instances[0];
+            grid.refresh(); // refresh the Grid.
+            //e.preventDefault();
+        });
+
+        function queryCellInfo(args) {
+            if (args.column.field == "requestId") {
+                args.cell.innerText = args.data.parentItem.requestId;
+                args.cell.innerText = args.data.parentItem.racilityId;
+                args.cell.innerText = args.data.parentItem.racilityTypeId;
+            }
+        }
+
+    function toolbarClick(args) {
+            var gridObj = document.getElementById("GridThree").ej2_instances[0];
+            if (args.item.id === 'GridThree_excelexport') {
+                //gridObj.excelExport();
+                var para = $('#ReqId').val();
+                var url = "/scmrequest/GenerateHFPivotTable/" + para;
+                window.location = url;
+        }
+        if (args.item.id === 'hfconsumption') {
+            $("#srhfconsumption").toggle();
+        }
+            if (args.item.id === 'Deletes') {
+                //gridObj.excelExport();
+                var response = confirm("Please be carefull. It will delete all records attached to this request and once the request is deleted, it cannot be recoved back");
+                if (response == true) {
+                    var para = $('#ReqId').val();
+                    var url = "/scmrequest/DeleteCurrectRequest/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'Current Request successfully deleted',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to delete',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+                }
+            }
+            if (args.item.id === 'Approve') {
+
+                var para = $('#ReqId').val();
+                var url = "/scmrequest/ApproveRequest/" + para;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { 'id': para },
+                    success: function (data) {
+                        //$("#loading").hide();
+                        new Noty({
+                            type: "success",
+                            layout: "bottomRight",
+                            text: 'Request successfully approved',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show();
+                        gridObj.refresh();
+                    },
+                }).fail(function () {
+                    new Noty({
+                        type: "error",
+                        layout: "bottomRight",
+                        text: 'Failed to approve',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show()
+                }
+                );
+
+            }
+        }
+        function toolbarClickcontact(args) {
+            var gridObj = document.getElementById("GridEight").ej2_instances[0];
+            if (args.item.id === 'UpdateContact') {
+                //gridObj.excelExport();
+                var response = confirm("This will get latest available contact details of the same user. You then need to update the right details or add new one if needed.");
+                if (response == true) {
+                    var para = $('#ReqId').val();
+                    var url = "/scmContacts/AddContacts/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'Current Request successfully deleted',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to update',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+            var grid = document.getElementById("GridEight").ej2_instances[0];
+            grid.refresh(); // refresh the Grid.
+                }
+            }
+        }
+
+        function toolbarClick2(args) {
+            var gridObj = document.getElementById("GridFiveReq").ej2_instances[0];
+            if (args.item.id === 'Deletes') {
+                //gridObj.excelExport();
+                var response = confirm("Please be carefull. It will delete all records attached to this request and once the request is deleted, it cannot be recoved back");
+                if (response == true) {
+                    var para = $('#ReqId').val();
+                    var url = "/scmrequest/DeleteCurrectRequestAvgbased/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'Current Request successfully deleted',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to delete',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+                }
+            }
+            if (args.item.id === 'Add_average') {
+                //gridObj.excelExport();
+                var response = confirm("Do you really want to generate average-based calculation");
+                if (response == true) {
+                    var para = $('#ReqId').val();
+                    var url = "/scmrequest/AddHFAveragebasedEstimation/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'Request proccessed',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to proccess this request',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+                }
+            }
+            if (args.item.id === 'Deletes2') {
+                //gridObj.excelExport();
+                var response = confirm("Are you sure you want to delete the records and it will delete only un-approved records!");
+                if (response == true) {
+                    var para = $('#ReqId').val();
+                    var url = "/scmrequest/DeleteCurrectRequestAvgbased/" + para;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { 'id': para },
+                        success: function (data) {
+                            //$("#loading").hide();
+                            new Noty({
+                                type: "success",
+                                layout: "bottomRight",
+                                text: 'Records deleted',
+                                visibilityControl: true,
+                                timeout: 3000,
+                            }).show();
+                            gridObj.refresh();
+                        },
+                    }).fail(function () {
+                        new Noty({
+                            type: "error",
+                            layout: "bottomRight",
+                            text: 'Failed to delete',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show()
+                    }
+                    );
+                }
+            }
+            if (args.item.id === 'Approve') {
+
+                var para = $('#ReqId').val();
+                var url = "/scmrequest/ApproveRequestAvgbased/" + para;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { 'id': para },
+                    success: function (data) {
+                        //$("#loading").hide();
+                        new Noty({
+                            type: "success",
+                            layout: "bottomRight",
+                            text: 'Request successfully approved',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show();
+                        gridObj.refresh();
+                    },
+                }).fail(function () {
+                    new Noty({
+                        type: "error",
+                        layout: "bottomRight",
+                        text: 'Failed to approve',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show()
+                }
+                );
+
+            }
+        }
+    function reqtypeChange() {
+        var reqtypeObj = document.getElementById('TypeOfRequest').ej2_instances[0];
+        var reqperiodObj = document.getElementById('RequestPeriod').ej2_instances[0];
+        var startyearObj = document.getElementById('StartYear').ej2_instances[0];
+        var startmonthObj = document.getElementById('StartMonth').ej2_instances[0];
+        var endyearObj = document.getElementById('EndYear').ej2_instances[0];
+        var endmonthObj = document.getElementById('EndMonth').ej2_instances[0];
+        var tempQuery = new ej.data.Query().where('ReqTypeId', 'equal', reqtypeObj.value);
+        reqperiodObj.query = tempQuery;
+        reqperiodObj.text = null;
+        startyearObj.text = null;
+        startmonthObj.text = null;
+        endyearObj.text = null;
+        endmonthObj.text = null;
+        reqperiodObj.dataBind();
+    }
+    function startmonthChange() {
+        var reqtypeObj = document.getElementById('TypeOfRequest').ej2_instances[0];
+        var startyearObj = document.getElementById('StartYear').ej2_instances[0];
+        var startmonthObj = document.getElementById('StartMonth').ej2_instances[0];
+        var endyearObj = document.getElementById('EndYear').ej2_instances[0];
+        var endmonthObj = document.getElementById('EndMonth').ej2_instances[0];
+        var startyearValue;
+        var startmonthValue;
+        var endYear = 11;
+        var quarterYear = 3;
+        if (reqtypeObj.text == 'Annual') {
+            startyearValue = startyearObj.text + 1;
+            startmonthValue = new Date(startyearObj.text, startmonthObj.text + endYear - 1).getMonth() + 1;
+            startmonthObj.dataBind();
+            var tempquery = new ej.data.Query().where('EndYearName', 'equal', startyearValue);
+            endyearObj.query = tempquery;
+            endyearObj.text = null;
+            endyearObj.dataBind();
+            var tempquery1 = new ej.data.Query().where('EndMonthName', 'equal', startmonthValue);
+            endmonthObj.query = tempquery1;
+            endmonthObj.text = null;
+            endmonthObj.dataBind();
+        }
+        else if (reqtypeObj.text == 'Quarterly') {
+            startyearValue = new Date(startyearObj.text, (startmonthObj.value - 1) + quarterYear).getFullYear();
+            startmonthValue = new Date(startyearObj.text, (startmonthObj.value - 1) + quarterYear).getMonth() + 1;
+            var tempquery = new ej.data.Query().where('EndYearName', 'equal', startyearValue);
+            endyearObj.query = tempquery;
+            endyearObj.text = null;
+            endyearObj.dataBind();
+            var tempquery1 = new ej.data.Query().where('EndMonthName', 'equal', startmonthValue);
+            endmonthObj.query = tempquery1;
+            endmonthObj.text = null;
+            endmonthObj.dataBind();
+        }
+        }
+
+        function dataBound() {
+             var gridOther = '@(ViewBag.gridOther)';
+             if (gridOther == 0) {
+                 this.toolbarModule.enableItems(['Add_average', 'Approve', 'Deletes2','Deletes'], false);
+             }
+             else {
+                 this.toolbarModule.enableItems(['Add_average', 'Approve', 'Deletes2','Deletes'], true);
+             }
+        }
+
+
+        $(document).ready(() => {
+            $("#mainrequest").click(() => {
+                $("#mainreqnote").toggle();
+            });
+        });
+
+        function toolbarClickHelp(args) {
+            if (args.item.id === 'pocHelp') {
+                $("#srfacilities").toggle();
+            }
+            if (args.item.id === 'hfconsumption') {
+                $("#srhfconsumption").toggle();
+            }
+
+        }
+    </script>
+
+}
+<style>
+    .e-expand::before {
+        content: '\f1f8';
+    }
+    .movetop{
+        margin-top:-35px!important;
+        margin-right:20px!important;
+    }
+    .fa-question{
+        font-size:20px!important;
+        color:#4c73b9!important;
+    }
+</style>

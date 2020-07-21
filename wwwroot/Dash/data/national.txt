@@ -1,0 +1,1 @@
+[{"admissions":243469,"U6Children":869,"Children23":191111,"Children59":51489,"deaths":493,"cured":160403,"odema":2604,"zscore":51108,"MUAC":189757,"Male":109054,"Female":131966}]

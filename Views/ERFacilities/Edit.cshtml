@@ -1,0 +1,266 @@
+@model DataSystem.Models.ERFacilities
+
+@{
+    ViewData["Title"] = "Edit- Emergency Center";
+}
+<div class="container">
+    <h2>Edit Emergency Center</h2>
+
+    <form asp-action="Edit">
+        <div class="row col-md-10">
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        <label asp-for="FacilityId" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityId" class="form-control" placeholder="Enter ID between 30000 and 35000" />
+                            <span asp-validation-for="FacilityId" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="ProvCode" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.Provinces" asp-for="ProvCode" class="form-control"></select>
+                            <span asp-validation-for="ProvCode" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="DistCode" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.Districts" asp-for="DistCode" class="form-control"></select>
+                            <span asp-validation-for="DistCode" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityName" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityName" class="form-control" />
+                            <span asp-validation-for="FacilityName" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityNameDari" class=" control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityNameDari" class="form-control" />
+                            <span asp-validation-for="FacilityNameDari" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityNamePashto" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityNamePashto" class="form-control" />
+                            <span asp-validation-for="FacilityNamePashto" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityType" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.fac" asp-for="FacilityType" class="form-control"></select>
+                            <span asp-validation-for="FacilityType" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Location" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="LocationDari" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="LocationDari" class="form-control" />
+                            <span asp-validation-for="LocationDari" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="LocationPashto" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="LocationPashto" class="form-control" />
+                            <span asp-validation-for="LocationPashto" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Implementer" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.imps" asp-for="Implementer" class="form-control"></select>
+                            <span asp-validation-for="Implementer" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Lat" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Lat" class="form-control" placeholder="33.9391098" />
+                            <span asp-validation-for="Lat" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Lon" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Lon" class="form-control" placeholder="67.7099533" />
+                            <span asp-validation-for="Lon" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Status" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <label><input asp-for="Status" value="Y" type="radio" />Yes</label>
+                            <label><input asp-for="Status" value="N" type="radio" />No</label>
+                            <span asp-validation-for="Status" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="DateEstablished" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+
+                            <input asp-for="DateEstablished" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#DateEstablished"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" />
+                            <span asp-validation-for="DateEstablished" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="DateClosed" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+
+                            <input asp-for="DateClosed" type="text" class="form-control" data-name="datepicker2" data-mddatetimepicker="true" data-targetselector="#DateClosed"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                            <span asp-validation-for="DateClosed" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-4 col-md-6">
+                    <input type="submit" value="Save" class="btn btn-block btn-primary" />
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#ProvCode').change(function () {
+                var url = '@Url.Content("~/")' + "ERFacilities/districts";
+                var ddlsource = '#ProvCode';
+                $.getJSON(url, { ProvCode: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $('#DistCode').empty();
+                    $.each(data, function (i, dist) {
+                        items += "<option value='" + dist.value + "'>" + dist.text + "</option>";
+                    });
+                    $('#DistCode').html(items);
+                });
+            });
+        });
+
+
+        //var toastObj;
+        //var btnEleShow = document.getElementById('toastBtnShow');
+        //var btnEleHide = document.getElementById('toastBtnHide');
+
+        //document.onclick = function (e) {
+        //    if (e.target !== btnEleShow) {
+        //        toastObj.hide('All');
+        //    }
+        //};
+        //btnEleShow.onclick = function () {
+        //    toastObj.show();
+        //};
+
+        //btnEleHide.onclick = function () {
+        //    toastObj.hide('All');
+        //};
+
+        //function onclose(e) {
+        //    if (e.toastContainer.childElementCount === 0) {
+        //        btnEleHide.style.display = 'none';
+        //    }
+        //}
+
+        //function onBeforeOpen() {
+        //    btnEleHide.style.display = 'inline-block';
+        //}
+        //function created() {
+        //    toastObj = this;
+        //}
+
+        //setTimeout(
+        //    () => {
+        //        toastObj.show({
+        //            target: document.body
+        //        });
+        //    }, 500);
+    </script>
+}

@@ -1,0 +1,79 @@
+@model IEnumerable<DataSystem.Models.FacilityTypes>
+
+@{
+    ViewData["Title"] = "Facility Types";
+}
+<div class="container">
+    <h2>Facility Types</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+    @if (Model.Any())
+    {
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">        <thead>
+            <tr>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.FacTypeCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FacTypeCatCode)
+                </th>
+                <th data-priority="1">
+                    @Html.DisplayNameFor(model => model.FacType)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FacTypeDari)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FacTypePashto)
+                </th>
+                <th class="text-center" data-priority="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FacTypeCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FacTypeCatCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FacType)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FacTypeDari)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FacTypePashto)
+                    </td>
+                    <td class="text-center">
+                                 <div style="display: inline-block; float: none; white-space: nowrap;">
+                                     <a asp-action="Delete" asp-route-id="@item.FacTypeCode" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                      | <a asp-action="Edit" asp-route-id="@item.FacTypeCode" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                                 </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No record available.</div>
+    }
+</div>
+@section Scripts{
+    <script>
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        fixedHeader: true
+    } );
+} );
+    </script>
+}

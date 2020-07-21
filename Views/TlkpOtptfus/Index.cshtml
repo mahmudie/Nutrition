@@ -1,0 +1,61 @@
+@model IEnumerable<DataSystem.Models.TlkpOtptfu>
+
+@{
+    ViewData["Title"] = "SAM Age Group";
+}
+<div class="container">
+    <h2>SAM Age Group</h2>
+
+    <p>
+        <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+    </p>
+@if (Model.Any())
+{
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+        <th class="text-left">
+              Item ID
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.AgeGroup)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr class="text-left">
+            <td>
+                @Html.DisplayFor(modelItem => item.Otptfuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgeGroup)
+            </td>
+            <td>
+                @if (item.Active.Equals(true))
+                {
+                    <span class="label label-success">Yes</span>
+                }
+                else
+                {
+                    <span class="label label-danger">No</span>
+
+                }
+            </td>
+            <td class="text-center">
+                <div style="display: inline-block; float: none; white-space: nowrap;">
+                    <a asp-action="Delete" asp-route-id="@item.Otptfuid" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                    | <a asp-action="Edit" asp-route-id="@item.Otptfuid" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}else{<div class="alert alert-info">No record available.</div> }
+</div>

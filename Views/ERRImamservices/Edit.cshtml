@@ -1,0 +1,100 @@
+@model DataSystem.Models.EmrImamServices
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+<style>
+    .glowing {
+        border: 2px solid red;
+        border-radius: 7px;
+    }
+</style>
+<div class="modal" id="edit" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ERR - Indicators</h4>
+            </div>
+            <div class="modal-body ">
+                <form asp-action="Edit" id="form" data-bind="submit:update,visible: !sending()">
+                    <div class="form-horizontal">
+                        <div class="form-group ">
+                            <label for="indicator" class="col-sm-3 control-label">Indicator</label>
+                            <div class="col-sm-8">
+                                <select asp-for="IndicatorId" asp-items="ViewBag.OutServices"  class="form-control" data-bind="value:form.IndicatorId" readonly></select>
+                                <span for="indicator" class="text-danger" />
+                            </div>
+
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="Male" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Male" class="form-control" data-bind="textinput:form.Male" />
+                                <span asp-validation-for="Male" class="text-danger" />
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label asp-for="Female" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Female" class="form-control" data-bind="textinput:form.Female" />
+                                <span asp-validation-for="Female" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="Cures" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Cures" class="form-control" data-bind="textinput:form.cures" />
+                                <span asp-validation-for="Cures" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="Deaths" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Deaths" class="form-control" data-bind="textinput:form.deaths" />
+                                <span asp-validation-for="Deaths" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="Defaulters" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Defaulters" class="form-control" data-bind="textinput:form.defaulters" />
+                                <span asp-validation-for="Defaulters" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="Referouts" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="Referouts" class="form-control" data-bind="textinput:form.Referouts" />
+                                <span asp-validation-for="Referouts" class="text-danger" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="form-group form-group-sm">
+                            <div class="col-md-offset-3 col-md-8">
+                                <input type="submit" value="Save" class="btn btn-block btn-primary btn-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="progress" data-bind="visible: sending()">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                         role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100"
+                         style="width: 100%">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.validator.unobtrusive.parse($('#edit'));
+</script>

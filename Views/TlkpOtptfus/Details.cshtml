@@ -1,0 +1,30 @@
+@model DataSystem.Models.TlkpOtptfu
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TlkpOtptfu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AgeGroup)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AgeGroup)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Otptfuid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

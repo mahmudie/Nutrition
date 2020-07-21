@@ -1,0 +1,197 @@
+@model DataSystem.Models.ERFacilities
+
+@{
+    ViewData["Title"] = "Add- Emergency Center";
+}
+<div class="container">
+    <h2>Details Of Emergency Center</h2>
+
+        <div class="row col-md-10">
+            <table id="erfacilities" class="table table-condensed">
+                <tr>
+                    <th>
+                        <label asp-for="FacilityId" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityId" class="form-control" disabled="disabled" placeholder="Enter ID between 30000 and 35000" />
+                            <span asp-validation-for="FacilityId" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="ProvCode" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.Provinces" disabled="disabled" asp-for="ProvCode" class="form-control"></select>
+                            <span asp-validation-for="ProvCode" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="DistCode" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.Districts" disabled="disabled" asp-for="DistCode" class="form-control"></select>
+                            <span asp-validation-for="DistCode" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityName" disabled="disabled" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityName" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="FacilityName" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityNameDari" class=" control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityNameDari" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="FacilityNameDari" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityNamePashto" disabled="disabled" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="FacilityNamePashto" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="FacilityNamePashto" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="FacilityType" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.fac" disabled="disabled" asp-for="FacilityType" class="form-control"></select>
+                            <span asp-validation-for="FacilityType" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Location" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Location" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="LocationDari" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="LocationDari" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="LocationDari" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="LocationPashto" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="LocationPashto" disabled="disabled" class="form-control" />
+                            <span asp-validation-for="LocationPashto" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Implementer" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <select asp-items="ViewBag.imps" disabled="disabled" asp-for="Implementer" class="form-control"></select>
+                            <span asp-validation-for="Implementer" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Lat" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Lat" disabled="disabled" class="form-control" placeholder="33.9391098" />
+                            <span asp-validation-for="Lat" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="Lon" class="control-label"></label>
+
+                    </th>
+                    <td>
+                        <div>
+                            <input asp-for="Lon" disabled="disabled" class="form-control" placeholder="67.7099533" />
+                            <span asp-validation-for="Lon" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label asp-for="DateEstablished" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+
+                            <input asp-for="DateEstablished" disabled="disabled" class="form-control" data-name="datepicker1" data-mddatetimepicker="true" data-targetselector="#DateEstablished"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                            <span asp-validation-for="DateEstablished" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label asp-for="DateClosed" class="control-label"></label>
+                    </th>
+                    <td>
+                        <div>
+
+                            <input asp-for="DateClosed" type="text" disabled="disabled" class="form-control" data-name="datepicker2" data-mddatetimepicker="true" data-targetselector="#DateClosed"
+                                   data-trigger="click" data-enabletimepicker="false" data-isgregorian="true" data-englishnumber="true" placeholder="Click to Pick Date" />
+                            <span asp-validation-for="DateClosed" class="text-danger" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-lg-offset-4 col-md-6">
+                    <a asp-action="Edit" asp-route-id="@Model.FacilityId">Edit</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <hr />
+        </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

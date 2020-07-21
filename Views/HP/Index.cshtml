@@ -1,0 +1,125 @@
+﻿@*@model IEnumerable<DataSystem.Models.HP.HpMonitoring>*@
+@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Community(HP) Monitoring";
+}
+<div class="container-fluid">
+    <h2>Community(HP) Monitoring</h2>
+
+    <p>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
+        {
+            <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Create New</a>
+        }
+    </p>
+    <table id="hpreport" class="table table-bordered dt-responsive nowrap" width="100%">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    ID
+                </th>
+                <th class="text-center">
+                    Date Of Monitoring
+                </th>
+                <th class="text-center">
+                    Data Collector Name
+                </th>
+                <th class="text-center">
+                    Respondent Name
+                </th>
+                <th class="text-center">
+                    Contact No
+                </th>
+                <th class="text-center">
+                    Province
+                </th>
+                <th class="text-center">
+                    District
+                </th>
+                <th class="text-center">
+                    FacilityId
+                </th>
+                <th class="text-center">
+                    Facility Name
+                </th>
+                <th class="text-center">
+                    Implementer
+                </th>
+                <th class="text-center">
+                    Health Post Name
+                </th>
+                <th class="text-center">
+                    Health Post Code
+                </th>
+                <th class="text-center" data-priority="1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/dataRender/datetime.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#hpreport').DataTable({
+                responsive: true,
+                "lengthMenu": [10, 15, 25, 50, 100],
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "ajax": {
+                    "url": "/hp/pagedata",
+                    "type": "post",
+                },
+                "columns": [
+                    { "data": "hpmId", "name": "ID", "autoWidth": true },
+                    { "data": "dateOfMonitoring", "name": "Data Of Monitoring", "autoWidth": true },
+                    { "data": "dataCollectorName", "name": "Data Collector Name", "autoWidth": true },
+                    { "data": "respondentName", "name": "Respondent Name", "autoWidth": true },
+                    { "data": "respondentContactNo", "name": "Contact No", "autoWidth": true },
+                    { "data": "province", "name": "Province", "autoWidth": true },
+                    { "data": "district", "name": "District", "autoWidth": true },
+                    { "data": "facilityId", "name": "FacilityId", "autoWidth": true },
+                    { "data": "facilityName", "name": "Facility Name", "autoWidth": true },
+                    { "data": "implementer", "name": "Implementer", "autoWidth": true },
+                    { "data": "hpName", "name": "Health Post Name", "autoWidth": true },
+                    { "data": "hpCode", "name": "Health Post Code", "autoWidth": true },
+                    { "name": "actions", "autoWidth": true },
+
+
+                ],
+                "columnDefs": [
+                    {
+                        "data": "hpmId",
+                        "targets": 12,
+                        "class": 'text-center',
+                        "width": "10%",
+                        "sorting": false,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            return '<div style="display: inline-block; float: none; white-space: nowrap;"> <a href="/HP/delete/' + data + '" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a> | <a class="btn btn-primary btn-xs" href="/HP/edit/' + data + '"><span class="glyphicon glyphicon-pencil"></span></a></div> '
+                        }
+                    },
+                    {
+                        "targets": 1,
+                        "sorting": false,
+                        "orderable": true,
+                        "render": function (data, type, row) {
+                            if (data) {
+                                var mDate = moment(data);
+                                return (mDate && mDate.isValid()) ? mDate.format("DD/MM/YYYY") : "";
+                            }
+                            return "";
+                        }
+                    }
+                ]
+
+            });
+        })
+    </script>
+}
