@@ -64,7 +64,7 @@ namespace DataSystem.GLM.Controllers
                 DistrictId = m.DistCode
             }).ToList();
 
-            var implementers = _context.Implementers.Where(m=>m.ImpAcronym!=null).Select(m => new
+            var implementers = _context.Implementers.Where(m => m.ImpAcronym != null).Select(m => new
             {
                 ImpId = m.ImpCode,
                 ImpName = m.ImpAcronym
@@ -87,7 +87,7 @@ namespace DataSystem.GLM.Controllers
         {
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            
+
             if (!ModelState.IsValid)
             {
                 viewModel.DataForms = _context.DataForms.ToList();
@@ -117,7 +117,7 @@ namespace DataSystem.GLM.Controllers
 
             // concatenate all the parts
             Id += viewModel.DataFormId.ToString();
-            Id += ""+facilityId;
+            Id += "" + facilityId;
             Id += "" + year;
             Id += "" + month;
             Id += "" + weeknum;
@@ -145,13 +145,13 @@ namespace DataSystem.GLM.Controllers
                 DataFormId = viewModel.DataFormId,
                 FacilityId = viewModel.FacilityId,
                 FacilityTypeId = (int)facility.FacilityType,
-                DataCollectorOffice=viewModel.DataCollectorOffice,
-                ImpId=viewModel.ImpId,
-                ReportLat=0,
-                ReportLon=0,
+                DataCollectorOffice = viewModel.DataCollectorOffice,
+                ImpId = viewModel.ImpId,
+                ReportLat = 0,
+                ReportLon = 0,
                 TenantId = user.TenantId,
-                UserName =user.UserName,
-                UpdateDate=DateTime.Now.Date
+                UserName = user.UserName,
+                UpdateDate = DateTime.Now.Date
             };
 
             _context.Reports.Add(report);
@@ -168,7 +168,7 @@ namespace DataSystem.GLM.Controllers
                     .ToList();
 
             var numberFields = _context.Fields
-                .Where(m => m.DataType == "number" || m.DataType=="yesno")
+                .Where(m => m.DataType == "number" || m.DataType == "yesno")
                 .ToList();
 
             var dateFields = _context.Fields
@@ -219,8 +219,6 @@ namespace DataSystem.GLM.Controllers
 
         public IActionResult Edit(string Id)
         {
-
-
             var provinces = _context.Provinces.Select(m => new
             {
                 ProvinceId = m.ProvCode,
@@ -272,12 +270,53 @@ namespace DataSystem.GLM.Controllers
             viewModel.ReportLon = report.ReportLon;
             viewModel.DataFormId = report.DataFormId;
             viewModel.TenantId = (int)report.TenantId;
-            
+
             viewModel.DataForms = _context.DataForms.ToList();
 
             ViewBag.reportId = Id;
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ReportViewModel viewModel)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+
+            if (!ModelState.IsValid)
+            {
+                viewModel.DataForms = _context.DataForms.ToList();
+
+                return View(viewModel);
+            }
+
+            var report = _context.Reports.Find(viewModel.Id);
+            var facility = _context.FacilityInfo.Where(m => m.FacilityId.Equals(report.FacilityId)).FirstOrDefault();
+
+            report.ProvinceId = viewModel.ProvinceId;
+            report.DistrictId = viewModel.DistrictId;
+            report.FacilityId = viewModel.FacilityId;
+            report.ReportedBy = viewModel.ReportedBy;
+            report.FacilityTypeId = (int)facility.FacilityType;
+            report.ReportPreparedDate = viewModel.ReportPreparedDate;
+            report.ReportReceivedDate = viewModel.ReportReceivedDate;
+            report.DataCollectorOffice = viewModel.DataCollectorOffice;
+            report.ReportLat = viewModel.ReportLat;
+            report.ReportLon = viewModel.ReportLon;
+            report.DataFormId = viewModel.DataFormId;
+            report.TenantId = (int)report.TenantId;
+            report.UserName = user.UserName;
+            report.UpdateDate = DateTime.Now.Date;
+            report.ImpId = viewModel.ImpId;
+
+
+            _context.Entry(report).State = EntityState.Modified;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Reports");
         }
 
         public IActionResult ReportDetails(string Id)
@@ -445,6 +484,20 @@ namespace DataSystem.GLM.Controllers
                 // save fields with text datatype
                 foreach (var field in textFields)
                 {
+                    // if the value item doesn't exist, add one
+                    if (!_context.TextValues.Any(m => m.FieldId == field.Id && m.ReportId == form["ReportId"]))
+                    {
+                        var TV = new TextValue
+                        {
+                            FieldId = field.Id,
+                            ReportId = form["ReportId"],
+                            Data = null
+                        };
+
+                        _context.TextValues.Add(TV);
+                        _context.SaveChanges();
+                    }
+
                     var textValue = _context.TextValues
                         .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
                         .SingleOrDefault();
@@ -468,6 +521,20 @@ namespace DataSystem.GLM.Controllers
                 // save fields with numer datatype
                 foreach (var field in numberFields)
                 {
+                    // if the value item doesn't exist, add one
+                    if (!_context.NumberValues.Any(m => m.FieldId == field.Id && m.ReportId == form["ReportId"]))
+                    {
+                        var NV = new NumberValue
+                        {
+                            FieldId = field.Id,
+                            ReportId = form["ReportId"],
+                            Data = null
+                        };
+
+                        _context.NumberValues.Add(NV);
+                        _context.SaveChanges();
+                    }
+
                     var numberValue = _context.NumberValues
                         .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
                         .SingleOrDefault();
@@ -491,6 +558,20 @@ namespace DataSystem.GLM.Controllers
                 // save fields with date datatype
                 foreach (var field in dateFields)
                 {
+                    // if the value item doesn't exist, add one
+                    if (!_context.DateValues.Any(m => m.FieldId == field.Id && m.ReportId == form["ReportId"]))
+                    {
+                        var DV = new DateValue
+                        {
+                            FieldId = field.Id,
+                            ReportId = form["ReportId"],
+                            Data = null
+                        };
+
+                        _context.DateValues.Add(DV);
+                        _context.SaveChanges();
+                    }
+
                     var dateValue = _context.DateValues
                         .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
                         .SingleOrDefault();
@@ -530,12 +611,12 @@ namespace DataSystem.GLM.Controllers
 
             // Get report lookup names
             var lookupreport = _context.Reports.Where(m => m.Id.Equals(Id)).FirstOrDefault();
-            String ProvinceName, DistrictName, FacilityName, ImplementerName,FacilityTypeName;
-            ProvinceName = _context.Provinces.Where(w=>w.ProvCode.Equals(lookupreport.ProvinceId)).Select(m => m.ProvName).FirstOrDefault();
-            DistrictName = _context.Districts.Where(w=>w.DistCode.Equals(lookupreport.DistrictId)).Select(m => m.DistName).FirstOrDefault();
-            FacilityName = _context.FacilityInfo.Where(w=>w.FacilityId.Equals(lookupreport.FacilityId)).Select(m => m.FacilityName).FirstOrDefault();
-            ImplementerName = _context.Implementers.Where(w=>w.ImpCode.Equals(lookupreport.ImpId)).Select(m => m.ImpAcronym).FirstOrDefault();
-            FacilityTypeName = _context.FacilityTypes.Where(w=>w.FacTypeCode.Equals(lookupreport.FacilityTypeId)).Select(m => m.TypeAbbrv).FirstOrDefault();
+            String ProvinceName, DistrictName, FacilityName, ImplementerName, FacilityTypeName;
+            ProvinceName = _context.Provinces.Where(w => w.ProvCode.Equals(lookupreport.ProvinceId)).Select(m => m.ProvName).FirstOrDefault();
+            DistrictName = _context.Districts.Where(w => w.DistCode.Equals(lookupreport.DistrictId)).Select(m => m.DistName).FirstOrDefault();
+            FacilityName = _context.FacilityInfo.Where(w => w.FacilityId.Equals(lookupreport.FacilityId)).Select(m => m.FacilityName).FirstOrDefault();
+            ImplementerName = _context.Implementers.Where(w => w.ImpCode.Equals(lookupreport.ImpId)).Select(m => m.ImpAcronym).FirstOrDefault();
+            FacilityTypeName = _context.FacilityTypes.Where(w => w.FacTypeCode.Equals(lookupreport.FacilityTypeId)).Select(m => m.TypeAbbrv).FirstOrDefault();
 
             ViewBag.ProvinceName = ProvinceName;
             ViewBag.DistrictName = DistrictName;
