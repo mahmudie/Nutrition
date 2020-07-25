@@ -142,6 +142,8 @@ namespace TEST1.Controllers
             field.InputType = viewModel.InputType;
             field.IsRequired = viewModel.IsRequired;
             field.YesNoDefaultCaption = viewModel.YesNoDefaultCaption;
+            field.IsExpiryDate = viewModel.IsExpiryDate;
+            field.ExpiryWarningPeriod = viewModel.ExpiryWarningPeriod;
 
             _context.Fields.Add(field);
 
@@ -229,6 +231,8 @@ namespace TEST1.Controllers
                 InputType = field.InputType,
                 IsRequired = field.IsRequired,
                 YesNoDefaultCaption = field.YesNoDefaultCaption,
+                IsExpiryDate = field.IsExpiryDate,
+                ExpiryWarningPeriod = field.ExpiryWarningPeriod,
                 //
                 FieldOptions = _context.FieldOptions
                     .Where(m => m.FieldId == Id)
@@ -271,6 +275,8 @@ namespace TEST1.Controllers
             field.InputType = viewModel.InputType;
             field.IsRequired = viewModel.IsRequired;
             field.YesNoDefaultCaption = viewModel.YesNoDefaultCaption;
+            field.IsExpiryDate = viewModel.IsExpiryDate;
+            field.ExpiryWarningPeriod = viewModel.ExpiryWarningPeriod;
 
             _context.Entry(field).State = EntityState.Modified;
 

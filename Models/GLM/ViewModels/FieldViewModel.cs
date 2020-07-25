@@ -32,6 +32,13 @@ namespace DataSystem.Models.GLM
         [Display(Name = "Yes/No Default Caption (Optional)")]
         public string YesNoDefaultCaption { get; set; } = null;
 
+        [Required]
+        [Display(Name = "Is Expiry Date")]
+        public bool IsExpiryDate { get; set; } = false;
+
+        [Display(Name = "Expiry Warning Period")]
+        public int? ExpiryWarningPeriod { get; set; }
+
         public IEnumerable<FieldOption> FieldOptions { get; set; }
 
         public Dictionary<string, string> DataTypes
@@ -62,7 +69,7 @@ namespace DataSystem.Models.GLM
             }
         }
 
-        public Dictionary<bool, string> IsRequiredOptions
+        public Dictionary<bool, string> BooleanOptions
         {
             get
             {

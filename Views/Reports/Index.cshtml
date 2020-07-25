@@ -37,7 +37,9 @@
             <tbody>
                 @foreach (var row in Model)
                 {
-                    <tr>
+                    var warningClass = (row.ExpiryWarning) ? "table-date-expiry-warning" : "";
+
+                    <tr class="@warningClass">
                         <td>
                             @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
                             {
@@ -47,7 +49,7 @@
                             }
                             else
                             {
-                                    @row.Id
+                                @row.Id
                             }
                         </td>
                         <td>@row.Province</td>
@@ -65,7 +67,7 @@
                                     @row.Dataforms.Name
                                 </a>
                             }
-                            </td>
+                        </td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-light btn-sm dropdown-toggle" href="#" data-toggle="dropdown">Actions</a>
@@ -77,7 +79,7 @@
                                     {
                                         <a asp-controller="Reports" asp-action="Delete" asp-route-id="@row.Id" class="dropdown-item">Delete</a>
                                     }
-                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
