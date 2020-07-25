@@ -63,8 +63,7 @@ namespace DataSystem.Models.GLM
                 {
                     { "textbox", "Text Box" },
                     { "textarea", "Textarea" },
-                    { "dropdown", "Dropdown" },
-                    { "percentage", "Percentage" }
+                    { "dropdown", "Dropdown" }
                 };
             }
         }
