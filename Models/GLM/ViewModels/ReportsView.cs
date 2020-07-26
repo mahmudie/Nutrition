@@ -31,5 +31,8 @@ namespace DataSystem.Models.GLM
         [ForeignKey("DataForm")]
         public int DataFormId { get; set; }
         public DataForm Dataforms { get; set; }
+
+        [NotMapped]
+        public bool ExpiryWarning { get; set; } = false;
     }
 }
