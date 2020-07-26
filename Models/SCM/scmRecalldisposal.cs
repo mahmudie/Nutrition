@@ -17,7 +17,6 @@ namespace DataSystem.Models.SCM
         public DateTime? dateOfDisposal { get; set; }
         public Double? quantity { get; set; }
         public String placeDisposal { get; set; }
-        public String disposalMean { get; set; }
         public String remarks { get; set; }
         public int tenantId { get; set; }
         public String userName { get; set; }

@@ -34,5 +34,6 @@ namespace DataSystem.Models.SCM
         public string pndInchargeId { get; set; }
         public string unicefInchargeId { get; set; }
         public string commentByIp { get; set; }
+        public double? winterization { get; set; }
     }
 }

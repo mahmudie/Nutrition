@@ -165,7 +165,7 @@
                     <e-grid-column field="id" headerText="ID" isPrimaryKey="true" textAlign="Left" width="65"></e-grid-column>
                     <e-grid-column field="ipdistributionId" headerText="MID" allowEditing="false" textAlign="Left" width="80"></e-grid-column>
                     <e-grid-column field="facilityId" foreignKeyField="FacilityId" allowEditing="false" headerText="Facility Name" foreignKeyValue="FacilityName"
-                                   dataSource="ViewBag.FacilitySource"   editType="dropdownedit" textAlign="Left" width="250" edit="new {@params = drpFacilities }"></e-grid-column>
+                                   dataSource="ViewBag.FacilitySource" editType="dropdownedit" textAlign="Left" width="250" edit="new {@params = drpFacilities }"></e-grid-column>
                     <e-grid-column field="facilityTypeId" foreignKeyField="FacilityTypeId" allowEditing="false" headerText="Faci. Type" foreignKeyValue="FacilityTypeName"
                                    dataSource="ViewBag.FacilityTypeSource" editType="dropdownedit" textAlign="Left" width="100" edit="new {@params = drpFacilitiesType }"></e-grid-column>
 
@@ -174,28 +174,11 @@
 
                     <e-grid-column field="program" headerText="Program" allowEditing="false" textAlign="Left" width="110"></e-grid-column>
                     <e-grid-column field="estimation" allowFiltering="false" headerText="Estim." allowEditing="false" textAlign="Left" width="110"></e-grid-column>
-                    <e-grid-column field="distribution" allowFiltering="false" headerText="Dist." textAlign="Left" width="110"></e-grid-column>
-                    <e-grid-column field="distributionDate" allowFiltering="false" headerText="Dist. Date"  editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="distribution" allowFiltering="false" headerText="DistR1" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="distributionDate" allowFiltering="false" headerText="DistR1.Date" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="distributionb" allowFiltering="false" headerText="DistR2" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="distributionbDate" allowFiltering="false" headerText="DistR2.Date" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
                     <e-grid-column field="approve" allowFiltering="false" headerText="Aprvd?" allowEditing="false" textAlign="Left" width="110"></e-grid-column>
-                </e-grid-columns>
-            </ejs-grid>
-        </div>
-
-        <div style="display: none" id="Grid3">
-
-            <ejs-grid id="SupplyWaste_Grid" load="load" allowSorting="true" actionComplete="actionComplete" actionBegin="actionBegin"  editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete})" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
-                <e-data-manager url="/scmwastages/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmwastages/Insert" updateUrl="/scmwastages/Update" removeUrl="/scmwastages/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
-                <e-grid-columns>
-                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
-                    <e-grid-column field="ipDistributionId" headerText="MID" visible="false" textAlign="Left" width="80"></e-grid-column>
-                    <e-grid-column field="wasteId" foreignKeyField="WasteTypeId" headerText="Waste Type" foreignKeyValue="WasteTypeName" dataSource="ViewBag.WasteTypeSource"
-                                   editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpWasteTypes }"></e-grid-column>
-                    <e-grid-column field="dateWasted" editType="datepickeredit" customFormat="@(new {type = "date", format = "M/d/y" })" headerText="Date Wasted" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
-                    <e-grid-column field="quantity" headerText="Quantity(Carton)" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                    <e-grid-column field="reason" headerText="Remarks if any" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="300"></e-grid-column>
-                    <e-grid-column field="actionTaken" headerText="Action Taken" edit="@(new {create = "create2", read = "read2", destroy = "destroy2", write = "write2"})" textAlign="Left" width="300"></e-grid-column>
-
                 </e-grid-columns>
             </ejs-grid>
         </div>

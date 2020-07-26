@@ -192,7 +192,6 @@ namespace DataSystem.Controllers.SCM
             item.dateOfDisposal = value.Value.dateOfDisposal;
             item.quantity = value.Value.quantity;
             item.placeDisposal = value.Value.placeDisposal;
-            item.disposalMean = value.Value.disposalMean;
             item.tenantId = user.TenantId;
             item.userName = user.UserName;
             item.updateDate = DateTime.Now.Date;
@@ -230,7 +229,6 @@ namespace DataSystem.Controllers.SCM
                 item.dateOfDisposal = value.Value.dateOfDisposal;
                 item.quantity = value.Value.quantity;
                 item.placeDisposal = value.Value.placeDisposal;
-                item.disposalMean = value.Value.disposalMean;
                 item.tenantId = user.TenantId;
                 item.userName = user.UserName;
                 item.updateDate = DateTime.Now.Date;

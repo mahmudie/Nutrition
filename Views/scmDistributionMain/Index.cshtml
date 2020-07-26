@@ -14,7 +14,7 @@
     commands.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
     commands.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
 }
-<div class="container">
+<div class="container-fluid">
 
     <div class="row">
         <div class="col-md-12">
@@ -26,7 +26,7 @@
             <e-grid-columns>
                 <e-grid-column field="distributionId" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
                 <e-grid-column field="roundId" foreignKeyField="RoundId" validationRules="@(new { required=true})" headerText="Distribution Round" foreignKeyValue="RoundDescription"
-                               dataSource="ViewBag.RoundSources" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpRounds }"></e-grid-column>
+                               dataSource="ViewBag.RoundSources" editType="dropdownedit" textAlign="Left" width="350" edit="new {@params = drpRounds }"></e-grid-column>
                 <e-grid-column field="impId" foreignKeyField="ImpId" validationRules="@(new { required=true})" headerText="Implementer" clipMode="EllipsisWithTooltip" foreignKeyValue="ImpName"
                                dataSource="ViewBag.ImpSources" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpImplementers }"></e-grid-column>
                 <e-grid-column field="provinceId" foreignKeyField="ProvinceId" validationRules="@(new { required=true})" headerText="Province" clipMode="EllipsisWithTooltip" foreignKeyValue="ProvinceName"

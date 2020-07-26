@@ -373,11 +373,9 @@ namespace DataSystem.Controllers.SCM
 
             ViewBag.content1 = "#Grid1";
             ViewBag.content2 = "#Grid2";
-            ViewBag.content3 = "#Grid3";
             List<TabTabItem> headerItems = new List<TabTabItem>();
             headerItems.Add(new TabTabItem { Header = new TabHeader { Text = "Stock Info", IconCss = "e-tab1" }, Content = ViewBag.content1 });
             headerItems.Add(new TabTabItem { Header = new TabHeader { Text = "Distribution to Facilities", IconCss = "e-tab2" }, Content = ViewBag.content2 });
-            headerItems.Add(new TabTabItem { Header = new TabHeader { Text = "Supply Wastages", IconCss = "e-tab2" }, Content = ViewBag.content3 });
             ViewBag.headeritems = headerItems;
 
 
