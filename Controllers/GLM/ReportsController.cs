@@ -29,10 +29,28 @@ namespace DataSystem.GLM.Controllers
 
         public IActionResult Index()
         {
-            var reports = _context.ReportsView
-                .Include(m => m.Dataforms)
-                .OrderByDescending(m => m.UpdateDate)
+            var reports = _context.Reports
+                .Include(m => m.Dataform)
+                .Include(m => m.DateValues).ThenInclude(m => m.Field)
+                .OrderByDescending(m => m.Id)
                 .ToList();
+
+            // check for the date field with expiry set to True and
+            // check if the date is in expiry warning period and set
+            // expiry warning flag
+            for (int i = 0; i < reports.Count(); i++)
+            {
+                foreach (var dv in reports[i].DateValues)
+                {
+                    if (dv.Field.IsExpiryDate && dv.Field.ExpiryWarningPeriod != null)
+                    {
+                        if ((DateTime)dv.Data <= DateTime.Now.AddDays((double)dv.Field.ExpiryWarningPeriod))
+                        {
+                            reports[i].ExpiryWarning = true;
+                        }
+                    }
+                }
+            }
 
             return View(reports);
         }

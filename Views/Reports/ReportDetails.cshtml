@@ -107,7 +107,9 @@
                                                                     if (field.DataType == "date")
                                                                     {
                                                                         var myid = "td" + field.Id;
-                                                                        <input type="text" name="@field.Id" id="@myid" value="@field.Data" class="form-control js-datepicker" />
+                                                                        var warningClass = (field.ExpiryWarning) ? "field-date-expiry-warning" : "";
+
+                                                                        <input type="text" name="@field.Id" id="@myid" value="@field.Data" class="form-control js-datepicker @warningClass" />
                                                                     }
                                                                     else
                                                                     {

@@ -26,5 +26,6 @@ namespace DataSystem.Models.GLM
         public ICollection<FieldOption> FieldOptions { get; set; }
 
         public Dictionary<byte, string> YesNoOptions { get; set; }
+        public bool ExpiryWarning { get; set; } = false;
     }
 }

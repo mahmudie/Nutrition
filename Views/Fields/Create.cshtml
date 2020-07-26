@@ -28,7 +28,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(m => m.IsRequired)
-                @Html.DropDownListFor(m => m.IsRequired, new SelectList(Model.IsRequiredOptions, "Key", "Value"), "", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.IsRequired, new SelectList(Model.BooleanOptions, "Key", "Value"), "", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.IsRequired)
             </div>
 
@@ -36,6 +36,23 @@
                 @Html.LabelFor(m => m.YesNoDefaultCaption)
                 @Html.TextBoxFor(m => m.YesNoDefaultCaption, new { @class = "form-control js-yesno-default-caption" })
                 @Html.ValidationMessageFor(m => m.YesNoDefaultCaption)
+            </div>
+
+            <div class="card js-date-field-settings">
+                <div class="card-header">Date Field Settings</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsExpiryDate)
+                        @Html.DropDownListFor(m => m.IsExpiryDate, new SelectList(Model.BooleanOptions, "Key", "Value"), "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IsExpiryDate)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ExpiryWarningPeriod)
+                        @Html.TextBoxFor(m => m.ExpiryWarningPeriod, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ExpiryWarningPeriod)
+                    </div>
+                </div>
             </div>
 
             <hr />
@@ -53,6 +70,7 @@
             var dataType = $('.js-data-type').val();
             var $inputType = $('.js-input-type');
             var $yesNoDefaultCaption = $('.js-yesno-default-caption');
+            var $dateFieldSettings = $('.js-date-field-settings');
 
             if (dataType == 'date' || dataType == 'yesno') {
                 $inputType.attr('disabled', 'disabled');
@@ -60,6 +78,10 @@
 
             if (dataType != 'yesno') {
                 $yesNoDefaultCaption.attr('disabled', 'disabled');
+            }
+
+            if (dataType != 'date') {
+                $dateFieldSettings.css('display', 'none');
             }
 
             // enable / disable input-type & yesno-default-option field based on data-type change
@@ -77,6 +99,12 @@
                     $yesNoDefaultCaption.removeAttr('disabled', 'disabled');
                 } else {
                     $yesNoDefaultCaption.attr('disabled', 'disabled');
+                }
+
+                if (dataType == 'date') {
+                    $dateFieldSettings.css('display', 'block');
+                } else {
+                    $dateFieldSettings.css('display', 'none');
                 }
             })
         });

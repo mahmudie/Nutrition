@@ -11,5 +11,6 @@ namespace DataSystem.Models.GLM
         public long FieldId { get; set; }
         public string ReportId { get; set; }
         public DateTime? Data { get; set; } = null;
+        public Field Field { get; set; }
     }
 }

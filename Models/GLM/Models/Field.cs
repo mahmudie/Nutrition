@@ -16,6 +16,9 @@ namespace DataSystem.Models.GLM
         public string YesNoDefaultCaption { get; set; } = "N/A";
         public bool IsRequired { get; set; } = true;
 
+        public bool IsExpiryDate { get; set; } = false;
+        public int? ExpiryWarningPeriod { get; set; } = null;
+
         [ForeignKey("Question")]
         public long QuestionId { get; set; }
         public Question Question { get; set; }
