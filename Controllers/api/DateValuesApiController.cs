@@ -20,11 +20,9 @@ namespace DataSystem.Controllers.api
     {
 
         protected readonly WebNutContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public DateValuesApiController(WebNutContext context, UserManager<ApplicationUser> userManager)
+        public DateValuesApiController(WebNutContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
 

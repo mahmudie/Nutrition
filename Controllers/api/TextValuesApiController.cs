@@ -22,11 +22,9 @@ namespace DataSystem.Controllers.api
     {
 
         protected readonly WebNutContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public TextValuesApiController(WebNutContext context, UserManager<ApplicationUser> userManager)
+        public TextValuesApiController(WebNutContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
 

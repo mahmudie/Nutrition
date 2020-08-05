@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Stock Movement Report";
+}
+
+@{
+    var RoudDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RoudSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "RoundId", Text = "RoundName" } };
+    var ProvinceDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "Province" } };
+    var ImpDropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ImpSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ImpId", Text = "ImpName" } };
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <h3>@ViewData["Title"] </h3>
+        @{
+            List<object> toolbarItems = new List<object>();
+            toolbarItems.Add("Add");
+            toolbarItems.Add("Edit");
+            toolbarItems.Add("Delete");
+            toolbarItems.Add("Update");
+            toolbarItems.Add("Cancel");
+            toolbarItems.Add("Search");
+            toolbarItems.Add("ExcelExport");
+        }
+        <ejs-grid id="MovmntGrid1" allowSorting="true" selectedRowIndex="0" rowSelected="selected" actionComplete="actionComplete" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+            <e-data-manager url="/scmStokmovmnt/UrlDataSource" adaptor="UrlAdaptor" ></e-data-manager>
+            @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
+            <e-grid-columns>
+                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="implementer"  headerText="Implementer" textAlign="Left" width="200" ></e-grid-column>
+                <e-grid-column field="consignee" headerText="Warehouse/Consignee" validationRules="@(new { required=true})"  textAlign="Left" width="330"></e-grid-column>            
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+
+    <div class="row">
+        <h3>Details</h3>
+        <ejs-grid id="MovmntGrid2" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+            <e-data-manager url="/scmStokmovmnt/CUrlDataSource" adaptor="UrlAdaptor"></e-data-manager>
+            @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
+        <e-grid-columns>
+            @*<e-grid-column field="id" headerText="ID" isPrimaryKey="true" isIdentity="true" defaultValue="0" textAlign="Left" width="80"></e-grid-column>*@
+            <e-grid-column field="whId" headerText="ID" validationRules="@(new { required=true})" textAlign="Left" width="70" ></e-grid-column>
+            <e-grid-column field="roundId" headerText="Period" textAlign="Left" width="80"></e-grid-column>
+            <e-grid-column field="dateFrom" headerText="Date From" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="dateTo" headerText="Date To" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="item" headerText="Stock Item" textAlign="Left" width="180"></e-grid-column>
+            <e-grid-column field="batchNumber" headerText="Batch No" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="quantity" headerText="Rcvd" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="dispatch" headerText="Dispatch" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="balance" headerText="Balance" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="loss" headerText="Loss" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="damage" headerText="Damage" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="expiration" headerText="Expiration" textAlign="Left" width="90"></e-grid-column>
+            <e-grid-column field="expiryDate" headerText="Expire Date" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" textAlign="Left" width="130"></e-grid-column>
+            
+        </e-grid-columns>
+        </ejs-grid>
+
+    </div>
+</div>
+@section Scripts{
+
+}
+
+
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 650;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+        }
+    }
+
+    function selected(args) {
+        @*//var data = @Html.Raw(Json.Serialize(ViewBag.dataSource));*@
+        var id = args.data.id;
+        var degrid = document.getElementById("MovmntGrid2").ej2_instances[0];       // Child Grid instance
+        degrid.query = new ej.data.Query().where("whId", "equal", id, false).take(1);
+    }
+
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("MovmntGrid1").ej2_instances[0];
+        if (args.item.id === 'MovmntGrid1_excelexport') {
+            var url = "/scmStokmovmnt/MovementPivot";
+            window.location = url;
+        }
+    }
+</script>

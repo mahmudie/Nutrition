@@ -1458,6 +1458,7 @@ namespace DataSystem.Models
         public virtual DbSet<rptIPStockmovement> rptIPStockmovement { get; set; }
         public virtual DbSet<rptIPStockmovementdetails> rptIPStockmovementdetails { get; set; }
         public virtual DbSet<scmRecalldisposal> scmRecalldisposal { get; set; }
+        public virtual DbSet<vscmRounds> vscmRounds { get; set; }
         //public virtual DbSet<scmFiles> scmFiles { get; set; }
 
         //Views
@@ -1470,6 +1471,7 @@ namespace DataSystem.Models
         public virtual DbSet<vscmrequests> vscmrequests { get; set; }
         public virtual DbSet<vscmiprequest> vscmiprequest { get; set; }
         public virtual DbSet<vscmstockwastages> vscmstockwastages { get; set; }
+        public virtual DbSet<vusers> vusers { get; set; }
 
 
 

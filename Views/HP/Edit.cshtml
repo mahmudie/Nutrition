@@ -188,7 +188,7 @@
                                    dataSource="ViewBag.HpCbnpKits" editType="dropdownedit" edit="new {@params = drpHpCbnpKits }"></e-grid-column>
                     <e-grid-column field="responseId" foreignKeyField="ResponseId" validationRules="@(new { required=true})" headerText="Response" foreignKeyValue="ResponseName"
                                    dataSource="ViewBag.Responses" editType="dropdownedit" textAlign="Left" width="120" edit="new {@params = drpResponses }"></e-grid-column>
-                    <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" textAlign="Left" width="350"></e-grid-column>
+                    <e-grid-column field="remarks" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="350"></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
     </div>

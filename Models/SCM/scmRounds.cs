@@ -28,4 +28,15 @@ namespace DataSystem.Models.SCM
         public int TenantId { get; set; }
         public DateTime? UpdateDate { get; set; }
     }
+
+    public class vscmRounds
+    {
+
+        [Key]
+        public int roundId { get; set; }
+        public string roundCode { get; set; }
+        public string roundDescription { get; set; }
+        public DateTime periodFrom { get; set; }
+        public DateTime periodTo { get; set; }
+    }
 }

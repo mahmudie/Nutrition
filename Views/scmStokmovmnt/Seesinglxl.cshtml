@@ -1,0 +1,31 @@
+
+@{
+    ViewData["Title"] = "Excel File";
+}
+<div>
+    <ejs-spreadsheet id="spreadsheet" width="100%" height="600px" openUrl="/scmStokmovmnt/Open" saveUrl="/scmStokmovmnt/Save" created="createdHandler">
+
+    </ejs-spreadsheet>
+</div>
+
+<script>
+    function createdHandler() {
+        var host = window.location.host;
+        var spreadsheet = ej.base.getComponent(document.getElementById("spreadsheet"), "spreadsheet");
+        fetch(window.location.protocol+"/Template/" + "WHstockmovement.xlsx")
+            .then((response) => {
+                response.blob().then((fileBlob) => {
+                    var file = new File([fileBlob], "WHstockmovement.xlsx");
+                    spreadsheet.open({ file: file });
+                })
+            })
+        //if (this.activeSheetIndex === 0 && this.sheets[this.activeSheetIndex].name === 'Requests IP Level') {
+        //    this.merge("A2:J2");
+        //}
+    }
+</script>
+<style>
+    .box-header.with-border {
+        display: none !important;
+    }
+</style>
