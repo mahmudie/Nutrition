@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 using DataSystem.ViewModels;
+using DataSystem.Models.GLM.ViewModels;
 
 namespace DataSystem.GLM.Controllers
 {
@@ -29,30 +30,57 @@ namespace DataSystem.GLM.Controllers
 
         public IActionResult Index()
         {
-            var reports = _context.Reports
-                .Include(m => m.Dataform)
-                .Include(m => m.DateValues).ThenInclude(m => m.Field)
-                .OrderByDescending(m => m.Id)
+            var reports = _context.ReportsView
+                .Include(m => m.DataForm)
+                .Include(m => m.DateValues)
+                .OrderByDescending(m => m.UpdateDate)
                 .ToList();
 
-            // check for the date field with expiry set to True and
-            // check if the date is in expiry warning period and set
-            // expiry warning flag
-            for (int i = 0; i < reports.Count(); i++)
+            // prepare the final reports list view model with expiry warning
+            // and other configurations
+            
+            List<ReportListViewModel> reportList = new List<ReportListViewModel>();
+
+            foreach (var r in reports)
             {
-                foreach (var dv in reports[i].DateValues)
+                var report = new ReportListViewModel();
+
+                report.ReportId = r.Id;
+                report.Province = r.Province;
+                report.District = r.District;
+                report.FacilityId = r.FacilityID;
+                report.Facility = r.Facility;
+                report.ReportedBy = r.ReportedBy;
+                report.DataCollectorOffice = r.DataCollectorOffice;
+                report.DataForm = r.DataForm.Name;
+                report.PreparedDate = r.ReportPreparedDate;
+                report.IsCompleted = r.IsCompleted;
+
+                // check for the date field with expiry set to True and
+                // check if the date is in expiry warning period and then
+                // set expiry warning flag
+                if (!r.IsCompleted)
                 {
-                    if (dv.Field.IsExpiryDate && dv.Field.ExpiryWarningPeriod != null)
+                    if (r.DateValues.Count() > 0)
                     {
-                        if ((DateTime)dv.Data <= DateTime.Now.AddDays((double)dv.Field.ExpiryWarningPeriod))
+                        foreach (var dv in r.DateValues)
                         {
-                            reports[i].ExpiryWarning = true;
+                            if (dv.Data != null && dv.IsExpiryDate && dv.ExpiryWarningPeriod != null)
+                            {
+                                if ((DateTime)dv.Data <= DateTime.Now.AddDays((double)dv.ExpiryWarningPeriod))
+                                {
+                                    report.HasExpiryWarning = true;
+                                }
+                            }
                         }
                     }
                 }
+
+                // add report to the list
+                reportList.Add(report);
             }
 
-            return View(reports);
+            return View(reportList);
         }
 
         public IActionResult Create()
@@ -643,7 +671,7 @@ namespace DataSystem.GLM.Controllers
             ViewBag.FacilityTypeName = FacilityTypeName;
 
             var report = _context.Reports
-                .Include(m => m.Dataform)
+                .Include(m => m.DataForm)
                 .Where(m => m.Id == Id)
                 .SingleOrDefault();
 
@@ -789,6 +817,27 @@ namespace DataSystem.GLM.Controllers
             return View(reportDetailsForm);
         }
 
+        public IActionResult Complete(string Id)
+        {
+            var report = _context.Reports.Find(Id);
+
+            return View(report);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Complete(StringId dto)
+        {
+            var report = _context.Reports.Find(dto.Id);
+
+            report.IsCompleted = true;
+
+            _context.Entry(report).State = EntityState.Modified;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Reports");
+        }
 
         public IActionResult Delete(string Id)
         {
@@ -808,6 +857,7 @@ namespace DataSystem.GLM.Controllers
 
             return RedirectToAction("Index", "Reports");
         }
+
         public int WeekNumber(DateTime value)
         {
             return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(value, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);

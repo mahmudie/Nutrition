@@ -37,6 +37,7 @@ namespace DataSystem.Models
         [Display(Name = "Facility Type")]
         [Required(ErrorMessage = "Facility Type is required.")]
         public int? FacilityType { get; set; }
+
         public double? Lat { get; set; }
         public double? Lon { get; set; }
         public string ActiveStatus { get; set; }

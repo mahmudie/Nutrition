@@ -30,6 +30,10 @@ namespace DataSystem.Models.GLM
 
         [ForeignKey("DataForm")]
         public int DataFormId { get; set; }
-        public DataForm Dataforms { get; set; }
+        public DataForm DataForm { get; set; }
+
+        public bool IsCompleted { get; set; }
+
+        public ICollection<VDateValue> DateValues { get; set; }
     }
 }

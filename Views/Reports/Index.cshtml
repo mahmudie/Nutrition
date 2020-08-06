@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataSystem.Models.GLM.ReportsView>
+﻿@model List<DataSystem.Models.GLM.ViewModels.ReportListViewModel>
 @{
     ViewData["Title"] = "National Nutrition Quality Assurance Checklist";
 }
@@ -37,34 +37,34 @@
             <tbody>
                 @foreach (var row in Model)
                 {
-                    var warningClass = (row.ExpiryWarning) ? "table-date-expiry-warning" : "";
+                    var warningClass = (row.HasExpiryWarning) ? "table-date-expiry-warning" : "";
 
                     <tr class="@warningClass">
                         <td>
                             @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
                             {
-                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.Id">
-                                    @row.Id
+                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.ReportId">
+                                    @row.ReportId
                                 </a>
                             }
                             else
                             {
-                                @row.Id
+                                @row.ReportId
                             }
                         </td>
                         <td>@row.Province</td>
                         <td>@row.District</td>
                         <td>@row.Implementer</td>
-                        <td>@row.FacilityID</td>
+                        <td>@row.FacilityId</td>
                         <td>@row.Facility</td>
                         <td>@row.ReportedBy</td>
                         <td>@row.DataCollectorOffice</td>
-                        <td>  @String.Format("{0:yyyy-MM-dd}", @row.ReportPreparedDate)</td>
+                        <td>@String.Format("{0:yyyy-MM-dd}", @row.PreparedDate)</td>
                         <td>
                             @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
                             {
-                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.Id">
-                                    @row.Dataforms.Name
+                                <a asp-controller="Reports" asp-action="Edit" asp-route-id="@row.ReportId">
+                                    @row.DataForm
                                 </a>
                             }
                         </td>
@@ -73,11 +73,18 @@
                                 <a class="btn btn-light btn-sm dropdown-toggle" href="#" data-toggle="dropdown">Actions</a>
 
                                 <div class="dropdown-menu">
-                                    <a asp-controller="Reports" asp-action="ShowReport" asp-route-id="@row.Id" class="dropdown-item">Show Report</a>
-                                    <div class="dropdown-divider"></div>
+                                    <a asp-controller="Reports" asp-action="ShowReport" asp-route-id="@row.ReportId" class="dropdown-item">Show Report</a>
+
+                                    @if (!row.IsCompleted)
+                                    {
+                                        <div class="dropdown-divider"></div>
+                                        <a asp-controller="Reports" asp-action="Complete" asp-route-id="@row.ReportId" class="dropdown-item">Complete</a>
+                                    }
+
                                     @if (SignInManager.IsSignedIn(User) && User.IsInRole("dataentry"))
                                     {
-                                        <a asp-controller="Reports" asp-action="Delete" asp-route-id="@row.Id" class="dropdown-item">Delete</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a asp-controller="Reports" asp-action="Delete" asp-route-id="@row.ReportId" class="dropdown-item">Delete</a>
                                     }
                                 </div>
                             </div>

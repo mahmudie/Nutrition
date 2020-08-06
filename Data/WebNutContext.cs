@@ -11,6 +11,7 @@ using DataSystem.GLM.Models;
 using DataSystem.Controllers.SCM;
 using DataSystem.Models.GLM;
 
+
 namespace DataSystem.Models
 {
     public partial class WebNutContext : DbContext
@@ -1337,7 +1338,10 @@ namespace DataSystem.Models
             modelBuilder.Entity<DateValue>()
                 .HasKey(m => new { m.FieldId, m.ReportId });
 
+            modelBuilder.Entity<VDateValue>()
+                .HasKey(m => new { m.FieldId, m.ReportsViewId });
         }
+
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<Districts> Districts { get; set; }
         public virtual DbSet<FacilityInfo> FacilityInfo { get; set; }
@@ -1494,6 +1498,7 @@ namespace DataSystem.Models
         public DbSet<TextValue> TextValues { get; set; }
         public DbSet<NumberValue> NumberValues { get; set; }
         public DbSet<DateValue> DateValues { get; set; }
+        //public DbSet<VDateValue> VDateValues { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportsView> ReportsView { get; set; }
     }

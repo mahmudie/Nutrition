@@ -26,10 +26,10 @@ namespace DataSystem.Models.GLM
         public Double? ReportLat { get; set; }
         public Double? ReportLon { get; set; }
 
-        [ForeignKey("DataForm")]
+        public bool IsCompleted { get; set; } = false;
+
         public int DataFormId { get; set; }
-        public DataForm Dataform { get; set; }
-        public ICollection<DateValue> DateValues { get; set; }
+        public DataForm DataForm { get; set; }
 
         [NotMapped]
         public bool ExpiryWarning { get; set; } = false;

@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataSystem.Models
 {
+    [Table("Provinces")]
     public partial class Provinces
     {
         public Provinces()
@@ -15,6 +16,7 @@ namespace DataSystem.Models
             Districts = new HashSet<Districts>();
             warehouses = new HashSet<scmWarehouses>();
         }
+
         [Required]
         public string ProvCode { get; set; }
         public int? AGHCHOCode { get; set; }
@@ -32,7 +34,7 @@ namespace DataSystem.Models
         public string ProveNamePashto { get; set; }
 
         public virtual ICollection<Districts> Districts { get; set; }
-       
+
 
         [ForeignKey("ProvinceId")]
         public virtual ICollection<scmWarehouses> warehouses { get; set; }
