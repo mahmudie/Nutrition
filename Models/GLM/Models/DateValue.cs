@@ -17,8 +17,6 @@ namespace DataSystem.Models.GLM
         public string ReportId { get; set; }
         public Report Report { get; set; }
 
-        public ReportsView ReportsView { get; set; }
-
         public DateTime? Data { get; set; } = null;
         
     }
