@@ -194,7 +194,7 @@
             <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
             <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
             <e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
-            <e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+            @*<e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>*@
             <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
             <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
 
@@ -238,7 +238,7 @@
                 <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="116"></e-grid-column>
                 <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
-                <e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                @*<e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>*@
                 <e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
@@ -262,7 +262,7 @@
             toolbarItems.Add("Search");
         }
 
-        <ejs-grid id="GridFours" allowSorting="true" load="loadmessage" actionComplete="actionComplete" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog, Template="#dialogtemplate"})" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+        <ejs-grid id="GridFours" allowSorting="true" load="loadmessage" queryCellInfo="queryCellInfo3" actionComplete="actionComplete" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog, Template="#dialogtemplate"})" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
             <e-data-manager url="/scmIPRequest/RUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmIPRequest/RInsert" updateUrl="/scmIPRequest/RUpdate" removeUrl="/scmIPRequest/RRemove"></e-data-manager>
             @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>*@
             <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
@@ -275,11 +275,13 @@
                 <e-grid-column field="program" headerText="Prgrm" textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="children" allowFiltering="false" headerText="Children" textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="stockForChildren" allowFiltering="false" headerText="Estim." textAlign="Left" width="100"></e-grid-column>
-                <e-grid-column field="currentBalance" allowFiltering="false" headerText="Balance" textAlign="Left" width="100"></e-grid-column>
+                @*<e-grid-column field="currentBalance" allowFiltering="false" headerText="Balance" textAlign="Left" width="100"></e-grid-column>*@
                 <e-grid-column field="adjustment" allowFiltering="false" headerText="Adj." textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="adjustmentReason" headerText="Adj.cmnt" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="emergency" allowFiltering="false" headerText="Emerg." textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="emergencyReason" allowFiltering="false" headerText="Emerg. Reason" textAlign="Left" width="200"></e-grid-column>
+                <e-grid-column field="winterization" allowFiltering="false" headerText="Winterization" textAlign="Left" width="110"></e-grid-column>
+                <e-grid-column field ="total" type="number" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
                 <e-grid-column field="commentByPnd" headerText="Cmnt. PND" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="commentByUnicef" headerText="Cmnt. UNICEF" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="approveByPnd" defaultValue="0" editType="booleanedit" template="#approveByPnd" allowFiltering="false" type="boolean" headerText="Aprv. PND" textAlign="Left" width="120"></e-grid-column>
@@ -455,7 +457,13 @@
     </script>
     <script>
 // Send Id to sub forms
-
+        function queryCellInfo3(args) {
+            if (args.column.field === 'total') {
+                args.data['total'] =args.data['stockForChildren']+args.data['currentBalance']+args.data['emergency']+args.data['winterization'];
+                args.cell.innerHTML = args.data['total'];
+            }
+        }
+ 
     function actionBegin2(args) {
         if (args.requestType === 'beginEdit' || args.requestType === 'add') {
             //assign value to corresponding key which helps to remove duplicate/conflicts

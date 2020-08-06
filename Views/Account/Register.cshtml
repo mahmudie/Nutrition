@@ -91,13 +91,15 @@
         <div class="form-group">
             <label asp-for="Pnd" class="col-md-2 control-label">Is PND?</label>
             <div class="col-md-7">
-                <input asp-for="Pnd" />
+                <input type="radio" asp-for="Pnd" value="0"> No<br>
+                <input type="radio" asp-for="Pnd" value="1"> Yes<br>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Unicef" class="col-md-2 control-label">Is UNICEF?</label>
             <div class="col-md-7">
-                <input asp-for="Unicef" class="form-control checkbox"  />
+                <input type="radio" asp-for="Unicef" value="0"> No<br>
+                <input type="radio" asp-for="Unicef" value="1"> Yes<br>
             </div>
         </div>
         <div class="form-group">

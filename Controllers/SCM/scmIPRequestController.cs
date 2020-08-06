@@ -44,7 +44,7 @@ namespace DataSystem.Controllers.SCM
             var data = _context.scmIPRequests.ToList();
             try
             {
-                if (User.IsInRole("dataentry"))
+                if (User.IsInRole("administrator") && (user.Unicef == 0 && user.Pnd == 0))
                 {
                     data = data.Where(m => m.userName == user.UserName).ToList();
                 }
@@ -111,6 +111,7 @@ namespace DataSystem.Controllers.SCM
             scmIpReq.emergencyReason = value.Value.emergencyReason;
             scmIpReq.userName = User.Identity.Name;
             scmIpReq.updateDate = DateTime.Now;
+            scmIpReq.winterization = value.Value.winterization;
             try
             {
                 if (User.IsInRole("administrator") && (user.Unicef!=1 || user.Pnd!=1))
@@ -149,6 +150,7 @@ namespace DataSystem.Controllers.SCM
                         scmIpReq.userName = user.UserName;
                         scmIpReq.updateDate = DateTime.Now;
                         scmIpReq.commentByIp = value.Value.commentByIp;
+                        scmIpReq.winterization = value.Value.winterization;
                     }
                 }
                 else if (User.IsInRole("unicef") && scmIpReq.approveByUnicef != true)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataSystem.Models;
 using DataSystem.Models.GLM;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +14,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataSystem.Controllers.api
 {
-   // [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DateValuesApiController : ControllerBase
     {
 
         protected readonly WebNutContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public DateValuesApiController(WebNutContext context, UserManager<ApplicationUser> userManager)
+        public DateValuesApiController(WebNutContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
 

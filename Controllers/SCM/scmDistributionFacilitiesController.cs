@@ -85,6 +85,8 @@ namespace DataSystem.Controllers.SCM
             dist.userName = user.UserName;
             dist.tenantId = user.TenantId;
             dist.updateDate = DateTime.Now ;
+            dist.distributionb = value.Value.distributionb;
+            dist.distributionbDate = value.Value.distributionbDate;
 
             try
             {
@@ -115,6 +117,8 @@ namespace DataSystem.Controllers.SCM
                 dist.userName = user.UserName;
                 dist.tenantId = user.TenantId;
                 dist.updateDate = DateTime.Now;
+                dist.distributionb = value.Value.distributionb;
+                dist.distributionbDate = value.Value.distributionbDate;
             }
 
             if (!ModelState.IsValid)
@@ -189,6 +193,8 @@ namespace DataSystem.Controllers.SCM
                         hfreqs.tenantId = Crrentuser.TenantId;
                         hfreqs.updateDate = DateTime.Now.Date;
                         hfreqs.userName = Crrentuser.UserName;
+                        hfreqs.distributionb = value.Value.distributionb;
+                        hfreqs.distributionbDate = value.Value.distributionbDate;
                         _context.Update(hfreqs);
                         _context.SaveChanges();
                     }

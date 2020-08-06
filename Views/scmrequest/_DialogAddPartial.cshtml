@@ -8,107 +8,115 @@
                 <div class="form-group col-md-12">
                     <h3>Add New</h3>
                 </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="id">ID</label>
-                            <ejs-textbox id="id" enabled="false"></ejs-textbox>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="requestId">Request ID</label>
-                            <ejs-textbox id="requestId" enabled="false"></ejs-textbox>
-                        </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="id">ID</label>
+                        <ejs-textbox id="id" enabled="false"></ejs-textbox>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="SupplyId">Supply</label>
-                            <ejs-dropdownlist id="SupplyId" placeholder="Select a supply" dataSource="@ViewBag.SupplySource" popupHeight="300px">
-                                <e-dropdownlist-fields text="Item" value="SupplyId"></e-dropdownlist-fields>
-                            </ejs-dropdownlist>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="program">Program</label>
-                            <ejs-textbox id="program"></ejs-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="children">Total Children</label>
-                            <ejs-textbox id="children"></ejs-textbox>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <div class="form-group">
-                            <label for="stockForChildren">Estimated Stock</label>
-                            <ejs-textbox id="stockForChildren"></ejs-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="currentBalance">Current Balance</label>
-                            <ejs-textbox id="currentBalance"></ejs-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="adjustment">Adjustment</label>
-                            <ejs-textbox id="adjustment"></ejs-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="adjustment">Adjustment Reason</label>
-                            <ejs-richtexteditor id="adjustmentReason" enabled="true"></ejs-richtexteditor>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="emergency">Emergency</label>
-                            <ejs-textbox id="emergency" enabled="true"></ejs-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="emergencyReason">Emergency Reason</label>
-                            <ejs-richtexteditor id="emergencyReason" enabled="true"></ejs-richtexteditor>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="commentByPnd">Comment by PND</label>
-                            <ejs-richtexteditor id="commentByPnd" enabled="@ViewBag.gridUnicef"></ejs-richtexteditor>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-group">
-                            <label for="commentByUnicef">Comment by UNICEF</label>
-                            <ejs-richtexteditor id="commentByUnicef" enabled="@ViewBag.gridPnd"></ejs-richtexteditor>
-                        </div>
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="requestId">Request ID</label>
+                        <ejs-textbox id="requestId" enabled="false"></ejs-textbox>
                     </div>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="SupplyId">Supply</label>
+                        <ejs-dropdownlist id="SupplyId" placeholder="Select a supply" dataSource="@ViewBag.SupplySource" popupHeight="300px">
+                            <e-dropdownlist-fields text="Item" value="SupplyId"></e-dropdownlist-fields>
+                        </ejs-dropdownlist>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="program">Program</label>
+                        <ejs-textbox id="program"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="children">Total Children</label>
+                        <ejs-textbox id="children"></ejs-textbox>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        <label for="stockForChildren">Estimated Stock</label>
+                        <ejs-textbox id="stockForChildren"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="currentBalance">Current Balance</label>
+                        <ejs-textbox id="currentBalance"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="adjustment">Adjustment</label>
+                        <ejs-textbox id="adjustment"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="adjustment">Adjustment Reason</label>
+                        <ejs-richtexteditor id="adjustmentReason" enabled="true"></ejs-richtexteditor>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="emergency">Emergency</label>
+                        <ejs-textbox id="emergency" enabled="true"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="emergencyReason">Emergency Reason</label>
+                        <ejs-richtexteditor id="emergencyReason" enabled="true"></ejs-richtexteditor>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="winterization">Winterization</label>
+                        <ejs-textbox id="winterization" enabled="true"></ejs-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
+                    <label for="commentByPnd">Comment by PND</label>
+                    <ejs-richtexteditor id="commentByPnd" enabled="@ViewBag.gridUnicef"></ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="commentByUnicef">Comment by UNICEF</label>
+                        <ejs-richtexteditor id="commentByUnicef" enabled="@ViewBag.gridPnd"></ejs-richtexteditor>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <ejs-scripts></ejs-scripts> 

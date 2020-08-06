@@ -15,18 +15,15 @@ using Microsoft.EntityFrameworkCore;
 namespace DataSystem.Controllers.api
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReportsDataApiController : ControllerBase
     {
 
         protected readonly WebNutContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public ReportsDataApiController(WebNutContext context, UserManager<ApplicationUser> userManager)
+        public ReportsDataApiController(WebNutContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
 
@@ -72,8 +69,7 @@ namespace DataSystem.Controllers.api
         [HttpPost]
         public async Task<ActionResult<Report>> Post([FromBody] List<Report> reports)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
+           
             if (!ModelState.IsValid)
             {
                 return BadRequest("Bad Request, Didn't Pass validation");
@@ -82,6 +78,8 @@ namespace DataSystem.Controllers.api
 
             foreach (var report in reports)
             {
+                var users = _context.vusers.Where(m => m.UserName.Equals(report.UserName)).FirstOrDefault();
+
                 if (this.ReportsExists(report.Id))
                 {
                     _context.Entry(report).State = EntityState.Modified;
@@ -99,7 +97,7 @@ namespace DataSystem.Controllers.api
                 {
                     try
                     {
-                        report.TenantId = user.TenantId;
+                        report.TenantId = users.TenantId;
                         _context.Reports.Add(report);
                         _context.SaveChanges();
                     }

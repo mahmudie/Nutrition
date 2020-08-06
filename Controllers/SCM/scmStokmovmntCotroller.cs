@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,10 +10,14 @@ using System.Threading.Tasks;
 using DataSystem.Models;
 using DataSystem.Models.SCM;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Drawing;
 using Syncfusion.EJ2.Base;
+using Syncfusion.EJ2.Spreadsheet;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIO.Implementation.PivotTables;
 
@@ -22,18 +27,273 @@ namespace DataSystem.Controllers.SCM
     {
         private readonly WebNutContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public scmStokmovmntController(WebNutContext context, UserManager<ApplicationUser> userManager)
+
+        public scmStokmovmntController(WebNutContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+        public IActionResult Gensingxl(int id)
+        {
 
+            var data =  _context.rptIPStockmovementdetails.Where(m=>m.whId==id).ToList();
+
+            if (!data.Any())
+            {
+                return BadRequest();
+            }
+
+            //Instantiate the spreadsheet creation engine.
+            ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+
+            application.DefaultVersion = ExcelVersion.Excel2016;
+
+            IWorkbook workbook;
+            workbook = application.Workbooks.Create(2);
+            IWorksheet worksheet = workbook.Worksheets[0];
+
+            this._context.Database.SetCommandTimeout(3000);
+
+            //Merging and additing title
+            worksheet.Range["A2"].Text = "IP Warehouse Stock Movement";
+            worksheet.Range["A2:J2"].Merge();
+            worksheet.Range["A2"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+
+            worksheet.Range["A2"].CellStyle.Font.Size = 16;
+            worksheet.Range["A2"].CellStyle.Font.Bold = true;
+            //Add Column labels
+            worksheet.Range["A3"].Text = "#";
+            worksheet.Range["B3"].Text = "Round/Quarter";
+            worksheet.Range["C3"].Text = "Implementer";
+            worksheet.Range["D3"].Text = "Location/Consignee";
+            worksheet.Range["E3"].Text = "From Date";
+            worksheet.Range["F3"].Text = "Through Date";
+            worksheet.Range["G3"].Text = "Issue Date";
+            worksheet.Range["H3"].Text = "Stock Item";
+            worksheet.Range["I3"].Text = "Batch No";
+            worksheet.Range["J3"].Text = "Quantity";
+            worksheet.Range["K3"].Text = "Dispatched";
+            worksheet.Range["L3"].Text = "Loss";
+            worksheet.Range["M3"].Text = "Damage";
+            worksheet.Range["N3"].Text = "Expiration";
+            worksheet.Range["O3"].Text = "Expiry Date";
+
+            worksheet.Range["A3:O3"].CellStyle.Font.Size = 12;
+            worksheet.Range["A3:O3"].CellStyle.Font.Bold = true;
+            worksheet.Range["A3:O3"].CellStyle.Color = Color.FromArgb(0, 0, 112, 192); 
+            worksheet.Range["A3:O3"].CellStyle.Font.Color = ExcelKnownColors.White;
+            worksheet.Range["A3:O3"].RowHeight = 30;
+            worksheet.Range["A3:O3"].CellStyle.VerticalAlignment = ExcelVAlign.VAlignCenter;
+
+            int startRow = 4;
+            foreach (var j in data)
+            {
+                if (j.distributionId > 0)
+                {
+                    worksheet.Range["A" + startRow].Number =startRow-3;
+                    worksheet.Range["B" + startRow].Text = j.roundId;
+                    worksheet.Range["C" + startRow].Text = j.implementer;
+                    worksheet.Range["D" + startRow].Text = j.roundId;
+                    worksheet.Range["E" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["E" + startRow].DateTime = j.dateFrom;
+                    worksheet.Range["F" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["F" + startRow].DateTime = j.dateTo;
+                    worksheet.Range["G" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["G" + startRow].DateTime = j.issueDate;
+                    worksheet.Range["H" + startRow].Text = j.item;
+                    worksheet.Range["I" + startRow].Text = j.batchNumber;
+                    worksheet.Range["J" + startRow].Number = (double)j.quantity;
+                    worksheet.Range["K" + startRow].Number = (double)j.dispatch;
+                    worksheet.Range["L" + startRow].Number = (double)j.loss;
+                    worksheet.Range["M" + startRow].Number = (double)j.damage;
+                    worksheet.Range["N" + startRow].Number = (double)j.expiration;
+                    worksheet.Range["O" + startRow].NumberFormat = "m/d/yyyy"; ;
+                    worksheet.Range["O" + startRow].DateTime = j.expiryDate;
+                }
+                startRow += 1;
+            }
+
+            worksheet.Range["A2"].Text = "IP Warehouse Stock Movement";
+            worksheet.Range["A2:O2"].Merge();
+            worksheet.Range["A2"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignLeft;
+
+            worksheet.Range["A2"].CellStyle.Font.Size = 16;
+            worksheet.Range["A2"].CellStyle.Font.Bold = true;
+
+            worksheet.AutofitColumn(1);
+            worksheet.AutofitColumn(2);
+            worksheet.AutofitColumn(3);
+            worksheet.AutofitColumn(4);
+            worksheet.AutofitColumn(5);
+            worksheet.AutofitColumn(6);
+            worksheet.AutofitColumn(7);
+            worksheet.AutofitColumn(8);
+            worksheet.AutofitColumn(9);
+
+            if (System.IO.File.Exists(ResolveApplicationPath("WHstockmovement.xlsx")))
+            {
+                try
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(ResolveApplicationPath("WHstockmovement.xlsx"));
+                }
+                catch (Exception e) { }
+            }
+
+            worksheet.Name = "Stock Movement";
+            MemoryStream ms = new MemoryStream();
+            FileStream outputStream = new FileStream(ResolveApplicationPath("WHstockmovement.xlsx"), FileMode.Create);
+
+            workbook.SaveAs(outputStream);
+
+            ms.Position = 0;
+            workbook.Close();
+            excelEngine.Dispose();
+            return RedirectToAction("Seesinglxl");
+        }
+
+        public IActionResult Genmultxl(int id)
+        {
+
+            var data = _context.rptIPStockmovementdetails.Where(m=>m.rndId.Equals(id)).ToList();
+
+            if (!data.Any())
+            {
+                return BadRequest();
+            }
+
+            //Instantiate the spreadsheet creation engine.
+            ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+
+            application.DefaultVersion = ExcelVersion.Excel2016;
+
+            IWorkbook workbook;
+            workbook = application.Workbooks.Create(2);
+            IWorksheet worksheet = workbook.Worksheets[0];
+
+            this._context.Database.SetCommandTimeout(3000);
+
+            //Merging and additing title
+            worksheet.Range["A2"].Text = "IP Warehouse Stock Movement";
+            worksheet.Range["A2:J2"].Merge();
+            worksheet.Range["A2"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+
+            worksheet.Range["A2"].CellStyle.Font.Size = 16;
+            worksheet.Range["A2"].CellStyle.Font.Bold = true;
+            //Add Column labels
+            worksheet.Range["A3"].Text = "#";
+            worksheet.Range["B3"].Text = "Round/Quarter";
+            worksheet.Range["C3"].Text = "Implementer";
+            worksheet.Range["D3"].Text = "Location/Consignee";
+            worksheet.Range["E3"].Text = "From Date";
+            worksheet.Range["F3"].Text = "Through Date";
+            worksheet.Range["G3"].Text = "Issue Date";
+            worksheet.Range["H3"].Text = "Stock Item";
+            worksheet.Range["I3"].Text = "Batch No";
+            worksheet.Range["J3"].Text = "Quantity";
+            worksheet.Range["K3"].Text = "Dispatched";
+            worksheet.Range["L3"].Text = "Loss";
+            worksheet.Range["M3"].Text = "Damage";
+            worksheet.Range["N3"].Text = "Expiration";
+            worksheet.Range["O3"].Text = "Expiry Date";
+
+            worksheet.Range["A3:O3"].CellStyle.Font.Size = 12;
+            worksheet.Range["A3:O3"].CellStyle.Font.Bold = true;
+            worksheet.Range["A3:O3"].CellStyle.Color = Color.FromArgb(0, 0, 112, 192);
+            worksheet.Range["A3:O3"].CellStyle.Font.Color = ExcelKnownColors.White;
+            worksheet.Range["A3:O3"].RowHeight = 30;
+            worksheet.Range["A3:O3"].CellStyle.VerticalAlignment = ExcelVAlign.VAlignCenter;
+
+            int startRow = 4;
+            foreach (var j in data)
+            {
+                if (j.distributionId > 0)
+                {
+                    worksheet.Range["A" + startRow].Number = startRow - 3;
+                    worksheet.Range["B" + startRow].Text = j.roundId;
+                    worksheet.Range["C" + startRow].Text = j.implementer;
+                    worksheet.Range["D" + startRow].Text = j.roundId;
+                    worksheet.Range["E" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["E" + startRow].DateTime = j.dateFrom;
+                    worksheet.Range["F" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["F" + startRow].DateTime = j.dateTo;
+                    worksheet.Range["G" + startRow].NumberFormat = "m/d/yyyy";
+                    worksheet.Range["G" + startRow].DateTime = j.issueDate;
+                    worksheet.Range["H" + startRow].Text = j.item;
+                    worksheet.Range["I" + startRow].Text = j.batchNumber;
+                    worksheet.Range["J" + startRow].Number = (double)j.quantity;
+                    worksheet.Range["K" + startRow].Number = (double)j.dispatch;
+                    worksheet.Range["L" + startRow].Number = (double)j.loss;
+                    worksheet.Range["M" + startRow].Number = (double)j.damage;
+                    worksheet.Range["N" + startRow].Number = (double)j.expiration;
+                    worksheet.Range["O" + startRow].NumberFormat = "m/d/yyyy"; ;
+                    worksheet.Range["O" + startRow].DateTime = j.expiryDate;
+                }
+                startRow += 1;
+            }
+
+            worksheet.Range["A2"].Text = "Period Level Stock Movement";
+            worksheet.Range["A2:O2"].Merge();
+            worksheet.Range["A2"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignLeft;
+
+            worksheet.Range["A2"].CellStyle.Font.Size = 16;
+            worksheet.Range["A2"].CellStyle.Font.Bold = true;
+
+            worksheet.AutofitColumn(1);
+            worksheet.AutofitColumn(2);
+            worksheet.AutofitColumn(3);
+            worksheet.AutofitColumn(4);
+            worksheet.AutofitColumn(5);
+            worksheet.AutofitColumn(6);
+            worksheet.AutofitColumn(7);
+            worksheet.AutofitColumn(8);
+            worksheet.AutofitColumn(9);
+
+            if (System.IO.File.Exists(ResolveApplicationPath("Periodstockmovement.xlsx")))
+            {
+                try
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(ResolveApplicationPath("Periodstockmovement.xlsx"));
+                }
+                catch (Exception e) { }
+            }
+
+            worksheet.Name = "Stock Movement";
+            MemoryStream ms = new MemoryStream();
+            FileStream outputStream = new FileStream(ResolveApplicationPath("Periodstockmovement.xlsx"), FileMode.Create);
+
+            workbook.SaveAs(outputStream);
+
+            ms.Position = 0;
+            workbook.Close();
+            excelEngine.Dispose();
+            return RedirectToAction("Seemultxl");
+        }
+        public IActionResult Seesinglxl()
+        {
+            return View();
+        }
+        public IActionResult Seemultxl()
+        {
+            return View();
+        }
+        private string ResolveApplicationPath(string fileName)
+        {
+            return _hostingEnvironment.WebRootPath + "//Template//" + fileName;
+        }
         public async Task<IActionResult> UrlDatasource([FromBody]DataManagerRequest dm)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -41,6 +301,10 @@ namespace DataSystem.Controllers.SCM
             if (user.Unicef==0 && user.Pnd==0)
             {
                 data = data.Where(m => m.tenantId == user.TenantId).ToList();
+            }
+            else
+            {
+                data = data.ToList();
             }
 
             IEnumerable DataSource = data;
@@ -73,11 +337,7 @@ namespace DataSystem.Controllers.SCM
         public async Task<IActionResult> CUrlDatasource([FromBody]DataManagerRequest dm)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var data = await _context.rptIPStockmovementdetails.ToListAsync();
-            if (user.Unicef == 0 && user.Pnd == 0)
-            {
-                data = data.Where(m => m.tenantId == user.TenantId).ToList();
-            }
+            var data = await _context.vscmRounds.ToListAsync();
             IEnumerable DataSource = data;
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0)
@@ -92,7 +352,7 @@ namespace DataSystem.Controllers.SCM
             {
                 DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator);
             }
-            int count = DataSource.Cast<rptIPStockmovementdetails>().Count();
+            int count = DataSource.Cast<vscmRounds>().Count();
             if (dm.Skip != 0)
             {
                 DataSource = operation.PerformSkip(DataSource, dm.Skip);   //Paging
@@ -102,6 +362,18 @@ namespace DataSystem.Controllers.SCM
                 DataSource = operation.PerformTake(DataSource, dm.Take);
             }
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
+        }
+
+        public IActionResult Open(IFormCollection openRequest)
+        {
+            OpenRequest open = new OpenRequest();
+            open.File = openRequest.Files[0];
+            return Content(Workbook.Open(open));
+        }
+
+        public IActionResult Save(SaveSettings saveSettings)
+        {
+            return Workbook.Save(saveSettings);
         }
 
         public IActionResult MovementPivot()

@@ -96,6 +96,14 @@
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="form-group">
+                    <label for="winterization">Winterization</label>
+                    <ejs-textbox id="winterization" value="@Model.winterization" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
                     <label for="commentByIp">Comment by IP</label>
                     <ejs-richtexteditor id="commentByIp" value="@Model.commentByIp" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
                 </div>
@@ -109,14 +117,30 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
-                    <label for="approveByPnd">Approved by PND</label>
-                    <ejs-checkbox id="approveByPnd" name="approveByPnd" checked="(bool)@Model.approveByPnd" enabled="@ViewBag.gridPnd"></ejs-checkbox>
+        @if (ViewBag.gridPnd == true)
+        {
+            <div class="form-group">
+                <label asp-for="commentByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
+                <div>
+
+                    <input type="radio" asp-for="commentByPnd" value="0"> No<br>
+                    <input type="radio" asp-for="commentByPnd" value="1"> Yes<br>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="commentByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
+                <div>
+
+                    <input type="radio" disabled="disabled" asp-for="commentByPnd" value="0"> No<br>
+                    <input type="radio" disabled="disabled" asp-for="commentByPnd" value="1"> Yes<br>
+                </div>
+            </div>
+        }
+
+
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="form-group">
@@ -125,15 +149,29 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
-                    <label for="approveByUnicef">Approved by UNICEF</label>
-                    <ejs-checkbox id="approveByUnicef" name="approveByUnicef" checked="(bool)@Model.approveByUnicef" enabled="@ViewBag.gridUnicef"></ejs-checkbox>
-                </div>
 
+        @if (ViewBag.gridUnicef == true)
+        {
+            <div class="form-group">
+                <label asp-for="approveByUnicef" class="col-md-2 control-label disabled">Approve by UNICEF</label>
+                <div>
+
+                    <input type="radio" asp-for="approveByUnicef" value="0"> No<br>
+                    <input type="radio" asp-for="approveByUnicef" value="1"> Yes<br>
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="approveByUnicef" class="col-md-2 control-label disabled">Approve by UNICEF</label>
+                <div>
+
+                    <input type="radio" disabled="disabled" asp-for="approveByUnicef" value="0"> No<br>
+                    <input type="radio" disabled="disabled" asp-for="approveByUnicef" value="1"> Yes<br>
+                </div>
+            </div>
+        }
     </div>
 </div>
 <ejs-scripts></ejs-scripts> 
