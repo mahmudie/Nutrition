@@ -65,7 +65,7 @@ namespace DataSystem.GLM.Controllers
                     {
                         foreach (var dv in r.DateValues)
                         {
-                            if (dv.Data != null && dv.IsExpiryDate && dv.ExpiryWarningPeriod != null)
+                            if (dv.Data != null && dv.IsExpiryDate==true && dv.ExpiryWarningPeriod != null)
                             {
                                 if ((DateTime)dv.Data <= DateTime.Now.AddDays((double)dv.ExpiryWarningPeriod))
                                 {
