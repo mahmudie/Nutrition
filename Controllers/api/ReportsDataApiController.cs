@@ -86,6 +86,8 @@ namespace DataSystem.Controllers.api
 
                     try
                     {
+                        report.TenantId = users.TenantId;
+                        report.UpdateDate = DateTime.Now;
                         _context.SaveChanges();
                     }
                     catch (Exception)
@@ -98,6 +100,7 @@ namespace DataSystem.Controllers.api
                     try
                     {
                         report.TenantId = users.TenantId;
+                        report.UpdateDate = DateTime.Now;
                         _context.Reports.Add(report);
                         _context.SaveChanges();
                     }
