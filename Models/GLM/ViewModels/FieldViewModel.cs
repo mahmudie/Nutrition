@@ -10,7 +10,8 @@ namespace DataSystem.Models.GLM
     public class FieldViewModel
     {
         [Required]
-        public long Id { get; set; }
+        [Display(Name = "Field Id")]
+        public long? Id { get; set; } = null;
 
         [Required]
         public long QuestionId { get; set; }

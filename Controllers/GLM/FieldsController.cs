@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using DataSystem.GLM.Dtos;
+﻿using DataSystem.GLM.Dtos;
 using DataSystem.Models;
 using DataSystem.Models.GLM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
+using System.Linq;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -128,6 +125,15 @@ namespace TEST1.Controllers
                 return View(viewModel);
             }
 
+            // check if this id is taken
+            if (_context.Fields.Any(m => m.Id == viewModel.Id))
+            {
+                ViewBag.Error = true;
+                ViewBag.ErrorMessage = "The Field Id: " + viewModel.Id + " already exists.";
+
+                return View(viewModel);
+            }
+
             // check the input type 
             if (viewModel.InputType == null || viewModel.DataType == "date")
             {
@@ -136,6 +142,7 @@ namespace TEST1.Controllers
 
             var field = new Field();
 
+            field.Id = (long)viewModel.Id;
             field.QuestionId = viewModel.QuestionId;
             field.ColumnId = viewModel.ColumnId;
             field.DataType = viewModel.DataType;
@@ -233,6 +240,8 @@ namespace TEST1.Controllers
                 YesNoDefaultCaption = field.YesNoDefaultCaption,
                 IsExpiryDate = field.IsExpiryDate,
                 ExpiryWarningPeriod = field.ExpiryWarningPeriod,
+                QuestionId = field.QuestionId,
+                ColumnId = field.ColumnId,
                 //
                 FieldOptions = _context.FieldOptions
                     .Where(m => m.FieldId == Id)
@@ -259,6 +268,15 @@ namespace TEST1.Controllers
                 return View(viewModel);
             }
 
+            // check if this id is taken
+            if (_context.Fields.Any(m => m.Id == viewModel.Id && (m.QuestionId != viewModel.QuestionId || m.ColumnId != viewModel.ColumnId)))
+            {
+                ViewBag.Error = true;
+                ViewBag.ErrorMessage = "The Field Id: " + viewModel.Id + " already exists.";
+
+                return View(viewModel);
+            }
+
             // check the input type 
             if (viewModel.InputType == null || viewModel.DataType == "date")
             {
@@ -271,6 +289,7 @@ namespace TEST1.Controllers
             // in case of field data type change
             var previousDataType = field.DataType;
 
+            field.Id = (long)viewModel.Id;
             field.DataType = viewModel.DataType;
             field.InputType = viewModel.InputType;
             field.IsRequired = viewModel.IsRequired;
