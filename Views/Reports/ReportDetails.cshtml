@@ -23,7 +23,7 @@
 
                     @foreach (var sg in Model.SectionGrids)
                     {
-                        <div class="card mb-3">
+                        <div class="card mb-3 js-section-@sg.Id">
                             <div class="card-header" style="background-color:#F9FAFC"> <h3>@sg.Title</h3></div>
 
                             <div class="card-body">
@@ -62,7 +62,7 @@
                                                     <td>
                                                         @if (field.DataType == "yesno")
                                                         {
-                                                            <select name="@field.Id" class="form-control" style="min-width: 90px;"@field.RequiredAttr>
+                                                            <select name="@field.Id" class="form-control js-field" data-target-section=".js-section-@field.TargetSection" style="min-width: 90px;"@field.RequiredAttr>
                                                                 <option></option>
                                                                 @foreach (var option in field.YesNoOptions)
                                                                 {
@@ -81,7 +81,7 @@
                                                         {
                                                             @if (field.InputType == "dropdown")
                                                             {
-                                                                <select name="@field.Id" class="form-control">
+                                                                <select name="@field.Id" class="form-control js-field" data-id="@field.Id">
                                                                     <option></option>
                                                                     @foreach (var option in field.FieldOptions)
                                                                     {
@@ -100,7 +100,7 @@
                                                             {
                                                                 @if (field.InputType == "textarea")
                                                                 {
-                                                                    <textarea name="@field.Id" id="rowfindings@field.Id" class="form-control"@field.RequiredAttr>@field.Data</textarea>
+                                                                    <textarea name="@field.Id" id="rowfindings@field.Id" class="form-control js-field" data-id="@field.Id" @field.RequiredAttr>@field.Data</textarea>
                                                                 }
                                                                 else
                                                                 {
@@ -109,11 +109,11 @@
                                                                         var myid = "td" + field.Id;
                                                                         var warningClass = (field.ExpiryWarning) ? "field-date-expiry-warning" : "";
 
-                                                                        <input type="text" name="@field.Id" id="@myid" value="@field.Data" class="form-control js-datepicker @warningClass" />
+                                                                        <input type="text" name="@field.Id" id="@myid" value="@field.Data" class="form-control js-datepicker js-field @warningClass" data-id="@field.Id" />
                                                                     }
                                                                     else
                                                                     {
-                                                                        <input type="@field.DataType" name="@field.Id" value="@field.Data" data-value="@field.Data" class="form-control" />
+                                                                        <input type="@field.DataType" name="@field.Id" value="@field.Data" data-value="@field.Data" class="form-control js-field" data-id="@field.Id" />
                                                                     }
                                                                 }
                                                             }
@@ -176,6 +176,39 @@
                     }
                 };
             };
+        });
+
+
+        // activate / Deactivate sections based on nutrition services fields
+        $(document).ready(function () {
+            $('.js-field').each(function(e) {
+                var targetSection = $(this).data('target-section');
+                var fieldValue = $(this).val();
+
+                // set disabled attr for the new section
+                if (targetSection != 'js-section-0') {
+                    if (fieldValue == 1) {
+                        $(targetSection + ' .js-field').removeAttr('disabled');
+                    } else {
+                        $(targetSection + ' .js-field').attr('disabled', 'disabled');
+                    }
+                }
+            });
+        });
+
+        // set section activate/deactivate status based on change in field's dropdown
+        $(document).on('change', '.js-field', function () {
+            var targetSection = $(this).data('target-section');
+            var fieldValue = $(this).val();
+
+            // set disabled attr for the new section
+            if (targetSection != 'js-section-0') {
+                if (fieldValue == 1) {
+                    $(targetSection + ' .js-field').removeAttr('disabled');
+                } else {
+                    $(targetSection + ' .js-field').attr('disabled', 'disabled');
+                }
+            }
         });
 
     </script>

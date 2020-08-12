@@ -17,6 +17,7 @@ namespace DataSystem.Models.GLM
         public long SectionId { get; set; }
 
         public Section Section { get; set; }
+        public ICollection<Field> Fields { get; set; }
         public int? SortOrder { get; set; } = 0;
     }
 }

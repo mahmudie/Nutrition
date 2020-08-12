@@ -53,7 +53,7 @@
 
                             @foreach (var field in question.Fields)
                             {
-                                @if (field.IsPercentageValue)
+                                @if (field.IsPercentageValue && field.Data != null)
                                 {
                                     <td>@field.Data %</td>
                                 }

@@ -27,5 +27,6 @@ namespace DataSystem.Models.GLM
 
         public Dictionary<byte, string> YesNoOptions { get; set; }
         public bool ExpiryWarning { get; set; } = false;
+        public long TargetSection { get; set; } = 0;
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 using DataSystem.ViewModels;
 using DataSystem.Models.GLM.ViewModels;
+using System.IO;
 
 namespace DataSystem.GLM.Controllers
 {
@@ -124,6 +125,7 @@ namespace DataSystem.GLM.Controllers
             DateTime today_date = DateTime.Now.Date;
             ViewBag.minDate = today_date.AddDays(-90);
             ViewBag.maxDate = today_date.AddDays(1);
+            ViewBag.maxDeadline = today_date.AddDays(30);
             return View(viewModel);
         }
 
@@ -299,6 +301,7 @@ namespace DataSystem.GLM.Controllers
             DateTime today_date = DateTime.Now.Date;
             ViewBag.minDate = today_date.AddDays(-90);
             ViewBag.maxDate = today_date.AddDays(1);
+            ViewBag.maxDeadline = today_date.AddDays(30);
 
             var report = _context.Reports.Find(Id);
             var viewModel = new ReportViewModel();
@@ -447,8 +450,19 @@ namespace DataSystem.GLM.Controllers
                                         {
                                             field.YesNoOptions = SetYesNoOptions(FieldData.YesNoDefaultCaption);
                                         }
-                                    }
 
+                                        // set the target section for some of the yes/no fields to activate / deactivate
+                                        var myFieldIds = new List<long>() { 281, 282, 283, 284, 285, 286, 287 };
+                                        var myTargetSections = new Dictionary<long, long>()
+                                        {
+                                            { 281, 12 }, { 282, 8 }, { 283, 11 }, { 284, 17 }, { 285, 13 }, { 286, 10 }, { 287, 18 }
+                                        };
+
+                                        if (myFieldIds.Contains(FieldData.Id))
+                                        {
+                                            field.TargetSection = myTargetSections[FieldData.Id];
+                                        }
+                                    }
                                     // set required attribute of if field's IsRequired is true
                                     field.RequiredAttr = (FieldData.IsRequired) ? "required=\"required\"" : "";
                                 }
@@ -495,6 +509,7 @@ namespace DataSystem.GLM.Controllers
                 // add section grid to details-form's section-grid property
                 reportDetailsForm.SectionGrids.Add(new SectionGridViewModel
                 {
+                    Id = section.Id,
                     Title = section.Title,
                     Description = section.Description,
                     Grid = grid
@@ -544,22 +559,26 @@ namespace DataSystem.GLM.Controllers
                         _context.SaveChanges();
                     }
 
-                    var textValue = _context.TextValues
-                        .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
-                        .SingleOrDefault();
-
-                    var formInputValue = form[field.Id.ToString()];
-
-                    if (!String.IsNullOrWhiteSpace(formInputValue))
+                    if (_context.TextValues.Any(m => m.FieldId == field.Id && m.ReportId == form["ReportId"]))
                     {
-                        textValue.Data = Convert.ToString(formInputValue);
-                    }
-                    else
-                    {
-                        textValue.Data = null;
-                    }
+                        var textValue = _context.TextValues
+                            .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
+                            .SingleOrDefault();
 
-                    _context.Entry(textValue).State = EntityState.Modified;
+                        var formInputValue = form[field.Id.ToString()];
+
+                        if (!String.IsNullOrWhiteSpace(formInputValue))
+                        {
+                            textValue.Data = Convert.ToString(formInputValue);
+                        }
+                        else
+                        {
+                            textValue.Data = null;
+                        }
+
+                        _context.Entry(textValue).State = EntityState.Modified;
+                    }
+                    
                 }
 
                 _context.SaveChanges();
@@ -581,20 +600,58 @@ namespace DataSystem.GLM.Controllers
                         _context.SaveChanges();
                     }
 
+                    long? formInputValue = null;
+
+                    if (!String.IsNullOrWhiteSpace(form[field.Id.ToString()]))
+                    {
+                        formInputValue = Convert.ToInt64(form[field.Id.ToString()]);
+                    }
+
+                    // check if field is yes/no and the value selected is not 1 = "Yes" if 
+                    // so then add value 2 = "N/A" for its target yes/no input fields
+                    if (field.DataType == "yesno" && formInputValue != 1)
+                    {
+                        var myFieldIds = new List<long>() { 281, 282, 283, 284, 285, 286, 287 };
+                        var myTargetSections = new Dictionary<long, long>()
+                        {
+                            { 281, 12 }, { 282, 8 }, { 283, 11 }, { 284, 17 }, { 285, 13 }, { 286, 10 }, { 287, 18 }
+                        };
+
+                        if (myFieldIds.Contains(field.Id))
+                        {
+                            var sectionId = myTargetSections[field.Id];
+
+                            var questions = _context.Questions
+                                .Include(m => m.Fields)
+                                .Where(m => m.SectionId == sectionId)
+                                .ToList();
+
+                            foreach (var Q in questions)
+                            {
+                                foreach (var F in Q.Fields)
+                                {
+                                    if (_context.NumberValues.Any(m => m.FieldId == F.Id && m.ReportId == form["ReportId"]))
+                                    {
+                                        var nValue = _context.NumberValues
+                                            .Where(m => m.FieldId == F.Id && m.ReportId == form["ReportId"])
+                                            .SingleOrDefault();
+
+                                        nValue.Data = 2;
+
+                                        _context.Entry(nValue).State = EntityState.Modified;
+                                    }
+                                }
+                            }
+
+                            _context.SaveChanges();
+                        }
+                    }
+
                     var numberValue = _context.NumberValues
                         .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
                         .SingleOrDefault();
 
-                    var formInputValue = form[field.Id.ToString()];
-
-                    if (!String.IsNullOrWhiteSpace(formInputValue))
-                    {
-                        numberValue.Data = Convert.ToInt64(formInputValue);
-                    }
-                    else
-                    {
-                        numberValue.Data = null;
-                    }
+                    numberValue.Data = formInputValue;
 
                     _context.Entry(numberValue).State = EntityState.Modified;
                 }
@@ -618,22 +675,25 @@ namespace DataSystem.GLM.Controllers
                         _context.SaveChanges();
                     }
 
-                    var dateValue = _context.DateValues
-                        .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
-                        .SingleOrDefault();
-
-                    var formInputValue = form[field.Id.ToString()];
-
-                    if (!String.IsNullOrWhiteSpace(formInputValue))
+                    if (_context.DateValues.Any(m => m.FieldId == field.Id && m.ReportId == form["ReportId"]))
                     {
-                        dateValue.Data = DateTime.ParseExact(form[field.Id.ToString()], "MM/dd/yyyy", null);
-                    }
-                    else
-                    {
-                        dateValue.Data = null;
-                    }
+                        var dateValue = _context.DateValues
+                            .Where(m => m.FieldId == field.Id && m.ReportId == form["ReportId"])
+                            .SingleOrDefault();
 
-                    _context.Entry(dateValue).State = EntityState.Modified;
+                        var formInputValue = form[field.Id.ToString()];
+
+                        if (!String.IsNullOrWhiteSpace(formInputValue))
+                        {
+                            dateValue.Data = DateTime.ParseExact(form[field.Id.ToString()], "MM/dd/yyyy", null);
+                        }
+                        else
+                        {
+                            dateValue.Data = null;
+                        }
+
+                        _context.Entry(dateValue).State = EntityState.Modified;
+                    }
                 }
 
                 _context.SaveChanges();
@@ -645,7 +705,6 @@ namespace DataSystem.GLM.Controllers
                 return RedirectToAction("Index", "Reports");
             }
         }
-
 
         public IActionResult ShowReport(string Id)
         {
@@ -722,76 +781,128 @@ namespace DataSystem.GLM.Controllers
                             field.QuestionId = q.Id;
                             field.ColumnId = c.Id;
 
-                            // add field data 
-                            var FieldData = _context.Fields
-                                .Include(m => m.FieldOptions)
-                                .Where(m => m.QuestionId == q.Id && m.ColumnId == c.Id)
-                                .SingleOrDefault();
-
-                            if (FieldData != null)
+                            // check if column is of type standard
+                            if (c.ColumnType == "standard")
                             {
-                                field.Id = FieldData.Id;
-                                field.DataType = FieldData.DataType;
-                                field.InputType = FieldData.InputType;
-                                field.FieldOptions = FieldData.FieldOptions;
-                            }
-
-                            // add text field value
-                            if (field.DataType == "text" || field.DataType == "yesno")
-                            {
-                                var textValue = _context.TextValues
-                                    .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
+                                // add field data 
+                                var FieldData = _context.Fields
+                                    .Include(m => m.FieldOptions)
+                                    .Where(m => m.QuestionId == q.Id && m.ColumnId == c.Id)
                                     .SingleOrDefault();
 
-                                if (field.InputType == "dropdown" && field.DataType != "yesno")
+                                if (FieldData != null)
                                 {
-                                    foreach (var fo in field.FieldOptions)
+                                    field.Id = FieldData.Id;
+                                    field.DataType = FieldData.DataType;
+                                    field.InputType = FieldData.InputType;
+                                    field.FieldOptions = FieldData.FieldOptions;
+
+                                    // set YesNoOptions for yes/no field
+                                    if (field.DataType == "yesno")
                                     {
-                                        if (fo.Value == textValue.Data)
+                                        if (FieldData.YesNoDefaultCaption != null || FieldData.YesNoDefaultCaption != "")
                                         {
-                                            field.Data = fo.Caption;
+                                            field.YesNoOptions = SetYesNoOptions(FieldData.YesNoDefaultCaption);
                                         }
                                     }
                                 }
-                                else
-                                {
-                                    field.Data = (textValue != null) ? textValue.Data : null;
-                                }
-                            }
 
-                            // add number field value
-                            if (field.DataType == "number")
-                            {
-                                var numberValue = _context.NumberValues
-                                    .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
-                                    .SingleOrDefault();
-
-                                if (field.InputType == "dropdown" && field.DataType != "yesno")
+                                // add text field value
+                                if (field.DataType == "text")
                                 {
-                                    foreach (var fo in field.FieldOptions)
+                                    var textValue = _context.TextValues
+                                        .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
+                                        .SingleOrDefault();
+
+                                    if (field.InputType == "dropdown" && field.DataType != "yesno")
                                     {
-                                        if (fo.Value == numberValue.Data.ToString())
+                                        foreach (var fo in field.FieldOptions)
                                         {
-                                            field.Data = fo.Caption;
+                                            if (fo.Value == textValue.Data)
+                                            {
+                                                field.Data = fo.Caption;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        field.Data = (textValue != null) ? textValue.Data : null;
+                                    }
+                                }
+
+                                // add number field value
+                                if (field.DataType == "number" || field.DataType == "yesno")
+                                {
+                                    if (_context.NumberValues.Any(m => m.FieldId == field.Id && m.ReportId == report.Id))
+                                    {
+                                        var numberValue = _context.NumberValues
+                                            .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
+                                            .SingleOrDefault();
+
+                                        if (field.InputType == "dropdown" && field.DataType != "yesno")
+                                        {
+                                            foreach (var fo in field.FieldOptions)
+                                            {
+                                                if (fo.Value == numberValue.Data.ToString())
+                                                {
+                                                    field.Data = fo.Caption;
+                                                }
+                                            }
+                                        }
+                                        else if (field.DataType == "yesno")
+                                        {
+                                            foreach (var yo in field.YesNoOptions)
+                                            {
+                                                if (yo.Key == numberValue.Data)
+                                                {
+                                                    field.Data = yo.Value;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            field.Data = (numberValue != null) ? numberValue.Data.ToString() : null;
                                         }
                                     }
                                 }
-                                else
+
+                                // add date field value
+                                if (field.DataType == "date")
                                 {
-                                    field.Data = (numberValue != null) ? numberValue.Data.ToString() : null;
+                                    var dateValue = _context.DateValues
+                                        .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
+                                        .SingleOrDefault();
+
+                                    field.Data = (dateValue != null) ? String.Format("{0:MMM dd, yyyy}", dateValue.Data) : null;
                                 }
                             }
-
-                            // add date field value
-                            if (field.DataType == "date")
+                            else
                             {
-                                var dateValue = _context.DateValues
-                                    .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
-                                    .SingleOrDefault();
+                                // check if column is of type percentage then 
+                                // calculate the percentage data and set on field.Data property
+                                if (c.ColumnType == "percentage")
+                                {
+                                    var dividendField = _context.Fields
+                                        .SingleOrDefault(m => m.QuestionId == q.Id && m.ColumnId == c.DividendColumn).Id;
 
-                                field.Data = (dateValue != null) ? String.Format("{0:MMM dd, yyyy}", dateValue.Data) : null;
+                                    var divisorField = _context.Fields
+                                        .SingleOrDefault(m => m.QuestionId == q.Id && m.ColumnId == c.DivisorColumn).Id;
+
+                                    var dividendValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == dividendField).Data;
+                                    var divisorValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == divisorField).Data;
+
+                                    if (dividendValue != null && divisorValue != null)
+                                    {
+                                        field.Data = Math.Ceiling((double)dividendValue * 100.0 / (double)divisorValue).ToString();
+                                    }
+                                    else
+                                    {
+                                        field.Data = null;
+                                    }
+                                    
+                                    field.IsPercentageValue = true;
+                                }
                             }
-
                             question.Fields.Add(field);
                         }
 
@@ -802,6 +913,7 @@ namespace DataSystem.GLM.Controllers
                 // add section grid to details-form's section-grid property
                 reportDetailsForm.SectionGrids.Add(new SectionGridViewModel
                 {
+                    Id = section.Id,
                     Title = section.Title,
                     Description = section.Description,
                     Grid = grid
