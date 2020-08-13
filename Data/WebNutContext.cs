@@ -19,6 +19,7 @@ namespace DataSystem.Models
         public WebNutContext(DbContextOptions<WebNutContext> options) : base(options)
         {
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }

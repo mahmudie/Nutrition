@@ -126,24 +126,26 @@ namespace TEST1.Controllers
         {
             var section = _context.Sections.Find(dto.Id);
 
-            _context.Sections.Remove(section);
-            _context.SaveChanges();
-
-            // remove orphan questions
+            // remove related questions
             var questions = _context.Questions
-                .Where(m => m.SectionId == dto.Id)
+                .Where(m => m.SectionId == section.Id)
                 .ToList();
 
             _context.Questions.RemoveRange(questions);
             _context.SaveChanges();
 
-            // remove orphan columns
+            // remove related columns
             var columns = _context.Columns
-                .Where(m => m.SectionId == dto.Id)
+                .Where(m => m.SectionId == section.Id)
                 .ToList();
 
             _context.Columns.RemoveRange(columns);
             _context.SaveChanges();
+
+            _context.Sections.Remove(section);
+            _context.SaveChanges();
+
+            
 
             return RedirectToAction("Index", "Sections");
         }
