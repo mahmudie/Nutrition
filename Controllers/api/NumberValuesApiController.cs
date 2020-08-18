@@ -75,11 +75,13 @@ namespace DataSystem.Controllers.api
                 return BadRequest("Bad Request, Didn't Pass validation");
             }
                 Boolean result = true;
+            string failedvalues = "";
 
                 foreach (var NumberValue in NumberValues)
                 {
                     if (this.NumberValuesExists(NumberValue.ReportId,NumberValue.FieldId))
                     {
+                   
                         _context.Entry(NumberValue).State = EntityState.Modified;
 
                         try
@@ -89,7 +91,12 @@ namespace DataSystem.Controllers.api
                         catch (Exception)
                         {
                             result = false;
-                        }
+                        failedvalues += "Failed FieldId: "+  NumberValue.FieldId.ToString() + " |";
+                        _context.NumberValues.Remove(NumberValue);
+                        _context.SaveChanges();
+
+
+                    }
                     }
                     else
                     {
@@ -100,15 +107,20 @@ namespace DataSystem.Controllers.api
                         }
                         catch (Exception)
                         {
-                            result = false;
-                        }
+                        
+                        result = false;
+                        failedvalues += "Failed FieldId: " + NumberValue.FieldId.ToString() + " |";
+                        _context.NumberValues.Remove(NumberValue);
+
+                        _context.SaveChanges();
                     }
+                }
                 }
 
 
                 if (result == false)
                 {
-                    return BadRequest();
+                    return BadRequest(failedvalues);
                 }
                 else
                 {

@@ -75,7 +75,7 @@ namespace DataSystem.Controllers.api
                 return BadRequest("Bad Request, Didn't Pass validation");
             }
             Boolean result = true;
-
+            string failedvalues = "";
             foreach (var report in reports)
             {
                 var users = _context.vusers.Where(m => m.UserName.Equals(report.UserName)).FirstOrDefault();
@@ -93,6 +93,9 @@ namespace DataSystem.Controllers.api
                     catch (Exception)
                     {
                         result = false;
+                        failedvalues += "Failed FieldId: " + report.Id.ToString() + " |";
+                        _context.Entry(report).State = EntityState.Unchanged;
+                        _context.SaveChanges();
                     }
                 }
                 else
@@ -107,6 +110,9 @@ namespace DataSystem.Controllers.api
                     catch (Exception)
                     {
                         result = false;
+                        failedvalues += "Failed FieldId: " + report.Id.ToString() + " |";
+                        _context.Reports.Remove(report);
+                        _context.SaveChanges();
                     }
                 }
             }
@@ -114,7 +120,7 @@ namespace DataSystem.Controllers.api
 
             if (result == false)
             {
-                return Ok();
+                return BadRequest(failedvalues);
             }
             else
             {

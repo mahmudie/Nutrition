@@ -30,18 +30,27 @@ namespace DataSystem.GLM.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var reports = _context.ReportsView
+            var reports  = _context.ReportsView
                 .Include(m => m.DataForm)
                 .Include(m => m.DateValues)
                 .OrderByDescending(m => m.UpdateDate)
-                .ToList();
+                .ToList(); 
 
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (User.IsInRole("dataentry") && (user.Unicef == 0 && user.Pnd == 0))
+            {
+                reports = reports.Where(m => m.UserName == user.UserName).ToList();
+            }
+            else if (User.IsInRole("administrator") && (user.Unicef == 0 && user.Pnd == 0))
+            {
+                reports = reports.Where(m => m.TenantId == user.TenantId).ToList();
+            }
             // prepare the final reports list view model with expiry warning
             // and other configurations
-            
-            List<ReportListViewModel> reportList = new List<ReportListViewModel>();
+
+                List<ReportListViewModel> reportList = new List<ReportListViewModel>();
 
             foreach (var r in reports)
             {
@@ -925,8 +934,8 @@ namespace DataSystem.GLM.Controllers
                                     var divisorField = _context.Fields
                                         .SingleOrDefault(m => m.QuestionId == q.Id && m.ColumnId == c.DivisorColumn).Id;
 
-                                    var dividendValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == dividendField).Data;
-                                    var divisorValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == divisorField).Data;
+                                    var dividendValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == dividendField && m.ReportId==report.Id).Data;
+                                    var divisorValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == divisorField && m.ReportId==report.Id).Data;
 
                                     if (dividendValue != null && divisorValue != null)
                                     {

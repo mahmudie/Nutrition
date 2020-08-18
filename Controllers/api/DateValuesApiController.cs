@@ -75,8 +75,9 @@ namespace DataSystem.Controllers.api
                 return BadRequest("Bad Request, Didn't Pass validation");
             }
                 Boolean result = true;
+            string failedvalues = "";
 
-                foreach (var DateValue in DateValues)
+            foreach (var DateValue in DateValues)
                 {
                     if (this.DateValuesExists(DateValue.ReportId,DateValue.FieldId))
                     {
@@ -89,7 +90,10 @@ namespace DataSystem.Controllers.api
                         catch (Exception)
                         {
                             result = false;
-                        }
+                        failedvalues += "Failed FieldId: " + DateValue.FieldId.ToString() + " |";
+                        _context.DateValues.Remove(DateValue);
+                        _context.SaveChanges();
+                    }
                     }
                     else
                     {
@@ -101,14 +105,17 @@ namespace DataSystem.Controllers.api
                         catch (Exception)
                         {
                             result = false;
-                        }
+                        failedvalues += "Failed FieldId: " + DateValue.FieldId.ToString() + " |";
+                        _context.DateValues.Remove(DateValue);
+                        _context.SaveChanges();
+                    }
                     }
                 }
 
 
                 if (result == false)
                 {
-                    return BadRequest();
+                    return BadRequest(failedvalues);
                 }
                 else
                 {
