@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Guidelines";
+}
+    <div class="container-fluid">
+       
+        <div class="row">
+            <div class="col-md-12 text-center">
+                @*<video id="videotodisplay" src="@ViewBag.videolink" controls width="500" height="450" loop></video>*@
+                <iframe width="80%"
+                        height="580px"
+                        src="@ViewBag.videolink"
+                        frameborder="0"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}

@@ -1417,6 +1417,7 @@ namespace DataSystem.Models
         public virtual DbSet<Apistore> Apistore { get; set; }
         public virtual DbSet<Notehelpers> Notehelpers { get; set; }
         public virtual DbSet<vmFacilityimps> vmFacilityimps { get; set; }
+        public virtual DbSet<Videoguides> Videoguides { get; set; }
 
         //SCM
         public virtual DbSet<scmPOC> ScmPOCs { get; set; }

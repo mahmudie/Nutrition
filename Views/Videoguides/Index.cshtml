@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Guidelines";
+}
+    <div class="container-fluid">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Video Guides</h3>
+                <br />
+            <ejs-grid id="VideoListGrid"  allowSorting="true"  actionComplete="actionComplete"   toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+                <e-data-manager url="/Videoguides/UrlDataSource"  adaptor="UrlAdaptor"  insertUrl="/Videoguides/Insert" updateUrl="/Videoguides/Update" removeUrl="/Videoguides/Remove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" allowEditing="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
+                    <e-grid-column field="title" headerText="Title" validationRules="@(new { required=true})" textAlign="Left" width="170"></e-grid-column>
+                    <e-grid-column field="module" headerText="Module" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="link" headerText="Link" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 450;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['emailaccount'] : 'New';
+        }
+    }
+</script>
