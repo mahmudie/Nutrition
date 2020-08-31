@@ -1,0 +1,44 @@
+@model IEnumerable<DataSystem.Models.SCM.scmRegions>
+
+@{
+    ViewData["Title"] = "Inicators";
+}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Indicators</h3>
+                <br />
+            <ejs-grid id="UsiLookupsGrid"  allowSorting="true" allowResizing="true"  actionComplete="actionComplete"   toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+                <e-data-manager url="/UsiMonitoring/LookupSource"  adaptor="UrlAdaptor"  insertUrl="/UsiMonitoring/LookupInsert" updateUrl="/UsiMonitoring/LookupUpdate" removeUrl="/UsiMonitoring/LookupRemove" ></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" defaultValue="0" headerText="ID" isPrimaryKey="true" isIdentity="true" textAlign="Left" width="60"></e-grid-column>
+                    <e-grid-column field="indicatorName" headerText="Indicator Name" validationRules="@(new { required=true})" textAlign="Left" width="500"></e-grid-column>
+                    <e-grid-column field="isActive" defaultValue="1" headerText="Is Active?" template="#myisActive" editType="booleanedit" textAlign="Center" type="boolean" width="120"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 550;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['indicatorName'] : 'New';
+        }
+    }
+
+</script>
+
+<script id="myisActive" type="text/x-template">
+    ${if(isActive==1)}
+    <img src="/images/app/tick.png" /> Yes
+    ${else}
+    <img src="/images/app/cross.png" /> No
+    ${/if}
+</script>

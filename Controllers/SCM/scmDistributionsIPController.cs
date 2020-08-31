@@ -293,6 +293,7 @@ namespace DataSystem.Controllers.SCM
             stock.whId = value.Value.whId;
             stock.distributionId =int.Parse(value.Params["ID"].ToString());
             stock.quantity = value.Value.quantity;
+            stock.requested = value.Value.requested;
             stock.batchNumber = getBatchNumber(value.Value.stockId);
             
             stock.issueTo = value.Value.issueTo;
@@ -325,6 +326,7 @@ namespace DataSystem.Controllers.SCM
                 stock.whId = value.Value.whId;
                 stock.distributionId = int.Parse(value.Params["ID"].ToString());
                 stock.quantity = value.Value.quantity;
+                stock.requested = value.Value.requested;
                 stock.batchNumber = getBatchNumber(value.Value.stockId);
                 stock.issueTo = value.Value.issueTo;
                 stock.issueDate = value.Value.issueDate;

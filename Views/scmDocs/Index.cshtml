@@ -10,7 +10,7 @@
         <div class="col-md-12">
             <h3>Documents</h3>
 
-            <ejs-grid id="Grid1" allowSorting="true" load="load" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <ejs-grid id="docGrid1" allowSorting="true" load="load" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
                 <e-data-manager url="/scmDocs/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDocs/Insert" updateUrl="/scmDocs/Update" removeUrl="/scmDocs/Remove"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>

@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "USI Monitoring";
+}
+@{
+    var drpProvinces = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.ProvinceSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "ProvinceId", Text = "ProvinceName" } };
+    var drpYears = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.YearSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "YearId", Text = "YearName" } };
+    var drpMonths = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.MonthSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonthId", Text = "Month" } };
+    var drpIndicators = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.LookupSource, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "IndicatorId", Text = "IndicatorName" } };
+
+}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>@ViewData["Title"]</h3>
+
+                <ejs-grid id="USIMonitoringGrid" selectedRowIndex="0" allowSorting="true"  editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.edit, AllowEditing=ViewBag.edit, AllowDeleting = ViewBag.edit,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" rowSelected="selected" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update","Search"})" allowPaging="true">
+                    <e-data-manager url="/UsiMonitoring/UsiMonitoringSource" adaptor="UrlAdaptor" insertUrl="/UsiMonitoring/UsiMonitoringInsert" updateUrl="/UsiMonitoring/UsiMonitoringUpdate" removeUrl="/UsiMonitoring/UsiMonitoringRemove"></e-data-manager>
+                    @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
+                    <e-grid-columns>
+                        <e-grid-column field="usiId" headerText="ID" isPrimaryKey="true" visible="true" textAlign="Left" width="60"></e-grid-column>
+                        <e-grid-column field="provinceId" foreignKeyField="ProvinceId" validationRules="@(new { required=true})" headerText="Province" foreignKeyValue="ProvinceName"
+                                       dataSource="ViewBag.ProvinceSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpProvinces }"></e-grid-column>
+                        <e-grid-column field="year" foreignKeyField="YearId" validationRules="@(new { required=true})" headerText="Year" foreignKeyValue="YearName"
+                                       dataSource="ViewBag.YearSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpYears }"></e-grid-column>
+                        <e-grid-column field="month" foreignKeyField="MonthId" validationRules="@(new { required=true})" headerText="Month" foreignKeyValue="Month"
+                                       dataSource="ViewBag.MonthSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpMonths }"></e-grid-column>
+                        <e-grid-column field="userName" allowEditing="false" headerText="User" textAlign="Left" width="120"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Indicators</h3>
+
+                <ejs-grid id="USIIndicatorsGrid" allowResizing="true" allowSorting="true"  actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings {AllowAdding=ViewBag.edit, AllowEditing=ViewBag.edit, AllowDeleting = ViewBag.edit,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})"  toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update","Search"})" allowPaging="true">
+                    <e-data-manager url="/UsiMonitoring/IndicatorsSource" adaptor="UrlAdaptor" insertUrl="/UsiMonitoring/IndicatorsInsert" updateUrl="/UsiMonitoring/IndicatorsUpdate" removeUrl="/UsiMonitoring/IndicatorsRemove"></e-data-manager>
+                    @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
+                    <e-grid-columns>
+                        <e-grid-column field="id" headerText="ID" visible="true" allowEditing="false" textAlign="Left" width="40"></e-grid-column>
+                        <e-grid-column field="usiId" headerText="MID" allowEditing="false" visible="true" textAlign="Left" width="40"></e-grid-column>
+                        <e-grid-column field="indicatorId" allowEditing="false" foreignKeyField="IndicatorId" validationRules="@(new { required=true})" headerText="Indicator" foreignKeyValue="IndicatorName"
+                                       dataSource="ViewBag.LookupSource" editType="dropdownedit" textAlign="Left" width="400" edit="new {@params = drpIndicators }"></e-grid-column>
+                        <e-grid-column field="value" headerText="Value" textAlign="Left" width="120"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+
+            </div>
+        </div>
+    </div>
+@section Scripts{
+
+}
+
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.width = 750;
+        }
+    }
+
+    function selected(args) {
+        @*//var data = @Html.Raw(Json.Serialize(ViewBag.dataSource));*@
+        var id = args.data.usiId;
+        var degrid = document.getElementById("USIIndicatorsGrid").ej2_instances[0];       // Child Grid instance
+        degrid.query = new ej.data.Query().where("usiId", "equal", id, false).take(1);
+    }
+</script>

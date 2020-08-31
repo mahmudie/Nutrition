@@ -200,7 +200,7 @@
             commands.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
             commands.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
         }
-        <ejs-grid id="IPDist_GridTwo" allowSorting="true" allowTextWrap="true" allowResizing="true" recordDoubleClick="click" load="load" actionComplete="actionComplete" actionBegin="actionBegin" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+        <ejs-grid id="IPDist_GridTwoGrid" allowSorting="true" allowTextWrap="true" allowResizing="true" recordDoubleClick="click" load="load" actionComplete="actionComplete" actionBegin="actionBegin" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
             <e-data-manager url="/scmDistributionsToIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsToIP/Insert" updateUrl="/scmDistributionsToIP/Update" removeUrl="/scmDistributionsToIP/Remove"></e-data-manager>
             <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-columns>
@@ -231,7 +231,7 @@
 
     <div style="display:none" id="Grid3">
 
-        <ejs-grid id="IPDist_GridThree" allowSorting="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+        <ejs-grid id="IPDist_GridThreeGrid" allowSorting="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
             <e-data-manager url="/scmDistributionsToIP/DocUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsToIP/DocInsert" updateUrl="/scmDistributionsToIP/DocUpdate" removeUrl="/scmDistributionsToIP/DocRemove"></e-data-manager>
             <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-columns>
@@ -249,7 +249,7 @@
     </div>
     <div style="display:none" id="Grid4">
         <div class="col-md-12">
-            <ejs-grid id="IPDist_Grid4" allowSorting="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <ejs-grid id="IPDist_Grid4IP" allowSorting="true" actionBegin="actionBegin" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
                 <e-data-manager url="/scmEmail/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmEmail/Insert" updateUrl="/scmEmail/Update" removeUrl="/scmEmail/Remove"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>

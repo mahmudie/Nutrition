@@ -21,7 +21,7 @@
             toolbarItems.Add("Search");
             toolbarItems.Add(new { text = "Receivers", tooltipText = "List of notification receivers", prefixIcon = "e-receivers", id = "Receivers" });
         }
-        <ejs-grid id="Grid1" allowSorting="true" load="load" selectedRowIndex="0" rowSelected="selected" actionComplete="actionComplete" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+        <ejs-grid id="EstGrid1" allowSorting="true" load="load" selectedRowIndex="0" rowSelected="selected" actionComplete="actionComplete" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
             <e-data-manager url="/Estnotification/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/Estnotification/Insert" updateUrl="/Estnotification/Update" removeUrl="/Estnotification/Remove"></e-data-manager>
             <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-columns>
@@ -38,7 +38,7 @@
 
     <div class="row">
         <h3>Implementers</h3>
-        <ejs-grid id="Grid2" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
+        <ejs-grid id="EstGrid2" allowSorting="true" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
             <e-data-manager url="/Estnotification/CUrlDataSource" adaptor="UrlAdaptor" updateUrl="/Estnotification/CUpdate" removeUrl="/Estnotification/Remove"></e-data-manager>
             <e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-columns>

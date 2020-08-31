@@ -154,7 +154,7 @@
             toolbarItems.Add("Search");
             toolbarItems.Add(new { text = "View Estimation", tooltipText = "View estimated amount", prefixIcon = "e-eye", id = "viewestimation" });
         }
-        <ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" allowTextWrap="true" load="loaddata" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">
+        <ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" queryCellInfo="queryCellInfo3" allowTextWrap="true" load="loaddata" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">
             <e-data-manager url="/scmDistributionsIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsIP/Insert" updateUrl="/scmDistributionsIP/Update" removeUrl="/scmDistributionsIP/Remove"></e-data-manager>
             <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
@@ -164,7 +164,9 @@
                 <e-grid-column field="stockId" allowFiltering="false" foreignKeyField="StockId" allowResizing="true" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="StockItem"
                                dataSource="ViewBag.StockSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpStockItems }"></e-grid-column>
                 <e-grid-column field="batchNumber" allowFiltering="false" allowEditing="true" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="quantity" allowFiltering="false" headerText="Qty" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="requested" allowFiltering="false" headerText="Qty Req." validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="quantity" allowFiltering="false" headerText="Qty Issued" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="balance" type="number" allowFiltering="false" allowEditing="false" headerText="Balance" textAlign="Left" width="90"></e-grid-column>
                 <e-grid-column field="whId" foreignKeyField="WhId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
                                dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
 
@@ -172,7 +174,7 @@
                                dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
 
                 <e-grid-column field="issueDate" headerText="Issue Date" allowFiltering="false" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="issueBy" foreignKeyField="UniUserId"  allowFiltering="false"validationRules="@(new { required=true})" headerText="Issued By" foreignKeyValue="UniUserName"
+                <e-grid-column field="issueBy" foreignKeyField="UniUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued By" foreignKeyValue="UniUserName"
                                dataSource="ViewBag.UserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpUserUniItems }"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>
@@ -279,6 +281,12 @@
     </script>
 
     <script type="text/javascript">
+        function queryCellInfo3(args) {
+            if (args.column.field === 'balance') {
+                args.data['balance'] = args.data['requested'] - args.data['quantity'];
+                args.cell.innerHTML = args.data['balance'];
+            }
+        }
         //Filter sub grids
         $(document).ready(function () {
             var distributionID = $('#DistId').val();

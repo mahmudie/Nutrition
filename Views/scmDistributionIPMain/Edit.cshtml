@@ -140,7 +140,7 @@
             commands.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
             commands.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
         }
-        <ejs-grid id="IPDist_GridTwo" allowSorting="true" allowTextWrap="true" allowResizing="true" recordDoubleClick="click" load="load" actionComplete="actionComplete" actionBegin="actionBegin" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+        <ejs-grid id="IPDist_GridTwo" allowSorting="true" allowTextWrap="true"  queryCellInfo="queryCellInfo3"  allowResizing="true" recordDoubleClick="click" load="load" actionComplete="actionComplete" actionBegin="actionBegin" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
             <e-data-manager url="/scmDistributionsIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsIP/Insert" updateUrl="/scmDistributionsIP/Update" removeUrl="/scmDistributionsIP/Remove"></e-data-manager>
             <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="true" mode="Dialog"></e-grid-editSettings>
             <e-grid-columns>
@@ -149,7 +149,10 @@
                 <e-grid-column field="stockId" foreignKeyField="StockId" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="StockItem"
                                dataSource="ViewBag.StockSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpStockItems }"></e-grid-column>
                 <e-grid-column field="batchNumber" allowEditing="false" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="quantity" headerText="Quant." validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="requested" headerText="Qty Req." validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="quantity" allowFiltering="false" headerText="Qty Issued" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="balance" type="number" allowFiltering="false" allowEditing="false" headerText="Balance" textAlign="Left" width="90"></e-grid-column>
+
                 <e-grid-column field="whId" foreignKeyField="WhId" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
                                dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
 
@@ -274,6 +277,12 @@
     </script>
 
     <script>
+        function queryCellInfo3(args) {
+            if (args.column.field === 'balance') {
+                args.data['balance'] = args.data['requested'] - args.data['quantity'];
+                args.cell.innerHTML = args.data['balance'];
+            }
+        }
 
         function loadmessage(args) {
             this.getColumnByField('message').disableHtmlEncode = false;

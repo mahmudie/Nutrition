@@ -10,7 +10,7 @@ using DataSystem.Models.HP;
 using DataSystem.GLM.Models;
 using DataSystem.Controllers.SCM;
 using DataSystem.Models.GLM;
-
+using DataSystem.Models.USI;
 
 namespace DataSystem.Models
 {
@@ -1505,5 +1505,12 @@ namespace DataSystem.Models
         //public DbSet<VDateValue> VDateValues { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportsView> ReportsView { get; set; }
+
+
+        //USI
+        public DbSet<UsiMonitoring> UsiMonitoring { get; set; }
+        public DbSet<vUsiMonitoring> vUsiMonitoring { get; set; }
+        public DbSet<Usiindicators> Usiindicators { get; set; }
+        public DbSet<Usilookup> Usilookup { get; set; }
     }
 }

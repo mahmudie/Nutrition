@@ -18,6 +18,8 @@ namespace DataSystem.Models.SCM
         [Required]
         [Display(Name = "Quantity")]
         public int quantity { get; set; }
+        [Display(Name = "Requested")]
+        public int requested { get; set; }
         [Required]
         [Display(Name = "Batch Number")]
         public string batchNumber { get; set; }

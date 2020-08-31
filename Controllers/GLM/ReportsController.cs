@@ -934,8 +934,18 @@ namespace DataSystem.GLM.Controllers
                                     var divisorField = _context.Fields
                                         .SingleOrDefault(m => m.QuestionId == q.Id && m.ColumnId == c.DivisorColumn).Id;
 
-                                    var dividendValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == dividendField && m.ReportId==report.Id).Data;
-                                    var divisorValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == divisorField && m.ReportId==report.Id).Data;
+                                    long? dividendValue = null;
+                                    long? divisorValue = null;
+
+                                    if (_context.NumberValues.Any(m => m.FieldId == dividendField && m.ReportId == report.Id))
+                                    {
+                                        dividendValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == dividendField && m.ReportId == report.Id).Data;
+                                    }
+
+                                    if (_context.NumberValues.Any(m => m.FieldId == divisorField && m.ReportId == report.Id))
+                                    {
+                                        divisorValue = _context.NumberValues.SingleOrDefault(m => m.FieldId == divisorField && m.ReportId == report.Id).Data;
+                                    }
 
                                     if (dividendValue != null && divisorValue != null)
                                     {
