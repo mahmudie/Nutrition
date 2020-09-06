@@ -14,7 +14,7 @@ namespace DataSystem.Models.SCM
         }
         [Key]
         public int RegionId { get; set; }
-        [Required()]
+        [Required]
         [Display(Name ="Region Long Name")]
         public string RegionLong { get; set; }
         [Required]
