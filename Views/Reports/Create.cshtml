@@ -79,7 +79,7 @@
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.ReportReceivedDate, new { @class = "control-label" })
-                        <ejs-datepicker id="ReportReceivedDate" format="MM/dd/yyyy" min="@ViewBag.maxDate" max="@ViewBag.maxDeadline" ejs-for="ReportReceivedDate"></ejs-datepicker>
+                        <ejs-datepicker id="ReportReceivedDate" format="MM/dd/yyyy" min="@ViewBag.maxDatemin" max="@ViewBag.maxDeadline" ejs-for="ReportReceivedDate"></ejs-datepicker>
                         @Html.ValidationMessageFor(m => m.ReportReceivedDate)
                     </div>
                 </div>

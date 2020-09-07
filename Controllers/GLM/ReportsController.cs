@@ -135,6 +135,7 @@ namespace DataSystem.GLM.Controllers
             DateTime today_date = DateTime.Now.Date;
             ViewBag.minDate = today_date.AddDays(-90);
             ViewBag.maxDate = today_date.AddDays(1);
+            ViewBag.maxDatemin = today_date;
             ViewBag.maxDeadline = today_date.AddDays(30);
             return View(viewModel);
         }

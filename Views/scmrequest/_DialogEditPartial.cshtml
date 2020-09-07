@@ -104,6 +104,14 @@
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="form-group">
+                    <label for="winterization">IP Balance</label>
+                    <ejs-textbox id="ipbalance" value="@Model.ipbalance" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="form-group">
                     <label for="commentByIp">Comment by IP</label>
                     <ejs-richtexteditor id="commentByIp" value="@Model.commentByIp" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
                 </div>

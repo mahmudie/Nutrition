@@ -280,8 +280,10 @@
                 <e-grid-column field="adjustmentReason" headerText="Adj.cmnt" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="emergency" allowFiltering="false" headerText="Emerg." textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="emergencyReason" allowFiltering="false" headerText="Emerg. Reason" textAlign="Left" width="200"></e-grid-column>
-                <e-grid-column field="winterization" allowFiltering="false" headerText="Winterization" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field ="total" type="number" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="winterization" allowFiltering="false" headerText="Winter." textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="total" type="number" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="ipbalance" allowFiltering="false" headerText="Bal." textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="netstock" type="number" allowFiltering="false" headerText="Net" textAlign="Left" width="90"></e-grid-column>
                 <e-grid-column field="commentByPnd" headerText="Cmnt. PND" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="commentByUnicef" headerText="Cmnt. UNICEF" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="approveByPnd" defaultValue="0" editType="booleanedit" template="#approveByPnd" allowFiltering="false" type="boolean" headerText="Aprv. PND" textAlign="Left" width="120"></e-grid-column>
@@ -461,6 +463,10 @@
             if (args.column.field === 'total') {
                 args.data['total'] =args.data['stockForChildren']+args.data['currentBalance']+args.data['emergency']+args.data['winterization'];
                 args.cell.innerHTML = args.data['total'];
+            }
+            if (args.column.field === 'netstock') {
+                args.data['netstock'] =args.data['total']-args.data['ipbalance'];
+                args.cell.innerHTML = args.data['netstock'];
             }
         }
  

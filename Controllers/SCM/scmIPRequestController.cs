@@ -41,6 +41,15 @@ namespace DataSystem.Controllers.SCM
         public async Task<IActionResult> RUrlDatasource([FromBody]DataManagerRequest dm)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            try
+            {
+                var data2 = _context.scmIPRequests.ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             var data = _context.scmIPRequests.ToList();
             try
             {
@@ -112,6 +121,7 @@ namespace DataSystem.Controllers.SCM
             scmIpReq.userName = User.Identity.Name;
             scmIpReq.updateDate = DateTime.Now;
             scmIpReq.winterization = value.Value.winterization;
+            scmIpReq.ipbalance = value.Value.ipbalance;
             try
             {
                 if (User.IsInRole("administrator") && (user.Unicef!=1 || user.Pnd!=1))
@@ -151,6 +161,7 @@ namespace DataSystem.Controllers.SCM
                         scmIpReq.updateDate = DateTime.Now;
                         scmIpReq.commentByIp = value.Value.commentByIp;
                         scmIpReq.winterization = value.Value.winterization;
+                        scmIpReq.ipbalance = value.Value.ipbalance;
                     }
                 }
                 else if (User.IsInRole("unicef") && scmIpReq.approveByUnicef != true)
