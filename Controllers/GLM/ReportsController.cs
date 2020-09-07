@@ -595,7 +595,9 @@ namespace DataSystem.GLM.Controllers
                 _context.SaveChanges();
 
                 // this variable hold a list of the Ids of the disabled fields
-                List<long> disabledFieldIds = new List<long>();
+                List<long> disabledYesNoFieldIds = new List<long>();
+                List<long> disabledNumberFieldIds = new List<long>();
+                List<long> disabledTextFieldIds = new List<long>();
 
                 // save fields with numer datatype
                 foreach (var field in numberFields)
@@ -646,30 +648,22 @@ namespace DataSystem.GLM.Controllers
                                 {
                                     if (_context.NumberValues.Any(m => m.FieldId == F.Id && m.ReportId == form["ReportId"]))
                                     {
-                                        disabledFieldIds.Add(F.Id);
+                                        if (F.DataType == "yesno")
+                                        {
+                                            disabledYesNoFieldIds.Add(F.Id);
+                                        }
+                                        else
+                                        {
+                                            disabledNumberFieldIds.Add(F.Id);
+                                        }
+                                    }
 
-                                        //var nValue = _context.NumberValues
-                                        //    .Where(m => m.FieldId == F.Id && m.ReportId == form["ReportId"])
-                                        //    .SingleOrDefault();
-
-                                        //nValue.Data = 2;
-
-                                        //_context.Entry(nValue).State = EntityState.Modified;
+                                    if (_context.TextValues.Any(m => m.FieldId == F.Id && m.ReportId == form["ReportId"]))
+                                    {
+                                        disabledTextFieldIds.Add(F.Id);
                                     }
                                 }
                             }
-
-                            //_context.NumberValues
-                            //    .Where(m => disabledFieldIds.Contains(m.FieldId) && m.ReportId == form["ReportId"])
-                            //    .ToList()
-                            //    .ForEach(m => m.Data = 2);
-
-                            //_context.SaveChanges();
-
-                            //using(var ctx = new WebNutContext())
-                            //{
-
-                            //}
                         }
                     }
 
@@ -683,27 +677,6 @@ namespace DataSystem.GLM.Controllers
                 }
 
                 _context.SaveChanges();
-
-                // set the  values of the disabled yes/no fields
-                var sql = @"UPDATE [NumberValues] SET [Data] = 2 WHERE FieldId IN (";
-
-                for (int i = 0; i < disabledFieldIds.Count(); i++)
-                {
-                    sql += disabledFieldIds[i];
-
-                    if (i < disabledFieldIds.Count - 1)
-                    {
-                        sql += ",";
-                    }
-                    else
-                    {
-                        sql += ")";
-                    }
-                }
-
-                sql += " AND ReportId = " + form["ReportId"];
-
-                _context.Database.ExecuteSqlCommand(sql);
 
                 // save fields with date datatype
                 foreach (var field in dateFields)
@@ -744,6 +717,30 @@ namespace DataSystem.GLM.Controllers
                 }
 
                 _context.SaveChanges();
+
+                // set the  values of the disabled yes/no fields
+                var sqlYesNo = @"UPDATE [NumberValues] SET [Data] = 2";
+
+                sqlYesNo += " WHERE FieldId IN (" + String.Join(",", disabledYesNoFieldIds.ToArray()) + ")";
+                sqlYesNo += " AND ReportId = " + form["ReportId"];
+
+                _context.Database.ExecuteSqlCommand(sqlYesNo);
+
+                // set the  values of the disabled number fields
+                var sqlNumber = @"UPDATE [NumberValues] SET [Data] = NULL";
+
+                sqlNumber += " WHERE FieldId IN (" + String.Join(",", disabledNumberFieldIds.ToArray()) + ")";
+                sqlNumber += " AND ReportId = " + form["ReportId"];
+
+                _context.Database.ExecuteSqlCommand(sqlNumber);
+
+                // set the  values of the disabled text fields
+                var sqlText = @"UPDATE [TextValues] SET [Data] = NULL";
+
+                sqlText += " WHERE FieldId IN (" + String.Join(",", disabledTextFieldIds.ToArray()) + ")";
+                sqlText += " AND ReportId = " + form["ReportId"];
+
+                _context.Database.ExecuteSqlCommand(sqlText);
 
                 return RedirectToAction("Index", "Reports");
             }
@@ -867,7 +864,7 @@ namespace DataSystem.GLM.Controllers
                                         {
                                             if (fo.Value == textValue.Data)
                                             {
-                                                field.Data = fo.Caption;
+                                                field.Data = (String.IsNullOrEmpty(textValue.Data)) ? "N/A" : fo.Caption;
                                             }
                                         }
                                     }
