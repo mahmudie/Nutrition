@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <h3>Supply Distribution to SDP</h3>
 
-            <ejs-grid id="scmDistributionMainGrid" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowSorting="true"  actionBegin="Begin" toolbarClick="toolbarClick" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
+            <ejs-grid id="scmDistributionIPMainGrid" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowSorting="true"  actionBegin="Begin" toolbarClick="toolbarClick" actionComplete="actionComplete" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})" allowPaging="true">
                 <e-data-manager url="/scmDistributionIPMain/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionIPMain/Insert" updateUrl="/scmDistributionIPMain/Update" removeUrl="/scmDistributionIPMain/Remove"></e-data-manager>
                 @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
             <e-grid-columns>

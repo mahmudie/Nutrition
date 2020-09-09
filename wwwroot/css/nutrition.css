@@ -37,6 +37,12 @@
     color: #3F51B5!important;
 }
 /*Grid Toolbar Formatting*/
+#PopGridOne_toolbarItems .e-toolbar-items .e-tbar-btn-text,
+#PopGridOne_toolbarItems .e-toolbar-item .e-btn-icon,
+#PopGridTwo_toolbarItems .e-toolbar-items .e-tbar-btn-text,
+#PopGridTwo_toolbarItems .e-toolbar-item .e-btn-icon,
+#scmDistributionIPMainGrid_toolbarItems .e-toolbar-items .e-tbar-btn-text,
+#scmDistributionIPMainGrid_toolbarItems .e-toolbar-item .e-btn-icon,
 #ChecklistGrid_toolbarItems .e-toolbar-items .e-tbar-btn-text,
 #ChecklistGrid_toolbarItems .e-toolbar-item .e-btn-icon,
 #LevelsGrid_toolbarItems .e-toolbar-items .e-tbar-btn-text,

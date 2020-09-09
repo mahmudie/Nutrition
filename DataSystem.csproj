@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <!--<AspNetCoreHostingModel>OutProcess</AspNetCoreHostingModel>-->
     <!--<RuntimeFrameworkVersion>2.1.5</RuntimeFrameworkVersion>-->
@@ -39,6 +39,10 @@
   
   <ItemGroup>
     <Compile Remove="Controllers\SCM\scmDistributionIPController.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Remove="Views\scmStokmovmnt\IndexCopy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\Default Settings.pubxml" />

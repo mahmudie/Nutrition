@@ -17,7 +17,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <ejs-grid id="GridOne" allowSorting="true" allowResizing="true" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel"})" allowPaging="true">
+                    <ejs-grid id="PopGridOne" allowSorting="true" allowResizing="true" toolbar="@(new List<string>() {"Add","Edit", "Delete", "Cancel"})" allowPaging="true">
                         <e-data-manager url="/DistPopulation/UrlDataSource" insertUrl="/DistPopulation/Insert"
                                         updateUrl="/DistPopulation/Update" adaptor="UrlAdaptor" removeUrl="/DistPopulation/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false" mode="Dialog"></e-grid-editSettings>
@@ -37,7 +37,7 @@
     <div style="display: none" id="Grid2">
         <div class="row">
             <div class="col-md-12">
-                <ejs-grid id="GridTwo" allowSorting="true" allowFiltering="true" allowResizing="true" allowPaging="true">
+                <ejs-grid id="PopGridTwo" allowSorting="true" allowFiltering="true" allowResizing="true" allowPaging="true">
                     <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
                     <e-data-manager url="/DistPopulation/PermUrlDataSource" insertUrl="/DistPopulation/Insert"
                                     updateUrl="/DistPopulation/Update" adaptor="UrlAdaptor" removeUrl="/DistPopulation/Remove"></e-data-manager>
