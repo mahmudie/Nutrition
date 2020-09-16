@@ -1,0 +1,68 @@
+
+@model DataSystem.Models.ViewModels.PivotTable.IndicatorsFilter
+@{
+    ViewData["Title"] = "Provincial Level Indicators Pivot Table";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h2>@ViewBag.Title</h2>
+            <hr />
+            <p>
+                <strong>
+
+                    This page will help you in creating the Provincial Level Indicators.
+                    Please specify required parameters/filters to procceed.
+                </strong>
+            </p>
+            <br /><br />
+                  <form  name="pivotForm" id="pivotForm">
+                      <table id="provincial" class="table-striped table-bordered table-condensed nowrap margin:10px;" width="100%" cellspacing="0">
+                          <tr>
+                              <th>Province</th>
+                              <td>
+                                  <select asp-for="Province" class="form-control" asp-items="@ViewBag.ProvList"></select>
+                              </td>
+                          </tr>
+                          <tr>
+                              <th>Calendar</th>
+                              <td>
+                                  <select asp-for="Calendar" class="form-control">
+                                      <option value="1">Shamsi</option>
+                                      <option value="2">Meladi</option>
+                                  </select>
+                              </td>
+                          </tr>
+                          <tr>
+                              <th>Period</th>
+                              <td>
+                                  <select asp-for="Period" class="form-control">
+                                      <option value="1">Annual</option>
+                                      <option value="2">Quarterly</option>
+                                      <option value="3">Monthly</option>
+                                  </select>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan="2">
+                                  <div class="form-group">
+                                      <div class="col-md-3 col-md-offset-6">
+                                          <button id="sendbtn" onclick="send()" class="btn btn-success btn-block">Generate</button>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+                  </form>
+            <br /><br /><br />
+        </div>
+    </div>
+</div>
+    <script>
+        function send() {
+            document.pivotForm.action = "/Gpvtnum/PPivot";
+            document.pivotForm.submit();
+
+        };
+    </script>

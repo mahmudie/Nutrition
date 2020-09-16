@@ -1,0 +1,28 @@
+
+@{
+    ViewData["Title"] = "Nutrition Provincial Level Indicators";
+}
+<div>
+    <ejs-spreadsheet id="spreadsheet" width="100%" height="600px" openUrl="/Gpvtnum/Open" saveUrl="/Gpvtnum/Save" created="createdHandler">
+
+    </ejs-spreadsheet>
+</div>
+
+<script>
+    function createdHandler() {
+        var host = window.location.host;
+        var spreadsheet = ej.base.getComponent(document.getElementById("spreadsheet"), "spreadsheet");
+        fetch(window.location.protocol+"/analysis/" + "Nutrition_Provincial.xlsx")
+            .then((response) => {
+                response.blob().then((fileBlob) => {
+                    var file = new File([fileBlob], "Nutrition_Provincial.xlsx");
+                    spreadsheet.open({ file: file });
+                })
+            })
+    }
+</script>
+<style>
+    .box-header.with-border {
+        display: none !important;
+    }
+</style>

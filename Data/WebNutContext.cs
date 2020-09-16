@@ -11,6 +11,7 @@ using DataSystem.GLM.Models;
 using DataSystem.Controllers.SCM;
 using DataSystem.Models.GLM;
 using DataSystem.Models.USI;
+using DataSystem.Models.Analysis;
 
 namespace DataSystem.Models
 {
@@ -1512,5 +1513,23 @@ namespace DataSystem.Models
         public DbSet<vUsiMonitoring> vUsiMonitoring { get; set; }
         public DbSet<Usiindicators> Usiindicators { get; set; }
         public DbSet<Usilookup> Usilookup { get; set; }
+
+        //Analysis
+        public DbSet<totalpivotcombinednprovs> totalpivotcombinednprovs { get; set; }
+        public DbSet<totalpivotcombinednprovm> totalpivotcombinednprovm { get; set; }
+        public DbSet<totalpivotcombinedndists> totalpivotcombinedndists { get; set; }
+        public DbSet<totalpivotcombinedndistm> totalpivotcombinedndistm { get; set; }
+        public DbSet<totalpivotcombinednhfs> totalpivotcombinednhfs { get; set; }
+        public DbSet<totalpivotcombinednhfm> totalpivotcombinednhfm { get; set; }
+        public DbSet<totalpivotcombinedpprovs> totalpivotcombinedpprovs { get; set; }
+        public DbSet<totalpivotcombinedpprovm> totalpivotcombinedpprovm { get; set; }
+        public DbSet<totalpivotcombinedpdists> totalpivotcombinedpdists { get; set; }
+        public DbSet<totalpivotcombinedpdistm> totalpivotcombinedpdistm { get; set; }
+        public DbSet<totalpivotcombinedphfs> totalpivotcombinedphfs { get; set; }
+        public DbSet<totalpivotcombinedphfm> totalpivotcombinedphfm { get; set; }
+
+
+
+        public DbSet<Procedureupdatestat> Procedureupdatestat { get; set; }
     }
 }

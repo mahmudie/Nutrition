@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Nutrition Services Indicators - Numeric";
+}
+
+    <div class="container">      
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>@ViewBag.Title</h2>
+                <hr />
+                <p>
+                    <strong>
+                        This page will help you in creating Excel Pivot Table
+                        at Province, District and Facility Level from which you should be able to
+                        view the data at national level, implementer level and different timing.
+                        You are also able to view reports in Shamsi or Meladi Year and Month.
+                    </strong>
+                </p>
+                <p>This will only show percentage indicator results</p>
+                <p>The last update was on:<strong> @ViewBag.updatedate</strong></p>
+                <p>If you want to update click here <a href="/Gpvtper/UpdateProcedure" target="_self">Update</a>. This will take sometime</p>
+                <p><i>This may take a few minutes to update!</i></p>
+                <br /><br />
+                <ol>
+                    <li><a href="/Gpvtnum/ProvPivot" target="_blank">Provincial level</a></li>
+                    <li><a href="/Gpvtnum/DistPivot" target="_blank">District level</a></li>
+                    <li><a href="/Gpvtnum/HFPivot" target="_blank">Health Facility level</a></li>
+                </ol>
+                <br /><br /><br /><br /><br />
+                <br /><br /><br />
+            </div>
+        </div>
+    </div>
+@section Scripts{
+}
