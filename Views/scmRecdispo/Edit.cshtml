@@ -136,7 +136,7 @@
             </div>
         </form>
     </div>
-    <div style="display: none" id="Grid2">
+    <div style="display: none;" id="Grid2">
         @{
             List<object> toolbarItems = new List<object>();
             toolbarItems.Add("Add");
@@ -145,8 +145,11 @@
             toolbarItems.Add("Update");
             toolbarItems.Add("Cancel");
             toolbarItems.Add("Search");
+
+            List<object> commands = new List<object>();
+            commands.Add(new { type = "open", buttonOption = new { content = "", iconCss = "e-btn-icon e-icons e-edit" } });
         }
-        <ejs-grid id="GridDisposals" allowSorting="true" load="loadremarks" allowTextWrap="true" allowFiltering="true" allowResizing="true" actionBegin="actionBegin" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowReordering="true" toolbar=toolbarItems allowPaging="true">
+        <ejs-grid id="GridDisposals" commandClick="attachmentButton" allowSorting="true" load="loadremarks" allowTextWrap="true" allowFiltering="true" allowResizing="true" actionBegin="actionBegin" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowReordering="true" toolbar=toolbarItems allowPaging="true">
             <e-data-manager url="/scmRecdispo/DisposalUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmRecdispo/Insert" updateUrl="/scmRecdispo/Update" removeUrl="/scmRecdispo/Remove"></e-data-manager>
             @*<e-grid-editSettings allowAdding=ViewBag.gridAdd allowDeleting="" allowEditing="true" mode="Dialog"></e-grid-editSettings>*@
             <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
@@ -163,12 +166,23 @@
                 <e-grid-column field="quantity" allowFiltering="false" headerText="Qty" textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="placeDisposal" allowFiltering="false" headerText="Disp. Place" textAlign="Left" width="130"></e-grid-column>
                 <e-grid-column field="remarks" allowFiltering="false" headerText="Remarks" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" textAlign="Left" width="200"></e-grid-column>
-
+                <e-grid-column headerText="Attachment" width="100" commands="commands"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>
     </div>
 </div>
 @section Scripts{
+    <script>
+        // attachment button settings
+        function attachmentButton(args) {
+            var id = args.rowData.id;
+                
+            if (id != null && id != "") {
+                window.location.href = '/scmRecdispo/EditAttachment?Id=' + id;
+            }
+        }
+    </script>
+
     <script>
         function actionComplete(args) {
             if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {

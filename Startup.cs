@@ -75,7 +75,7 @@ namespace DataSystem
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                //options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -134,6 +134,7 @@ namespace DataSystem
 
             services.RegisterDataTables();
             services.AddAutoMapper();
+            services.AddSession();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("admin", policy =>

@@ -1,0 +1,16 @@
+﻿@{
+    bool Alert = (TempData["Alert"] != null) ? (bool)TempData["Alert"] : false;
+    bool AlertStatus = (TempData["AlertStatus"] != null) ? (bool)TempData["AlertStatus"] : false;
+    string AlertText = (TempData["AlertText"] != null) ? (string)TempData["AlertText"] : "";
+
+    string AlertClass = (AlertStatus) ? "alert-success" : "alert-danger";
+}
+
+@if (Alert)
+{
+    <div class="alert @AlertClass">
+        <p>@AlertText</p>
+    </div>
+
+    <br />
+}

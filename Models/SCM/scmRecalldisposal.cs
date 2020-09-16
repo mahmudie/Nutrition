@@ -21,5 +21,6 @@ namespace DataSystem.Models.SCM
         public int tenantId { get; set; }
         public String userName { get; set; }
         public DateTime? updateDate { get; set; }
+        public string Attachment { get; set; }
     }
 }

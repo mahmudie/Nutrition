@@ -374,6 +374,12 @@
 }
 
 
+.e-tabdocs:before {
+    content: "\F0c5";
+    font-family: "fontawesome" !important;
+    font-size: 50pt;
+}
+
 .e-tab .e-tab-header .e-toolbar-item.e-active .e-tab-icon::before {
     color: white !important;
 }

@@ -22,6 +22,6 @@ namespace DataSystem.Models.SCM
         public string issueBy { get; set; }
         public string issueTo { get; set; }
         public int tenantId { get; set; }
-
+        public string attachment { get; set; }
     }
 }

@@ -1,0 +1,81 @@
+﻿@model DataSystem.Models.ViewModels.scmAttachment
+@{
+    ViewData["Title"] = "Attachment for the Stock Recall and Disposal";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>@ViewData["Title"]</h3>
+            <hr />
+
+            @if (Model.AttachmentName != null)
+            {
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm("DownloadAttachment", "scmRecdispo"))
+                                {
+                                    @Html.HiddenFor(m => m.Id)
+
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-instagram">
+                                            <i class="fa fa-download"></i>
+                                        </button>
+                                        <button type="submit" class="btn btn-instagram">Download File</button>
+                                    </div>
+                                }
+                            </td>
+
+                            <td>
+                                @using (Html.BeginForm("RemoveAttachment", "scmRecdispo"))
+                                {
+                                    @Html.HiddenFor(m => m.Id)
+
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-google js-remove-file">
+                                            <i class="fa fa-times-circle"></i>
+                                        </button>
+                                        <button type="submit" class="btn btn-google btn-bracketed js-remove-file">Remove File</button>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr />
+            }
+
+            @using (Html.BeginForm("EditAttachment", "scmRecdispo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(m => m.Id)
+                @Html.ValidationMessageFor(m => m.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Attachment)
+                    @Html.TextBoxFor(m => m.Attachment, new { @class = " form-control", @type = "file" })
+                    @Html.ValidationMessageFor(m => m.Attachment)
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                    <a asp-action="Index" class="btn btn-link"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section  Scripts {
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.js-remove-file', function () {
+                return confirm('Do you realy want to remove this file?');
+            });
+        });
+    </script>
+}
