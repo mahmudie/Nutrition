@@ -447,10 +447,12 @@ namespace DataSystem.Controllers.analyze
             if (Province > 0 & Province < 10)
             {
                 ProvCode = "0" + Province;
-            }
-            if (District > 0)
-            {
                 DistCode = "0" + District;
+            }
+            else if (Province > 10)
+            {
+                ProvCode = Province.ToString();
+                DistCode = District.ToString();
             }
 
             switch (Calendar)
@@ -817,10 +819,12 @@ namespace DataSystem.Controllers.analyze
             if (Province > 0 & Province < 10)
             {
                 ProvCode = "0" + Province;
-            }
-            if (District > 0)
-            {
                 DistCode = "0" + District;
+            }
+            else if (Province > 10)
+            {
+                ProvCode = Province.ToString();
+                DistCode = District.ToString();
             }
 
             switch (Calendar)
@@ -1001,6 +1005,7 @@ namespace DataSystem.Controllers.analyze
                     }
                 case 2:
                     {
+                        _context.Database.SetCommandTimeout(5000);
                         var data = _context.totalpivotcombinedphfm.ToList();
 
                         if (!Province.Equals(0) & !District.Equals(0) & !FacilityId.Equals(0))

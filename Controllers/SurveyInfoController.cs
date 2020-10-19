@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 
 namespace DataSystem.Controllers
 {
-    [Authorize(Roles = "administrator,unicef,pnd")]
-    [Authorize(Policy = "admin")]
+    [Authorize(Roles = "administrator,unicef,pnd,otherentry")]
+    //[Authorize(Policy = "admin")]
     public class SurInfoController : Controller
     {
         IHostingEnvironment hostingEnv;

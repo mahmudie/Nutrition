@@ -104,7 +104,7 @@
             <div>
                 <form asp-action="Delete">
                     <div class="col-lg-offset-6 col-md-8">
-                        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+                        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")|| User.IsInRole("otherentry")))
                                 {
                         <input type="submit" value="Delete" class="btn btn-danger" /> }|
                         <a asp-action="Index">Back to List</a>

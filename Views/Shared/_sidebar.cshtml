@@ -22,10 +22,8 @@
                     <ul class="treeview-menu">
                         <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard</a></li>
                         <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
-                        <li><a href="https://app.powerbi.com/reportEmbed?reportId=e10fa88c-d9b8-4f41-b643-a929d017a8f2&groupId=88a0a20e-41f5-406f-939c-be019e711aa0&autoAuth=true&ctid=26ae6adf-61be-443f-8dc4-6531b61a9a38&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" target="_blank"><i class="fa  fa-lightbulb-o"></i>Nutrition Monitoring</a></li>
                     </ul>
                 </li>
-
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-bar-chart"></i>
@@ -35,31 +33,165 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/pivot/index"><i class="fa fa-table"></i>Pivot Table</a></li>
-                        <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
-                        <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Mix Modules</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/Gpvtnum/index"><i class="fa  fa-table"></i>Numeric Indicators</a></li>
+                                <li><a href="/Gpvtper/index"><i class="fa  fa-table"></i>Proportional Indicators</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>IMAM Indicators</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/pivot/index"><i class="fa  fa-table"></i>Pivot Table</a></li>
+                                <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                                <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                                <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-file"></i>
+                                <span>OPD-MAM</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                                <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                                <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                                <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
-
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-file"></i>
-                        <span>OPD-MAM Reports</span>
+                        <i class="fa fa-desktop"></i>
+                        <span>Monitoring</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
-                        <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
-                        <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
-                        <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+
+                        <li><a href="/Reports/Index"><i class="fa fa-table"></i>Facility Monitoring</a></li>
+
                     </ul>
                 </li>
+            </ul>
         </section>
     </aside>
 }
 
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("otherentry"))
+{
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="/dashboard">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/dashboard"><i class="fa  fa-pie-chart"></i>Shamsi Dashboard</a></li>
+                        <li><a href="/dashboardm"><i class="fa  fa-lightbulb-o"></i>Gregorian Dashboard</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Mix Modules</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/Gpvtnum/index"><i class="fa  fa-table"></i>Numeric Indicators</a></li>
+                                <li><a href="/Gpvtper/index"><i class="fa  fa-table"></i>Proportional Indicators</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>IMAM Indicators</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li><a href="/pivot/index"><i class="fa  fa-table"></i>Pivot Table</a></li>
+                                <li><a href="/Indicators/sindicators"><i class="fa fa-table"></i>Indicators (Shamsi)</a></li>
+                                <li><a href="/Indicators/mindicators"><i class="fa fa-table"></i>Indicators (Miladi)</a></li>
+                                <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-file"></i>
+                                <span>OPD-MAM</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="/FacilityReport/index"><i class="fa fa-table"></i>Facility</a></li>
+                                <li><a href="/FacilityReport/District"><i class="fa fa-table"></i>District</a></li>
+                                <li><a href="/FacilityReport/Province"><i class="fa fa-table"></i>Province</a></li>
+                                <li><a href="/FacilityReport/Partner"><i class="fa fa-table"></i>Partner</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-check-square"></i>
+                        <span>Survey Indicators</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/SurInfo/index"><i class="fa fa-table"></i>Indicator Results</a></li>
+                    </ul>
+
+                </li>
+            </ul>
+        </section>
+    </aside>
+}
 
 @if (User.IsInRole("dataentry"))
 {
@@ -236,7 +368,7 @@
                         <li><a href="/submission"><i class="fa fa-plus-circle"></i>Submission PivotTable</a></li>
                     </ul>
                 </li>
-               
+
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-desktop"></i>
@@ -346,7 +478,7 @@
 
                     </ul>
                 </li>
-</section>
+        </section>
     </aside>
 }
 
@@ -669,7 +801,7 @@
         </section>
     </aside>
 }
-@if ((User.IsInRole("unicef") ||User.IsInRole("pnd")) && User.MyProperty() == "1")
+@if ((User.IsInRole("unicef") || User.IsInRole("pnd")) && User.MyProperty() == "1")
 {
 
     <aside class="main-sidebar">

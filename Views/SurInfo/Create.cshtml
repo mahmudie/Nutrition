@@ -84,7 +84,7 @@
                             </select>
                             <span asp-validation-for="Month" class="text-danger" />
                         </div>
-                    </td>                   
+                    </td>
                 </tr>
 
                 <tr>
@@ -128,7 +128,7 @@
             </table>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-md-6">
-                    @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+                    @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")|| User.IsInRole("otherentry")))
                     {
                         <input type="submit" value="Save" class="btn btn-block btn-primary" />
                     }

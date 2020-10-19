@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace DataSystem.Controllers
 {
-    [Authorize(Roles = "administrator,unicef,pnd")]
-    [Authorize(Policy = "admin")]
+    [Authorize(Roles = "administrator,unicef,pnd,otherentry")]
+    //[Authorize(Policy = "admin")]
     public class SurvIndicatorsController : Controller
     {
         private readonly WebNutContext _context;
@@ -29,11 +29,11 @@ namespace DataSystem.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (User.Identity.IsAuthenticated & User.IsInRole("dataentry"))
+            if (User.Identity.IsAuthenticated & User.IsInRole("otherentry"))
             {
-                ViewBag.gridAdd = false;
-                ViewBag.gridEdit = false;
-                ViewBag.gridDelete = false;
+                ViewBag.gridAdd = true;
+                ViewBag.gridEdit = true;
+                ViewBag.gridDelete = true;
             }
             else if ((user.Unicef == 1 || user.Pnd == 1))
             {

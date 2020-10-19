@@ -14,7 +14,7 @@
     <h2>Survey Result</h2>
 
     <p>
-        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd")))
+        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("unicef") || User.IsInRole("pnd") || User.IsInRole("otherentry")))
         {
             <a class="btn btn-success" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Add New</a>
 

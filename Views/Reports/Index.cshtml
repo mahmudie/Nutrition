@@ -75,7 +75,7 @@
                                 <div class="dropdown-menu">
                                     <a asp-controller="Reports" asp-action="ShowReport" asp-route-id="@row.ReportId" class="dropdown-item">Show Report</a>
 
-                                    @if (!row.IsCompleted)
+                                    @if (!row.IsCompleted && SignInManager.IsSignedIn(User) && !User.IsInRole("guest"))
                                     {
                                         <div class="dropdown-divider"></div>
                                         <a asp-controller="Reports" asp-action="Complete" asp-route-id="@row.ReportId" class="dropdown-item">Complete</a>
@@ -86,6 +86,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a asp-controller="Reports" asp-action="Delete" asp-route-id="@row.ReportId" class="dropdown-item">Delete</a>
                                     }
+
                                 </div>
                             </div>
                         </td>

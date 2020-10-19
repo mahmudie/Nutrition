@@ -19,7 +19,7 @@ using System.Data.SqlClient;
 
 namespace DataSystem.GLM.Controllers
 {
-    [Authorize(Roles = "administrator,unicef,pnd,dataentry")]
+    [Authorize(Roles = "administrator,unicef,pnd,dataentry,guest")]
     public class ReportsController : Controller
     {
         protected readonly WebNutContext _context;

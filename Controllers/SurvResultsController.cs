@@ -14,8 +14,8 @@ using DataSystem.Models.ViewModels;
 
 namespace DataSystem.Controllers
 {
-    [Authorize(Roles = "administrator,unicef,pnd")]
-    [Authorize(Policy ="admin")]
+    [Authorize(Roles = "administrator,unicef,pnd,otherentry")]
+    //[Authorize(Policy ="admin")]
     public  static  class getSurvInfos
     {
         public  static int? SurvId { get; set; }
