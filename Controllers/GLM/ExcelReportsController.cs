@@ -1,9 +1,11 @@
 ﻿using DataSystem.Models;
+using DataSystem.Models.GLM;
 using DataSystem.Models.GLM.Dtos;
 using DataSystem.Models.GLM.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
@@ -90,6 +92,9 @@ namespace DataSystem.Controllers.GLM
                     .Where(m => m.SectionId == 21)
                     .ToList();
 
+                var fieldOptionsAll = _context.FieldOptions.ToList();
+                var fieldOptions = new List<FieldOption>();
+
                 var tables = new List<DataTable>();
 
                 if (scqfs.Count > 0)
@@ -165,11 +170,17 @@ namespace DataSystem.Controllers.GLM
                                     // add fields data to the row
                                     foreach (var c in columns)
                                     {
+                                        //var field = _context.Fields
+                                        //    .Include(m => m.FieldOptions)
+                                        //    .Where(m => m.QuestionId == q.Id && m.ColumnId == c.Id)
+                                        //    .SingleOrDefault();
+
                                         var field = scqfs
                                             .Select(m => new
                                             {
                                                 Id = m.FieldId,
                                                 DataType = m.DataType,
+                                                InputType = m.InputType,
                                                 ColumnId = m.ColumnId,
                                                 QuestionId = m.QuestionId,
                                             })
@@ -178,48 +189,93 @@ namespace DataSystem.Controllers.GLM
 
                                         if (field != null)
                                         {
+                                            // get field options for the dropdown types
+                                            if (field.InputType == "dropdown" && field.InputType != "yesno")
+                                            {
+                                                fieldOptions = fieldOptionsAll
+                                                    .Select(m => new FieldOption
+                                                    {
+                                                        Value = m.Value,
+                                                        Caption = m.Caption,
+                                                        FieldId = m.FieldId
+                                                    })
+                                                    .Where(m => m.FieldId == field.Id)
+                                                    .ToList();
+                                            }
+
                                             // add text field value
                                             if (field.DataType == "text")
                                             {
-                                                var textValue = _context.TextValues
+                                                if (_context.TextValues.Any(m => m.FieldId == field.Id && m.ReportId == report.Id))
+                                                {
+                                                    var textValue = _context.TextValues
                                                     .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
                                                     .SingleOrDefault();
 
-                                                tableRow[c.Title] = (textValue != null) ? textValue.Data : null;
+                                                    if (field.InputType == "dropdown" && field.DataType != "yesno")
+                                                    {
+                                                        
+
+                                                        foreach (var fo in fieldOptions)
+                                                        {
+                                                            if (fo.Value == textValue.Data)
+                                                            {
+                                                                tableRow[c.Title] = (String.IsNullOrEmpty(textValue.Data)) ? "N/A" : fo.Caption;
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        tableRow[c.Title] = (textValue != null) ? textValue.Data : null;
+                                                    }
+                                                }
                                             }
 
                                             // add number field value
                                             if (field.DataType == "number" || field.DataType == "yesno")
                                             {
-                                                var numberValue = _context.NumberValues
-                                                    .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
-                                                    .SingleOrDefault();
-
-                                                if (numberValue != null)
+                                                if (_context.NumberValues.Any(m => m.FieldId == field.Id && m.ReportId == report.Id))
                                                 {
-                                                    if (field.DataType == "yesno" && numberValue.Data == 2)
+                                                    var numberValue = _context.NumberValues
+                                                        .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
+                                                        .SingleOrDefault();
+
+                                                    if (field.InputType == "dropdown" && field.DataType != "yesno")
                                                     {
-                                                        tableRow[c.Title] = "N/A";
+                                                        foreach (var fo in fieldOptions)
+                                                        {
+                                                            if (fo.Value == numberValue.Data.ToString())
+                                                            {
+                                                                tableRow[c.Title] = fo.Caption;
+                                                            }
+                                                            else
+                                                            {
+                                                                tableRow[c.Title] = "N/A";
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (field.DataType == "yesno")
+                                                    {
+                                                        tableRow[c.Title] = (numberValue.Data == 2) ? "N/A" : numberValue.Data.ToString();
                                                     }
                                                     else
                                                     {
-                                                        tableRow[c.Title] = numberValue.Data.ToString();
+                                                        tableRow[c.Title] = (numberValue != null) ? numberValue.Data.ToString() : null;
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    tableRow[c.Title] = null;
                                                 }
                                             }
 
                                             // add date field value
                                             if (field.DataType == "date")
                                             {
-                                                var dateValue = _context.DateValues
+                                                if (_context.DateValues.Any(m => m.FieldId == field.Id && m.ReportId == report.Id))
+                                                {
+                                                    var dateValue = _context.DateValues
                                                     .Where(m => m.ReportId == report.Id && m.FieldId == field.Id)
                                                     .SingleOrDefault();
 
-                                                tableRow[c.Title] = (dateValue != null) ? String.Format("{0:MM/dd/yyyy}", dateValue.Data) : null;
+                                                    tableRow[c.Title] = (dateValue != null) ? String.Format("{0:MM/dd/yyyy}", dateValue.Data) : null;
+                                                }
                                             }
                                         }
                                     }

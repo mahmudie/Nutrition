@@ -12,6 +12,7 @@ namespace DataSystem.Models.GLM.Models
         public long SectionId { get; set; }
         public long FieldId { get; set; }
         public string DataType { get; set; }
+        public string InputType { get; set; }
         public string SectionTitle { get; set; }
         public int SortOrder { get; set; }
         public int DataFormId { get; set; }
