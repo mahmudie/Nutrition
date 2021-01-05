@@ -75,7 +75,7 @@
                                 <div class="dropdown-menu">
                                     <a asp-controller="Reports" asp-action="ShowReport" asp-route-id="@row.ReportId" class="dropdown-item">Show Report</a>
                                     <br />
-                                    <a asp-controller="ExcelReports" asp-action="Index" asp-route-id="@row.ReportId" class="dropdown-item">Excel Format</a>
+                                    <a asp-controller="ExcelReports" asp-action="DownloadSections" asp-route-id="@row.ReportId" class="dropdown-item">Excel Format</a>
 
                                     @if (!row.IsCompleted && SignInManager.IsSignedIn(User) && !User.IsInRole("guest"))
                                     {
