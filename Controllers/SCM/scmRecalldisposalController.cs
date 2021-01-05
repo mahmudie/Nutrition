@@ -48,6 +48,7 @@ namespace DataSystem.Controllers.SCM
             headerItems.Add(new TabTabItem { Header = new TabHeader { Text = "Recall/Disposal Status", IconCss = "e-tab2" }, Content = ViewBag.content2 });
             ViewBag.headeritems = headerItems;
 
+
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
             {
@@ -109,7 +110,7 @@ namespace DataSystem.Controllers.SCM
             }
             else if (User.IsInRole("administrator") && (user.Unicef == 0 && user.Pnd == 0))
             {
-                data = data.Where(m => m.tenantId.Equals(user.TenantId)).ToList();
+                data = data.Where(m => m.issueTo.Equals(user.UserName)).ToList();
             }
             IEnumerable DataSource = data;
             DataOperations operation = new DataOperations();

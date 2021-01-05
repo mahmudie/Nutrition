@@ -89,17 +89,26 @@ namespace DataSystem.Controllers.analyze
             }
 
             int Province;
+            int District;
             int Calendar;
             int Period = 0;
             string ProvCode = "0";
+            string DistCode = "0";
 
             Province = req.Province;
+            District = req.DistCode;
             Calendar = req.Calendar;
             Period = req.Period;
 
             if (Province > 0 & Province < 10)
             {
                 ProvCode = "0" + Province;
+                DistCode = "0" + District;
+            }
+            else if (Province > 10)
+            {
+                ProvCode = Province.ToString();
+                DistCode = District.ToString();
             }
 
 

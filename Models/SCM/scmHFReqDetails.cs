@@ -16,6 +16,7 @@ namespace DataSystem.Models.SCM
         public int facilityTypeId { get; set; }
         public int supplyId { get; set; }
         public int children { get; set; }
+        [Range(0,0.9999)]
         public double? buffer { get; set; }
         public int? currentBalance { get; set; }
         public int? adjustment { get; set; }

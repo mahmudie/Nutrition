@@ -56,14 +56,6 @@
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <div class="form-group">
-                        <label for="currentBalance">Current Balance</label>
-                        <ejs-textbox id="currentBalance"></ejs-textbox>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <div class="form-group">
                         <label for="adjustment">Adjustment</label>
                         <ejs-textbox id="adjustment"></ejs-textbox>
                     </div>
@@ -78,34 +70,16 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                     <div class="form-group">
-                        <label for="emergency">Emergency</label>
-                        <ejs-textbox id="emergency" enabled="true"></ejs-textbox>
+                        <label for="ipbalance">IP Balance</label>
+                        <ejs-textbox id="ipbalance" enabled="@ViewBag.gridIP"></ejs-textbox>
                     </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                     <div class="form-group">
-                        <label for="emergencyReason">Emergency Reason</label>
-                        <ejs-richtexteditor id="emergencyReason" enabled="true"></ejs-richtexteditor>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <div class="form-group">
-                        <label for="winterization">Winterization</label>
-                        <ejs-textbox id="winterization" enabled="true"></ejs-textbox>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <div class="form-group">
-                        <label for="winterization">IP Balance</label>
-                        <ejs-textbox id="ipbalance" value="@Model.ipbalance" enabled="@ViewBag.gridIP"></ejs-textbox>
+                        <label for="buffer">Buffer Rate</label>
+                        <ejs-textbox id="buffer" enabled="@ViewBag.gridIP"></ejs-textbox>
                     </div>
                 </div>
             </div>

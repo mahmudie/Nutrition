@@ -56,14 +56,6 @@
         <div class="form-row">
             <div class="form-group col-md-12">
                 <div class="form-group">
-                    <label for="currentBalance">Current Balance</label>
-                    <ejs-textbox id="currentBalance" value="@Model.currentBalance" enabled="@ViewBag.gridIP"></ejs-textbox>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
                     <label for="adjustment">Adjustment</label>
                     <ejs-textbox id="adjustment" value="@Model.adjustment" enabled="@ViewBag.gridIP"></ejs-textbox>
                 </div>
@@ -78,34 +70,16 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
                 <div class="form-group">
-                    <label for="emergency">Emergency</label>
-                    <ejs-textbox id="emergency" value="@Model.emergency" enabled="@ViewBag.gridIP"></ejs-textbox>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
-                    <label for="emergencyReason">Emergency Reason</label>
-                    <ejs-richtexteditor id="emergencyReason" value="@Model.emergencyReason" enabled="@ViewBag.gridIP"></ejs-richtexteditor>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
-                    <label for="winterization">Winterization</label>
-                    <ejs-textbox id="winterization" value="@Model.winterization" enabled="@ViewBag.gridIP"></ejs-textbox>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <div class="form-group">
-                    <label for="winterization">IP Balance</label>
+                    <label for="ipbalance">IP Balance</label>
                     <ejs-textbox id="ipbalance" value="@Model.ipbalance" enabled="@ViewBag.gridIP"></ejs-textbox>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label for="buffer">Buffer Rate</label>
+                    <ejs-textbox id="buffer" value="@Model.buffer" enabled="@ViewBag.gridIP"></ejs-textbox>
                 </div>
             </div>
         </div>
@@ -128,22 +102,22 @@
         @if (ViewBag.gridPnd == true)
         {
             <div class="form-group">
-                <label asp-for="commentByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
+                <label asp-for="approveByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
                 <div>
 
-                    <input type="radio" asp-for="commentByPnd" value="0"> No<br>
-                    <input type="radio" asp-for="commentByPnd" value="1"> Yes<br>
+                    <input type="radio" asp-for="approveByPnd" value="0"> No<br>
+                    <input type="radio" asp-for="approveByPnd" value="1"> Yes<br>
                 </div>
             </div>
         }
         else
         {
             <div class="form-group">
-                <label asp-for="commentByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
+                <label asp-for="approveByPnd" class="col-md-2 control-label disabled">Approve by PND</label>
                 <div>
 
-                    <input type="radio" disabled="disabled" asp-for="commentByPnd" value="0"> No<br>
-                    <input type="radio" disabled="disabled" asp-for="commentByPnd" value="1"> Yes<br>
+                    <input type="radio" disabled="disabled" asp-for="approveByPnd" value="0"> No<br>
+                    <input type="radio" disabled="disabled" asp-for="approveByPnd" value="1"> Yes<br>
                 </div>
             </div>
         }

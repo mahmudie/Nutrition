@@ -168,6 +168,8 @@
         toolbarItems.Add("ExcelExport");
         toolbarItems.Add("Search");
         toolbarItems.Add(new { text = "", tooltipText = "Help", prefixIcon = "e-help", id = "hfconsumption" });
+        toolbarItems.Add(new { text = "Add Cons.Estimation", tooltipText = "Add consumption-based estimation", prefixIcon = "e-pluss", id = "Add_comsumption" });
+
         toolbarItems.Add(new { text = "Approve", tooltipText = "Approve this request", prefixIcon = "e-approved", id = "Approve" });
         toolbarItems.Add(new { text = "Delete All", tooltipText = "Delete All", prefixIcon = "e-expand", id = "Deletes" });
     }
@@ -175,7 +177,7 @@
     <div class="webnutnote" id="srhfconsumption" style="display:none">
         @Html.Raw(ViewBag.poctab)
     </div>
-    <ejs-grid id="GridThree" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowSorting="true" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
+    <ejs-grid id="GridThree" queryCellInfo="queryCellInfoStockNeed" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowSorting="true" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbarClick="toolbarClick" toolbar=toolbarItems allowPaging="true">
         <e-data-manager url="/scmrequest/HFUrlDatasource" adaptor="UrlAdaptor" batchUrl="/scmrequest/BatchUpdateConsumption"></e-data-manager>
         @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Batch"></e-grid-editSettings>*@
         <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
@@ -191,11 +193,13 @@
             <e-grid-column field="supplyId" foreignKeyField="SupplyId" allowEditing="false" headerText="Supply Item" foreignKeyValue="Item"
                            dataSource="ViewBag.SupplySource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = SuppliesDropDownList }"></e-grid-column>
             <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="116"></e-grid-column>
-            <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
-            <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
-            <e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
-            @*<e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>*@
+            @*<e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>*@
+            <e-grid-column field="adjustment" headerText="Adjust." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
             <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="stockForChildren" headerText="Sys. Estimate" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="total" type="number" allowFiltering="false" allowEditing="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
+
+            @*<e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>*@
             <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
 
         </e-grid-columns>
@@ -215,13 +219,14 @@
             toolbarItemsAvg.Add("Update");
             toolbarItemsAvg.Add("Cancel");
             toolbarItemsAvg.Add("Search");
-            toolbarItemsAvg.Add(new { text = "Add Avg-based Estimation", tooltipText = "Add average-based estimation", prefixIcon = "e-approved", id = "Add_average" });
+            toolbarItemsAvg.Add(new { text = "Add Avg-based Estimation", tooltipText = "Add average-based estimation", prefixIcon = "e-pluss", id = "Add_average" });
             toolbarItemsAvg.Add(new { text = "Approve", tooltipText = "Approve this request", prefixIcon = "e-approved", id = "Approve" });
             toolbarItemsAvg.Add(new { text = "Delete All", tooltipText = "Delete All", prefixIcon = "e-expand", id = "Deletes2" });
         }
 
-        <ejs-grid id="GridFiveReq" allowSorting="true" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowTextWrap="true" allowFiltering="true" allowResizing="true" toolbarClick="toolbarClick2" allowReordering="true" toolbar=toolbarItemsAvg allowPaging="true">
-            <e-data-manager url="/scmrequest/HFUrlDatasourceAvg" adaptor="UrlAdaptor" insertUrl="/scmrequest/InsertAvg" updateUrl="/scmrequest/UpdateAvg" removeUrl="/scmrequest/RemoveAvg"></e-data-manager>
+        <ejs-grid id="GridFiveReq" queryCellInfo="queryCellInfoStockNeedavg" allowSorting="true" dataBound="dataBound" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Batch})" allowTextWrap="true" allowFiltering="true" allowResizing="true" toolbarClick="toolbarClick2" allowReordering="true" toolbar=toolbarItemsAvg allowPaging="true">
+            @*<e-data-manager url="/scmrequest/HFUrlDatasourceAvg" adaptor="UrlAdaptor" insertUrl="/scmrequest/InsertAvg" updateUrl="/scmrequest/UpdateAvg" removeUrl="/scmrequest/RemoveAvg"></e-data-manager>*@
+            <e-data-manager url="/scmrequest/HFUrlDatasourceAvg" adaptor="UrlAdaptor" batchUrl="/scmrequest/BatchUpdateAveragebased"></e-data-manager>
             @*<e-grid-editSettings allowAdding="false" allowDeleting="true" allowEditing="true" mode="Batch"></e-grid-editSettings>*@
             <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
             <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
@@ -235,12 +240,12 @@
                 <e-grid-column field="program" allowFiltering="false" allowEditing="false" headerText="Prgrm" textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="supplyId" foreignKeyField="SupplyId" allowEditing="false" headerText="Supply Item" foreignKeyValue="Item"
                                dataSource="ViewBag.SupplySource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = SuppliesDropDownList }"></e-grid-column>
-                <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="116"></e-grid-column>
-                <e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="false" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="stockForChildren" headerText="Stock Need" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
-                @*<e-grid-column field="currentBalance" headerText="Curr.Bal" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>*@
+                <e-grid-column field="children" headerText="Children" allowEditing="false" allowFiltering="false" textAlign="Left" width="90"></e-grid-column>
+                @*<e-grid-column field="buffer" headerText="Buff. Factor" allowEditing="true" clipMode="Clip" allowFiltering="false" textAlign="Left" width="110"></e-grid-column>*@
                 <e-grid-column field="adjustment" headerText="Ad." allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
                 <e-grid-column field="adjComment" headerText="Adj. cmnt" allowFiltering="false" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="stockForChildren" headerText="Sys.Estimate" allowFiltering="false" allowEditing="false" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="total" type="number" allowEditing="false" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
                 <e-grid-column field="approved" headerText="Aprvd" allowFiltering="false" allowEditing="false" textAlign="Left" width="100"></e-grid-column>
 
             </e-grid-columns>
@@ -254,15 +259,18 @@
     <div style="display:none" id="Grid4">
         @{
             List<object> toolbarItems2 = new List<object>();
-            toolbarItems.Add("Add");
-            toolbarItems.Add("Edit");
-            toolbarItems.Add("Delete");
-            toolbarItems.Add("Update");
-            toolbarItems.Add("Cancel");
-            toolbarItems.Add("Search");
+            toolbarItems2.Add("Add");
+            toolbarItems2.Add("Edit");
+            toolbarItems2.Add("Delete");
+            toolbarItems2.Add("Update");
+            toolbarItems2.Add("Cancel");
+            toolbarItems2.Add("Search");
+            toolbarItems2.Add(new { text = "Refresh", tooltipText = "Refresh", prefixIcon = "e-refresh", id = "make_refresh" });
+            toolbarItems2.Add("ExcelExport");
+
         }
 
-        <ejs-grid id="GridFours" allowSorting="true" load="loadmessage" queryCellInfo="queryCellInfo3" actionComplete="actionComplete" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog, Template="#dialogtemplate"})" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+        <ejs-grid id="GridFours" allowSorting="true" load="loadmessage" queryCellInfo="queryCellInfo3" toolbarClick="toolbarclickip" actionComplete="actionComplete" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog, Template="#dialogtemplate"})" toolbar=toolbarItems2 allowPaging="true">
             <e-data-manager url="/scmIPRequest/RUrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmIPRequest/RInsert" updateUrl="/scmIPRequest/RUpdate" removeUrl="/scmIPRequest/RRemove"></e-data-manager>
             @*<e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>*@
             <e-grid-pagesettings pageSizes="true" pageSize="8"></e-grid-pagesettings>
@@ -273,17 +281,19 @@
                 <e-grid-column field="supplyId" foreignKeyField="SupplyId" headerText="Item" foreignKeyValue="Item"
                                dataSource="ViewBag.SupplySource" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="program" headerText="Prgrm" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="children" allowFiltering="false" headerText="Children" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="stockForChildren" allowFiltering="false" headerText="Estim." textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="children" allowFiltering="false" headerText="Chldrn" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="stockForChildren" allowFiltering="false" headerText="BaseEst" textAlign="Left" width="95"></e-grid-column>
                 @*<e-grid-column field="currentBalance" allowFiltering="false" headerText="Balance" textAlign="Left" width="100"></e-grid-column>*@
-                <e-grid-column field="adjustment" allowFiltering="false" headerText="Adj." textAlign="Left" width="100"></e-grid-column>
-                <e-grid-column field="adjustmentReason" headerText="Adj.cmnt" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
-                <e-grid-column field="emergency" allowFiltering="false" headerText="Emerg." textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="emergencyReason" allowFiltering="false" headerText="Emerg. Reason" textAlign="Left" width="200"></e-grid-column>
-                <e-grid-column field="winterization" allowFiltering="false" headerText="Winter." textAlign="Left" width="100"></e-grid-column>
-                <e-grid-column field="total" type="number" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
-                <e-grid-column field="ipbalance" allowFiltering="false" headerText="Bal." textAlign="Left" width="80"></e-grid-column>
-                <e-grid-column field="netstock" type="number" allowFiltering="false" headerText="Net" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="adjustment" allowFiltering="false" headerText="Adj." textAlign="Left" width="75"></e-grid-column>
+                <e-grid-column field="adjustmentReason" headerText="Adj.reason" allowFiltering="false" textAlign="Left" width="150"></e-grid-column>
+                @*<e-grid-column field="emergency" allowFiltering="false" headerText="Emerg." textAlign="Left" width="110"></e-grid-column>
+        <e-grid-column field="emergencyReason" allowFiltering="false" headerText="Emerg. Reason" textAlign="Left" width="200"></e-grid-column>
+        <e-grid-column field="winterization" allowFiltering="false" headerText="Winter." textAlign="Left" width="100"></e-grid-column>*@
+                <e-grid-column field="ipbalance" allowFiltering="false" headerText="IP.Bal" textAlign="Left" width="80"></e-grid-column>
+                <e-grid-column field="netstock" allowSorting="false" type="number" allowFiltering="false" headerText="Net" textAlign="Left" width="90"></e-grid-column>
+                <e-grid-column field="buffer" allowFiltering="false" headerText="Buff.Rate" textAlign="Left" width="100"></e-grid-column>
+                <e-grid-column field="totalbuffer" type="number" allowFiltering="false" headerText="Tot.Buffer" textAlign="Left" width="105"></e-grid-column>
+                <e-grid-column field="total" type="number" allowSorting="false" allowFiltering="false" headerText="Total" textAlign="Left" width="90"></e-grid-column>
                 <e-grid-column field="commentByPnd" headerText="Cmnt. PND" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="commentByUnicef" headerText="Cmnt. UNICEF" allowFiltering="false" textAlign="Left" width="180"></e-grid-column>
                 <e-grid-column field="approveByPnd" defaultValue="0" editType="booleanedit" template="#approveByPnd" allowFiltering="false" type="boolean" headerText="Aprv. PND" textAlign="Left" width="120"></e-grid-column>
@@ -340,7 +350,6 @@
                     <e-grid-column field="emailMessage" headerText="Email message" allowFiltering="false" validationRules="@(new { required = true })" edit="@(new { create = "create2", read = "read2", destroy = "destroy2", write = "write2" })" textAlign="Left" width="300"></e-grid-column>
                     <e-grid-column field="reasonId" foreignKeyField="ReasonId" headerText="Submission reason" foreignKeyValue="ReasonName"
                                    dataSource="ViewBag.RequestReasonSource" allowFiltering="false" editType="dropdownedit" textAlign="Left" width="130" edit="new {@params = drpRequestReasonSource }"></e-grid-column>
-                    <e-grid-column field="isSubmitted" headerText="Want to submit" allowFiltering="false" defaultValue="0" template="#isSubmitted" editType="booleanedit" type="Boolean" textAlign="Left" width="110"></e-grid-column>
                     <e-grid-column field="submissionDate" headerText="Submission date" allowFiltering="false" validationRules="@(new { required = true })" textAlign="Left" width="110" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })"></e-grid-column>
                     <e-grid-column field="sendEmail" headerText="Send email" allowFiltering="false" textAlign="Left" width="110" defaultValue="0" template="#sendEmail" editType="booleanedit" type="Boolean"></e-grid-column>
                 </e-grid-columns>
@@ -356,16 +365,16 @@
             toolbarItems3.Add("Update");
             toolbarItems3.Add("Cancel");
             toolbarItems3.Add("Search");
-            toolbarItems3.Add(new { text = "Update Contact", tooltipText = "Update contact list", prefixIcon = "e-approved", id = "UpdateContact" });
+            toolbarItems3.Add(new { text = "Update Contact", tooltipText = "Update contact list", prefixIcon = "e-add", id = "UpdateContact" });
         }
 
-        <ejs-grid id="GridEight" allowSorting="true" actionBegin="actionBegin2" toolbarClick="toolbarClickcontact" actionComplete="actionComplete" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbar=toolbarItems3 allowPaging="true">
+        <ejs-grid id="GridEight" allowSorting="true" actionBegin="actionBegin2" toolbarClick="toolbarClickcontact" actionComplete="actionCompleteContact" editSettings="@(new Syncfusion.EJ2.Grids.GridEditSettings { AllowAdding = ViewBag.gridAdd, AllowEditing = ViewBag.gridEdit2, AllowDeleting = ViewBag.gridDelete,Mode=Syncfusion.EJ2.Grids.EditMode.Dialog})" allowTextWrap="true" allowFiltering="true" allowResizing="true" allowReordering="true" toolbar=toolbarItems3 allowPaging="true">
             <e-data-manager url="/scmContacts/UrlDatasource" adaptor="UrlAdaptor" insertUrl="/scmContacts/Insert" updateUrl="/scmContacts/Update" removeUrl="/scmContacts/Remove"></e-data-manager>
             <e-grid-pagesettings pageSizes="true" pageSize="10"></e-grid-pagesettings>
             <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
             <e-grid-columns>
-                <e-grid-column field="id" headerText="ID" visible="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
-                <e-grid-column field="requestId" headerText="RID" allowEditing="false" textAlign="Left" width="50"></e-grid-column>
+                <e-grid-column field="id" headerText="" visible="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="requestId" headerText="RID" allowEditing="false" visible="false" textAlign="Left" width="50"></e-grid-column>
                 <e-grid-column field="position" headerText="Position" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
                 <e-grid-column field="firstName" headerText="First Name" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
                 <e-grid-column field="lastName" headerText="Last Name" allowFiltering="false" validationRules="@(new { required=true})" textAlign="Left" width="120"></e-grid-column>
@@ -461,15 +470,33 @@
 // Send Id to sub forms
         function queryCellInfo3(args) {
             if (args.column.field === 'total') {
-                args.data['total'] =args.data['stockForChildren']+args.data['currentBalance']+args.data['emergency']+args.data['winterization'];
-                args.cell.innerHTML = args.data['total'];
+                args.data['total'] = args.data['totalbuffer'] + args.data['netstock'];
+                args.cell.innerHTML =Math.round(args.data['total']);
             }
             if (args.column.field === 'netstock') {
-                args.data['netstock'] =args.data['total']-args.data['ipbalance'];
+                var stockforChildrn = args.data['stockForChildren'];
+                var ipbalance = args.data['ipbalance'];
+                var adjment = args.data['adjustment'];
+                args.data['netstock'] = Number(stockforChildrn) - Number(ipbalance) + Number(adjment);
                 args.cell.innerHTML = args.data['netstock'];
             }
+            if (args.column.field === 'totalbuffer') {
+                args.data['totalbuffer'] = args.data['netstock'] * args.data['buffer']*1;
+                args.cell.innerHTML =Math.round(args.data['totalbuffer'],1);
+            }
         }
- 
+        function queryCellInfoStockNeed(args) {
+            if (args.column.field === 'total') {
+                args.data['total'] = args.data['stockForChildren'] + args.data['adjustment'] ;
+                args.cell.innerHTML = args.data['total'];
+            }
+        }
+        function queryCellInfoStockNeedavg(args) {
+            if (args.column.field === 'total') {
+                args.data['total'] = args.data['stockForChildren'] + args.data['adjustment'] ;
+                args.cell.innerHTML = args.data['total'];
+            }
+        }
     function actionBegin2(args) {
         if (args.requestType === 'beginEdit' || args.requestType === 'add') {
             //assign value to corresponding key which helps to remove duplicate/conflicts
@@ -547,7 +574,7 @@
 // disable request encoding for message
         function loadmessage(args) {
             this.getColumnByField('adjustmentReason').disableHtmlEncode = false;
-            this.getColumnByField('emergencyReason').disableHtmlEncode = false;
+            //this.getColumnByField('emergencyReason').disableHtmlEncode = false;
             this.getColumnByField('commentByPnd').disableHtmlEncode = false;
             this.getColumnByField('commentByUnicef').disableHtmlEncode = false;
         }
@@ -565,7 +592,19 @@
             args.dialog.position.Y = "top";
             }
         }
-
+        function actionCompleteContact(args) {
+            var requestId = $('#ReqId').val();
+            if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                var dialog = args.dialog;
+                dialog.width = 450;
+                // change the header of the dialog
+                dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['id'] : 'New';
+                //this.query = this.query.addParams("ID", requestId)  // initial time
+                args.dialog.enableResize = true;
+                args.dialog.position.X = "center";
+                args.dialog.position.Y = "top";
+            }
+        }
         function actionCompletesubmission(args) {
             if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
                 var dialog = args.dialog;
@@ -588,7 +627,7 @@
             }
         }
 //Action complete to adjust size, etc
-  function actionComplete(args) {
+        function actionComplete(args) {
       if (args.requestType === 'beginEdit' || args.requestType === 'add') {
                 var dialog = args.dialog;
                   dialog.width = 750;
@@ -727,6 +766,8 @@
                         visibilityControl: true,
                         timeout: 3000,
                     }).show();
+                    var grid = document.getElementById("GridFours").ej2_instances[0];
+                    grid.refresh(); // refresh the Grid.
                 },
 
             }).fail(function () {
@@ -740,7 +781,7 @@
             }
             );
 
-            var grid = document.getElementById("GridThree").ej2_instances[0];
+       var grid = document.getElementById("GridFours").ej2_instances[0];
             grid.refresh(); // refresh the Grid.
             //e.preventDefault();
         });
@@ -797,6 +838,40 @@
                     );
                 }
             }
+
+        if (args.item.id === 'Add_comsumption') {
+            //gridObj.excelExport();
+            var response = confirm("Do you really want to generate consumption-based calculation");
+            if (response == true) {
+                var para = $('#ReqId').val();
+                var url = "/scmrequest/AddHFConsumptionBasedEstimation/" + para;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { 'id': para },
+                    success: function (data) {
+                        //$("#loading").hide();
+                        new Noty({
+                            type: "success",
+                            layout: "bottomRight",
+                            text: 'Request proccessed',
+                            visibilityControl: true,
+                            timeout: 3000,
+                        }).show();
+                        gridObj.refresh();
+                    },
+                }).fail(function () {
+                    new Noty({
+                        type: "error",
+                        layout: "bottomRight",
+                        text: 'Failed to proccess this request',
+                        visibilityControl: true,
+                        timeout: 3000,
+                    }).show()
+                }
+                );
+            }
+        }
             if (args.item.id === 'Approve') {
 
                 var para = $('#ReqId').val();
@@ -827,6 +902,19 @@
                 }
                 );
 
+            }
+    }
+        function toolbarclickip(args) {
+            var gridObj = document.getElementById("GridFours").ej2_instances[0];
+            if (args.item.id === 'make_refresh') {
+                gridObj.refresh(); // refresh the Grid.
+            }
+
+            if (args.item.id === 'GridFours_excelexport') {
+                //gridObj.excelExport();
+                var para = $('#ReqId').val();
+                var url = "/scmrequest/GenerateIPPivotTable/" + para;
+                window.location = url;
             }
         }
         function toolbarClickcontact(args) {

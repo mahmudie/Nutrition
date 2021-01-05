@@ -12,16 +12,16 @@
                     commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "e-flat" } });
                     commands.Add(new { type = "Save", buttonOption = new { iconCss = "e-icons e-update", cssClass = "e-flat" } });
                     commands.Add(new { type = "Cancel", buttonOption = new { iconCss = "e-icons e-cancel-icon", cssClass = "e-flat" } });
-                }
+}
                 <ejs-grid id="VideoReadGrid" allowSorting="true" toolbar="@(new List<string>() { "Edit", "Cancel", "Search" })" toolbarClick="toolbarClick"  actionBegin="Begin" allowPaging="true">
                     <e-data-manager url="/Videoguides/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/Videoguides/Insert" updateUrl="/Videoguides/Update" removeUrl="/Videoguides/Remove"></e-data-manager>
                     <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                     <e-grid-columns>
                         <e-grid-column field="id" headerText="ID" allowEditing="false" isPrimaryKey="true" textAlign="Left" width="60"></e-grid-column>
-                        <e-grid-column field="title" headerText="Title" validationRules="@(new { required=true})" textAlign="Left" width="170"></e-grid-column>
-                        <e-grid-column field="module" headerText="Module" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                        <e-grid-column field="link" headerText="Link" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
-                        <e-grid-column headerText="Manage" width="120" commands="commands"></e-grid-column>
+                        <e-grid-column field="title" headerText="Title" allowEditing="false" validationRules="@(new { required=true})" textAlign="Left" width="170"></e-grid-column>
+                        <e-grid-column field="module" headerText="Module" allowEditing="false" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                        <e-grid-column field="link" headerText="Link" allowEditing="false" validationRules="@(new { required=true})" textAlign="Left" width="300"></e-grid-column>
+                        <e-grid-column headerText="View" width="120" commands="commands"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
             </div>

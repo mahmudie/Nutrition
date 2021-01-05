@@ -73,7 +73,7 @@ namespace DataSystem.Controllers.SCM
             if (item == null) { return BadRequest(); }
 
             item.requestId = RequestId;
-            item.isSubmitted = value.Value.isSubmitted;
+            item.isSubmitted = false;
             item.submissionDate = value.Value.submissionDate;
             item.emailMessage = value.Value.emailMessage;
             item.reasonId = value.Value.reasonId;
@@ -125,7 +125,7 @@ namespace DataSystem.Controllers.SCM
             if (item != null)
             {
                 item.requestId = RequestId;
-                item.isSubmitted = value.Value.isSubmitted;
+                item.isSubmitted = false;
                 item.submissionDate = value.Value.submissionDate;
                 item.emailMessage = value.Value.emailMessage;
                 item.reasonId = value.Value.reasonId;

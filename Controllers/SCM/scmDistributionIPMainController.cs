@@ -962,7 +962,7 @@ namespace DataSystem.Controllers.SCM
             return Ok();
         }
 
-        public void InsertBulkProcedure(int DistId, int StockId, int TenantId,  string UserName)
+        public void InsertBulkProcedure(int? DistId, int? StockId, int TenantId,  string UserName)
         {
            
             DateTime updateDate;

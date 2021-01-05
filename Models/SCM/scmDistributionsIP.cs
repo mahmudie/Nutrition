@@ -12,14 +12,14 @@ namespace DataSystem.Models.SCM
         [Key]
         public int? id { get; set; }
         public int? distributionId { get; set; }
-        public int stockId { get; set; }
+        public int? stockId { get; set; }
         [Required()]
-        public int whId { get; set; }
+        public int? whId { get; set; }
         [Required]
         [Display(Name = "Quantity")]
-        public int quantity { get; set; }
+        public int? quantity { get; set; }
         [Display(Name = "Requested")]
-        public int requested { get; set; }
+        public int? requested { get; set; }
         [Required]
         [Display(Name = "Batch Number")]
         public string batchNumber { get; set; }
@@ -31,6 +31,6 @@ namespace DataSystem.Models.SCM
         public string issueBy { get; set; }
         public DateTime updateDate { get; set; }
         public string userName { get; set; }
-        public int tenantId { get; set; }
+        public int? tenantId { get; set; }
     }
 }

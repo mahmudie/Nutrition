@@ -92,7 +92,7 @@ namespace DataSystem.Controllers.SCM
             var provinces = _context.Provinces.Where(w => w.ProvName.Equals(tenants.Name)).FirstOrDefault();
             ProvinceId = provinces.ProvCode;
 
-            var data = _context.FacilityInfo.Include(m => m.DistNavigation).Where(m => m.DistNavigation.ProvCode ==ProvinceId).Select(n => new
+            var data = _context.FacilityInfo.Include(m => m.DistNavigation).Where(m => m.DistNavigation.ProvCode ==ProvinceId && m.ActiveStatus=="Y").Select(n => new
             {
                 FacilityId = n.FacilityId,
                 FacilityName = n.FacilityName,
@@ -160,7 +160,7 @@ namespace DataSystem.Controllers.SCM
             {
                 if (User.IsInRole("administrator"))
                 {
-                    data = data.Where(m => m.UserName == user.UserName).ToList();
+                    data = data.Where(m => m.TenantId == user.TenantId).ToList();
                 }
                 else if ((user.Unicef == 1 || user.Pnd == 1))
                 {

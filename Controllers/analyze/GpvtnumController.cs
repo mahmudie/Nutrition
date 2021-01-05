@@ -52,6 +52,7 @@ namespace DataSystem.Controllers.analyze
         {
             return View();
         }
+
         public ActionResult DistPivot()
         {
             List<Provinces> Povinces = _context.Provinces.OrderBy(m => m.ProvName).ToList();
@@ -97,17 +98,26 @@ namespace DataSystem.Controllers.analyze
             }
 
             int Province;
+            int District;
             int Calendar;
             int Period = 0;
             string ProvCode = "0";
+            string DistCode = "0";
 
             Province = req.Province;
+            District = req.DistCode;
             Calendar = req.Calendar;
             Period = req.Period;
 
             if (Province > 0 & Province < 10)
             {
                 ProvCode = "0" + Province;
+                DistCode = "0" + District;
+            }
+            else if (Province > 10)
+            {
+                ProvCode = Province.ToString();
+                DistCode = District.ToString();
             }
 
 
@@ -858,6 +868,7 @@ namespace DataSystem.Controllers.analyze
                         }
                         else if (!Province.Equals(0) & District.Equals(0) & FacilityId.Equals(0))
                         {
+                            
                             data = data.Where(m => m.ProvinceId.Equals(ProvCode)).ToList();
                         }
                         else

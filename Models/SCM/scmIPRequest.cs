@@ -36,5 +36,6 @@ namespace DataSystem.Models.SCM
         public string commentByIp { get; set; }
         public double? winterization { get; set; }
         public double? ipbalance { get; set; }
+        public double? buffer { get; set; } = 0.2;
     }
 }

@@ -383,7 +383,7 @@ namespace DataSystem.Controllers.SCM
             return NoContent();
         }
 
-        private bool Exists(int id)
+        private bool Exists(int? id)
         {
             return _context.scmDistributionsIP.Any(e => e.id == id);
         }
@@ -393,7 +393,7 @@ namespace DataSystem.Controllers.SCM
             var item= _context.scmStocks.FirstOrDefault(e => e.StockId == id);
             return item.ItemId;
         }
-        private string getBatchNumber(int id)
+        private string getBatchNumber(int? id)
         {
             var item = _context.scmStocks.FirstOrDefault(e => e.StockId == id);
             return item.BatchNumber;

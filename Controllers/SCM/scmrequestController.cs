@@ -205,8 +205,11 @@ namespace DataSystem.Controllers.SCM
             //int yearmonth =ScmRequest.startYear * 100 + ScmRequest.startMonth;
             try
             {
-                TimeStart = RequestStart(rounds.YearFrom, rounds.MonthFrom, rounds.RequesttypeId);
-                TimeEnd = RequestEnd(rounds.YearTo, rounds.MonthTo, rounds.RequesttypeId);
+                //TimeStart = RequestStart(rounds.YearFrom, rounds.MonthFrom, rounds.RequesttypeId);
+                TimeStart = rounds.YearFrom*100+rounds.MonthFrom;
+                //TimeEnd = RequestEnd(rounds.YearTo, rounds.MonthTo, rounds.RequesttypeId);
+                TimeEnd = rounds.YearTo*100+rounds.MonthTo;
+
                 //if (rounds.RequesttypeId == 2)
                 //{
                 //    TimeEnd = (rounds.YearFrom) * 100 + rounds.MonthFrom;
@@ -498,8 +501,10 @@ namespace DataSystem.Controllers.SCM
             //int yearmonth =ScmRequest.startYear * 100 + ScmRequest.startMonth;
             try
             {
-                TimeStart = RequestStart(rounds.YearFrom, rounds.MonthFrom, rounds.RequesttypeId);
-                TimeEnd = RequestEnd(rounds.YearTo, rounds.MonthTo, rounds.RequesttypeId);
+                //TimeStart = RequestStart(rounds.YearFrom, rounds.MonthFrom, rounds.RequesttypeId);
+                TimeStart = rounds.YearFrom*100+rounds.MonthFrom;
+                //TimeEnd = RequestEnd(rounds.YearTo, rounds.MonthTo, rounds.RequesttypeId);
+                TimeEnd = rounds.YearTo*100+ rounds.MonthTo;
                 //if (rounds.RequesttypeId == 2)
                 //{
                 //    TimeEnd = (rounds.YearFrom) * 100 + rounds.MonthFrom;
@@ -519,6 +524,7 @@ namespace DataSystem.Controllers.SCM
 
             InsertRquestDetails_ipd(id, user.TenantId, user.UserName,TimeStart,TimeEnd);
             InsertRquestDetails_opd(id, user.TenantId, user.UserName, TimeStart, TimeEnd);
+
             //InsertHRRequest(user.TenantId, user.UserName);
             InsertHFRequestDetails(user.TenantId, user.UserName,id);
 
@@ -831,7 +837,7 @@ namespace DataSystem.Controllers.SCM
             {
                 data = data.Where(m => m.userName == user.UserName).ToList();
             }
-            else if (User.IsInRole("administrator") && (user.Unicef != 1 || user.Pnd != 1))
+            else if (User.IsInRole("administrator") && (user.Unicef != 1 && user.Pnd != 1))
             {
                 data = data.Where(m => m.userName == user.UserName).ToList();
             }
@@ -872,7 +878,7 @@ namespace DataSystem.Controllers.SCM
             {
                 data = data.Where(m => m.userName == user.UserName).ToList();
             }
-            else if (User.IsInRole("administrator") && (user.Unicef != 1 || user.Pnd != 1))
+            else if (User.IsInRole("administrator") && (user.Unicef != 1 && user.Pnd != 1))
             {
                 data = data.Where(m => m.userName == user.UserName).ToList();
             }
@@ -1226,6 +1232,23 @@ namespace DataSystem.Controllers.SCM
             }
         }
 
+        //Average-based estimation - GridFive
+        public async Task<IActionResult> AddHFConsumptionBasedEstimation(int id)
+        {
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var req = _context.scmRequest.Where(m => m.requestId.Equals(id)).FirstOrDefault();
+            int TimeStart, TimeEnd;
+            TimeStart = req.TimeStart;
+            TimeEnd = req.TimeEnd;
+
+            InsertRquestDetails_ipd(id, user.TenantId, user.UserName, TimeStart, TimeEnd);
+            InsertRquestDetails_opd(id, user.TenantId, user.UserName, TimeStart, TimeEnd);
+
+            //InsertHRRequest(user.TenantId, user.UserName);
+            InsertHFRequestDetails(user.TenantId, user.UserName, id);
+            return Ok();
+        }
 
         //Average-based estimation - GridFive
         public async Task<IActionResult> AddHFAveragebasedEstimation(int id)
@@ -1267,7 +1290,7 @@ namespace DataSystem.Controllers.SCM
             }
         }
         //Method for creating pivottable -Gridthree
-        public IActionResult GenerateHFPivotTable(int id)
+        public async Task<IActionResult> GenerateHFPivotTable(int id)
         {
 
             if (!ModelState.IsValid)
@@ -1275,8 +1298,13 @@ namespace DataSystem.Controllers.SCM
                 return BadRequest();
             }
 
-            var pivotData = _context.scmrptRequestpivot.Where(m=>m.RequestId==id).ToList();
+            var pivotData = _context.scmrptRequestpivot.ToList();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
+            if (User.IsInRole("administrator") && (user.Unicef != 1 && user.Pnd != 1))
+            {
+                pivotData = pivotData.Where(m => m.RequestId == id).ToList();
+            }
 
             ExcelEngine excelEngine = new ExcelEngine();
             IApplication application = excelEngine.Excel;
@@ -1305,6 +1333,8 @@ namespace DataSystem.Controllers.SCM
                 sheet.Range["P1"].Text = "AdjComment";
                 sheet.Range["Q1"].Text = "District";
                 sheet.Range["R1"].Text = "Esttype";
+                sheet.Range["S1"].Text = "Province";
+                sheet.Range["T1"].Text = "Implementer";
 
 
                 sheet.Range["A2"].Text = "%Reports.Id";
@@ -1374,9 +1404,8 @@ namespace DataSystem.Controllers.SCM
 
             pivotTable.DataFields.Add(Children, "Total Children", PivotSubtotalTypes.Sum);
             pivotTable.DataFields.Add(StockForChildren, "Estimated Stock", PivotSubtotalTypes.Sum);
-            pivotTable.DataFields.Add(CurrentBalance, "Current Balance", PivotSubtotalTypes.Sum);
             pivotTable.DataFields.Add(Adjustment, "Adjustment", PivotSubtotalTypes.Sum);
-            pivotTable.DataFields.Add(TotalStock, "Total Needed", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(TotalStock, "Total Estimation", PivotSubtotalTypes.Sum);
             pivotTable.ShowDataFieldInRow = false;
 
 
@@ -1396,7 +1425,171 @@ namespace DataSystem.Controllers.SCM
             return File(ms, ContentType, filename);
 
         }
+        public async Task<IActionResult> GenerateIPPivotTable(int id)
+        {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var pivotData = _context.scmrptIPrequestDetails.ToList();
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (User.IsInRole("administrator") && (user.Unicef != 1 && user.Pnd != 1))
+            {
+                pivotData = pivotData.Where(m => m.RequestId == id).ToList();
+            }
+
+            ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+            application.DefaultVersion = ExcelVersion.Excel2013;
+
+            IWorkbook workbook = application.Workbooks.Create(2);
+
+            IWorksheet sheet = workbook.Worksheets[0];
+            try
+            {
+                sheet.Range["A1"].Text = "RequestId";
+                sheet.Range["B1"].Text = "RoundCode";
+                sheet.Range["C1"].Text = "RequestDate";
+                sheet.Range["D1"].Text = "IP";
+                sheet.Range["E1"].Text = "StartYear";
+                sheet.Range["F1"].Text = "StartMonth";
+                sheet.Range["G1"].Text = "EndYear";
+                sheet.Range["H1"].Text = "EndMonth";
+                sheet.Range["I1"].Text = "StartTime";
+                sheet.Range["J1"].Text = "EndTime";
+                sheet.Range["K1"].Text = "RequestBy";
+                sheet.Range["L1"].Text = "Province";
+                sheet.Range["M1"].Text = "PeriodFrom";
+                sheet.Range["N1"].Text = "PeriodTo";
+                sheet.Range["O1"].Text = "Item";
+                sheet.Range["P1"].Text = "Program";
+                sheet.Range["Q1"].Text = "Children";
+                sheet.Range["R1"].Text = "BaseEst";
+                sheet.Range["S1"].Text = "Adjustment";
+                sheet.Range["T1"].Text = "Adjustmentreason";
+                sheet.Range["U1"].Text = "ipbalance";
+                sheet.Range["V1"].Text = "Net";
+                sheet.Range["W1"].Text = "Buffer";
+                sheet.Range["X1"].Text = "BufferEst";
+                sheet.Range["Y1"].Text = "TotalEstimation";
+                sheet.Range["Z1"].Text = "ApproveByPnd";
+                sheet.Range["AA1"].Text = "ApproveByUnicef";
+                sheet.Range["AB1"].Text = "CommentByPnd";
+                sheet.Range["AC1"].Text = "CommentByUnicef";
+                sheet.Range["AD1"].Text = "CommentByIp";
+
+
+                sheet.Range["A2"].Text = "%Reports.RequestId";
+                sheet.Range["B2"].Text = "%Reports.RoundCode";
+                sheet.Range["C2"].Text = "%Reports.RequestDate";
+                sheet.Range["D2"].Text = "%Reports.IP";
+                sheet.Range["E2"].Text = "%Reports.StartYear";
+                sheet.Range["F2"].Text = "%Reports.StartMonth";
+                sheet.Range["G2"].Text = "%Reports.EndYear";
+                sheet.Range["H2"].Text = "%Reports.EndMonth";
+                sheet.Range["I2"].Text = "%Reports.StartTime";
+                sheet.Range["J2"].Text = "%Reports.EndTime";
+                sheet.Range["K2"].Text = "%Reports.RequestBy";
+                sheet.Range["L2"].Text = "%Reports.Province";
+                sheet.Range["M2"].Text = "%Reports.PeriodFrom";
+                sheet.Range["N2"].Text = "%Reports.PeriodTo";
+                sheet.Range["O2"].Text = "%Reports.Item";
+                sheet.Range["P2"].Text = "%Reports.Program";
+                sheet.Range["Q2"].Text = "%Reports.Children";
+                sheet.Range["R2"].Text = "%Reports.BaseEst";
+                sheet.Range["S2"].Text = "%Reports.Adjustment";
+                sheet.Range["T2"].Text = "%Reports.Adjustmentreason";
+                sheet.Range["U2"].Text = "%Reports.ipbalance";
+                sheet.Range["V2"].Text = "%Reports.Net";
+                sheet.Range["W2"].Text = "%Reports.Buffer";
+                sheet.Range["X2"].Text = "%Reports.BufferEst";
+                sheet.Range["Y2"].Text = "%Reports.TotalEstimation";
+                sheet.Range["Z2"].Text = "%Reports.ApproveByPnd";
+                sheet.Range["AA2"].Text ="%Reports.ApproveByUnicef";
+                sheet.Range["AB2"].Text ="%Reports.CommentByPnd";
+                sheet.Range["AC2"].Text ="%Reports.CommentByUnicef";
+                sheet.Range["AD2"].Text ="%Reports.CommentByIp";
+
+                ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
+
+                marker.AddVariable("Reports", pivotData);
+
+                marker.ApplyMarkers();
+                sheet.Name = "Data";
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            IWorksheet pivotSheet = workbook.Worksheets[1];
+
+            pivotSheet.Name = "PivotTable";
+
+            pivotSheet["A2"].Text = "IP Level Request";
+            pivotSheet.Range["A2"].CellStyle.Font.Size = 14f;
+            pivotSheet.Range["A2"].CellStyle.Font.Bold = true;
+            pivotSheet.Range["A3"].Text = "Date extracted: " + DateTime.Now.ToString(); ;
+            pivotSheet.Range["A3"].CellStyle.Font.Size = 10f;
+            pivotSheet.Range["A3"].CellStyle.Font.Bold = true;
+            pivotSheet.Range["A3"].CellStyle.Font.Italic = true;
+
+            IPivotCache cash_data = workbook.PivotCaches.Add(sheet.UsedRange);
+            IPivotTable pivotTable = pivotSheet.PivotTables.Add("PivotTable1", pivotSheet["A5"], cash_data);
+
+            IPivotTableOptions options = pivotTable.Options;
+            options.ShowFieldList = false;
+            pivotTable.Fields["Province"].Axis = PivotAxisTypes.Page;
+            pivotTable.Fields["IP"].Axis = PivotAxisTypes.Page;
+            pivotTable.Fields["RoundCode"].Axis = PivotAxisTypes.Page;
+            pivotTable.Fields["StartTime"].Axis = PivotAxisTypes.Page;
+            pivotTable.Fields["EndTime"].Axis = PivotAxisTypes.Page;
+
+            pivotTable.Fields["Program"].Axis = PivotAxisTypes.Row;
+            pivotTable.Fields["Item"].Axis = PivotAxisTypes.Row;
+
+            IPivotField Children = pivotTable.Fields["Children"];
+            IPivotField BaseTimation = pivotTable.Fields["BaseEst"];
+            IPivotField Adjustment = pivotTable.Fields["Adjustment"];
+            IPivotField ipbalance = pivotTable.Fields["ipbalance"];
+            IPivotField Net = pivotTable.Fields["Net"];
+            IPivotField Buffer = pivotTable.Fields["Buffer"];
+            IPivotField BufferEst = pivotTable.Fields["BufferEst"];
+            IPivotField TotalEstimation = pivotTable.Fields["TotalEstimation"];
+
+
+            pivotTable.DataFields.Add(Children, "Total Children", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(BaseTimation, "Base Estimation", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(Adjustment, "Adjustment", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(ipbalance, "IP Balance", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(Net, "Net Stock", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(Buffer, "Buffer Rate", PivotSubtotalTypes.Average);
+            pivotTable.DataFields.Add(BufferEst, "Buffer Stock", PivotSubtotalTypes.Sum);
+            pivotTable.DataFields.Add(TotalEstimation, "Total Request", PivotSubtotalTypes.Sum);
+            pivotTable.ShowDataFieldInRow = false;
+
+
+            IPivotTableOptions option = pivotTable.Options;
+            option.ErrorString = "X";
+            pivotTable.BuiltInStyle = PivotBuiltInStyles.PivotStyleMedium4;
+
+            pivotSheet.Activate();
+            string ContentType = "Application/msexcel";
+            string filename = "IP Level Request" + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + ".xlsx";
+
+            MemoryStream ms = new MemoryStream();
+            workbook.SaveAs(ms);
+            ms.Position = 0;
+            workbook.Close();
+            excelEngine.Dispose();
+            return File(ms, ContentType, filename);
+
+        }
         // Batch update
         public async Task<IActionResult> BatchUpdateConsumption([FromBody]CRUDModel value)
         {
@@ -1408,7 +1601,7 @@ namespace DataSystem.Controllers.SCM
                     try
                     {
                         var req = value.Changed[i];
-                        scmHFReqDetails hfreqs = _context.scmHFReqDetails.Where(or => or.id == req.id).FirstOrDefault();
+                        scmHFReqDetails hfreqs = _context.scmHFReqDetails.Where(or => or.id == req.id & or.Esttype== "Consumption-based").FirstOrDefault();
 
                         hfreqs.requestId = req.requestId;
                         hfreqs.facilityId = req.facilityId;
@@ -1454,7 +1647,62 @@ namespace DataSystem.Controllers.SCM
             var data = _context.scmHFReqDetails.ToList();
             return Json(data);
         }
+        public async Task<IActionResult> BatchUpdateAveragebased([FromBody] CRUDModel value)
+        {
+            var Crrentuser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (value.Changed != null)
+            {
+                for (var i = 0; i < value.Changed.Count(); i++)
+                {
+                    try
+                    {
+                        var req = value.Changed[i];
+                        scmHFReqDetails hfreqs = _context.scmHFReqDetails.Where(or => or.id == req.id & or.Esttype == "Average-based").FirstOrDefault();
 
+                        hfreqs.requestId = req.requestId;
+                        hfreqs.facilityId = req.facilityId;
+                        hfreqs.supplyId = req.supplyId;
+                        hfreqs.facilityTypeId = req.facilityTypeId;
+                        hfreqs.children = req.children;
+                        hfreqs.buffer = req.buffer;
+                        hfreqs.currentBalance = req.currentBalance;
+                        hfreqs.program = req.program;
+                        hfreqs.stockForChildren = req.stockForChildren;
+                        hfreqs.adjustment = req.adjustment;
+                        hfreqs.adjComment = req.adjComment;
+                        hfreqs.tenantId = Crrentuser.TenantId;
+                        hfreqs.updateDate = DateTime.Now.Date;
+                        hfreqs.userName = Crrentuser.UserName;
+                        _context.Update(hfreqs);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+
+                }
+            }
+            if (value.Deleted != null)
+            {
+                for (var i = 0; i < value.Deleted.Count(); i++)
+                {
+                    _context.scmHFReqDetails.Remove(_context.scmHFReqDetails.Where(or => or.id == value.Deleted[i].id).FirstOrDefault());
+                    _context.SaveChanges();
+                }
+            }
+            if (value.Added != null)
+            {
+                for (var i = 0; i < value.Added.Count(); i++)
+                {
+                    _context.Add(value.Added[i]);
+                    _context.SaveChanges();
+                }
+            }
+            var data = _context.scmHFReqDetails.ToList();
+            return Json(data);
+        }
         public class CRUDModel
         {
             public List<scmHFReqDetails> Added { get; set; }
@@ -1929,7 +2177,6 @@ namespace DataSystem.Controllers.SCM
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
     }
 
 }

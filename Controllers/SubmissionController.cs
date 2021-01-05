@@ -27,6 +27,8 @@ namespace DataSystem.Controllers
         }
         public IActionResult Index()
         {
+            _context.Database.SetCommandTimeout(5000);
+
             List<ImpFilter> ImpFilter = _context.ImpFilter.OrderBy(m => m.ImpCode).ToList();
             ImpFilter.Insert(0, new ImpFilter { ImpCode = "0", Implementer = "All" });
             ViewData["ImpList"] = new SelectList(ImpFilter, "ImpCode", "Implementer");
@@ -202,6 +204,7 @@ namespace DataSystem.Controllers
             {
                 ProvCode = "0" + Province;
             }
+            _context.Database.SetCommandTimeout(5000);
 
             var data = _context.reportsubmission.ToList();
 

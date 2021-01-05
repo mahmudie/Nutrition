@@ -1,17 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using DataSystem.Models.Analysis;
+using DataSystem.Models.Checklist_subs;
+using DataSystem.Models.GLM;
+using DataSystem.Models.GLM.Models;
+using DataSystem.Models.HP;
+using DataSystem.Models.SCM;
+using DataSystem.Models.USI;
+using DataSystem.Models.ViewModels;
 using DataSystem.Models.ViewModels.chart;
 using DataSystem.Models.ViewModels.Export;
 using DataSystem.Models.ViewModels.PivotTable;
-using DataSystem.Models.ViewModels;
-using DataSystem.Models.Checklist_subs;
-using DataSystem.Models.SCM;
-using DataSystem.Models.HP;
-using DataSystem.GLM.Models;
-using DataSystem.Controllers.SCM;
-using DataSystem.Models.GLM;
-using DataSystem.Models.USI;
-using DataSystem.Models.Analysis;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataSystem.Models
 {
@@ -1342,6 +1340,9 @@ namespace DataSystem.Models
 
             modelBuilder.Entity<VDateValue>()
                 .HasKey(m => new { m.FieldId, m.ReportsViewId });
+
+            modelBuilder.Entity<SectionColQuestionField>()
+                .HasKey(m => new { m.FieldId, m.SectionId });
         }
 
         public virtual DbSet<Tenant> Tenants { get; set; }
@@ -1362,7 +1363,7 @@ namespace DataSystem.Models
         public virtual DbSet<TblIycf> TblIycf { get; set; }
         public virtual DbSet<TblMam> TblMam { get; set; }
         public virtual DbSet<TblMn> TblMn { get; set; }
-        public virtual DbSet<TblOtp> TblOtp { get; set; }
+        public virtual DbSet<TblOtp> TblOtp {get; set; }
         public virtual DbSet<TblOtptfu> TblOtptfu { get; set; }
         public virtual DbSet<TblStockIpt> TblStockIpt { get; set; }
         public virtual DbSet<TblStockOtp> TblStockOtp { get; set; }
@@ -1506,6 +1507,7 @@ namespace DataSystem.Models
         //public DbSet<VDateValue> VDateValues { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportsView> ReportsView { get; set; }
+        public DbSet<SectionColQuestionField> SectionColQuestionFields { get; set; }
 
 
         //USI
@@ -1527,7 +1529,7 @@ namespace DataSystem.Models
         public DbSet<totalpivotcombinedpdistm> totalpivotcombinedpdistm { get; set; }
         public DbSet<totalpivotcombinedphfs> totalpivotcombinedphfs { get; set; }
         public DbSet<totalpivotcombinedphfm> totalpivotcombinedphfm { get; set; }
-
+        public DbSet<scmrptIPrequestDetails> scmrptIPrequestDetails { get; set; }
 
 
         public DbSet<Procedureupdatestat> Procedureupdatestat { get; set; }

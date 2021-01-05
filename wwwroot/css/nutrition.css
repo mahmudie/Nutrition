@@ -460,6 +460,16 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before
     font-family: "fontawesome" !important;
 }
 
+.e-pluss::before {
+    content: '\f067';
+    font-family: "fontawesome" !important;
+}
+
+.e-refresh::before {
+    content: '\f021';
+    font-family: "fontawesome" !important;
+}
+
 .e-help::before {
     content: '\f059';
     font-family: "fontawesome" !important;

@@ -144,40 +144,40 @@
     </div>
 
     <div style="display:none" id="Grid2">
-        @{
-            List<object> toolbarItems = new List<object>();
-            toolbarItems.Add("Add");
-            toolbarItems.Add("Edit");
-            toolbarItems.Add("Delete");
-            toolbarItems.Add("Update");
-            toolbarItems.Add("Cancel");
-            toolbarItems.Add("Search");
-            toolbarItems.Add(new { text = "View Estimation", tooltipText = "View estimated amount", prefixIcon = "e-eye", id = "viewestimation" });
-        }
-        <ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" queryCellInfo="queryCellInfo3" allowTextWrap="true" load="loaddata" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">
-            <e-data-manager url="/scmDistributionsIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsIP/Insert" updateUrl="/scmDistributionsIP/Update" removeUrl="/scmDistributionsIP/Remove"></e-data-manager>
-            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
-            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
-            <e-grid-columns>
-                <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
-                <e-grid-column field="distributionId" headerText="MID" allowEditing="false" visible="false" textAlign="Left" width="80"></e-grid-column>
-                <e-grid-column field="stockId" allowFiltering="false" foreignKeyField="StockId" allowResizing="true" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="StockItem"
-                               dataSource="ViewBag.StockSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpStockItems }"></e-grid-column>
-                <e-grid-column field="batchNumber" allowFiltering="false" allowEditing="true" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="requested" allowFiltering="false" headerText="Qty Req." validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
-                <e-grid-column field="quantity" allowFiltering="false" headerText="Qty Issued" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
-                <e-grid-column field="balance" type="number" allowFiltering="false" allowEditing="false" headerText="Balance" textAlign="Left" width="90"></e-grid-column>
-                <e-grid-column field="whId" foreignKeyField="WhId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
-                               dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
+        @{ List<object> toolbarItems = new List<object>();
+                        toolbarItems.Add("Add");
+                        toolbarItems.Add("Edit");
+                        toolbarItems.Add("Delete");
+                        toolbarItems.Add("Update");
+                        toolbarItems.Add("Cancel");
+                        toolbarItems.Add("Search");
+                        toolbarItems.Add(new { text = "View Estimation", tooltipText = "View estimated amount", prefixIcon = "e-eye", id = "viewestimation" }); }
+        @*<ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" queryCellInfo="queryCellInfo3" allowTextWrap="true" load="loaddata" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">*@
 
-                <e-grid-column field="issueTo" foreignKeyField="ImpUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued To" foreignKeyValue="ImpUserName"
-                               dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
+            <ejs-grid id="MainDist_GridTwo" allowSorting="true" allowFiltering="true" queryCellInfo="queryCellInfo3" allowTextWrap="true" recordDoubleClick="click" actionComplete="actionComplete" toolbarClick="toolbarClick" actionBegin="actionBegin" toolbar=toolbarItems allowPaging="true">
+                <e-data-manager url="/scmDistributionsIP/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmDistributionsIP/Insert" updateUrl="/scmDistributionsIP/Update" removeUrl="/scmDistributionsIP/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="distributionId" headerText="MID" allowEditing="false" visible="false" textAlign="Left" width="80"></e-grid-column>
+                    <e-grid-column field="stockId" allowFiltering="false" foreignKeyField="StockId" allowResizing="true" validationRules="@(new { required=true})" headerText="Stock Item" foreignKeyValue="StockItem"
+                                   dataSource="ViewBag.StockSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpStockItems }"></e-grid-column>
+                    <e-grid-column field="batchNumber" allowFiltering="false" allowEditing="true" headerText="Batch Number" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="requested" allowFiltering="false" headerText="Qty Req." validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="quantity" allowFiltering="false" headerText="Qty Issued" validationRules="@(new { required=true})" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="balance" type="number" allowFiltering="false" allowEditing="false" headerText="Balance" textAlign="Left" width="90"></e-grid-column>
+                    <e-grid-column field="whId" foreignKeyField="WhId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Warehouse" clipMode="EllipsisWithTooltip" foreignKeyValue="WarehouseName"
+                                   dataSource="ViewBag.WarehouseSource" editType="dropdownedit" textAlign="Left" width="160" edit="new {@params = drpWarehouses }"></e-grid-column>
 
-                <e-grid-column field="issueDate" headerText="Issue Date" allowFiltering="false" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
-                <e-grid-column field="issueBy" foreignKeyField="UniUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued By" foreignKeyValue="UniUserName"
-                               dataSource="ViewBag.UserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpUserUniItems }"></e-grid-column>
-            </e-grid-columns>
-        </ejs-grid>
+                    <e-grid-column field="issueTo" foreignKeyField="ImpUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued To" foreignKeyValue="ImpUserName"
+                                   dataSource="ViewBag.ImpUserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpImpUserItems }"></e-grid-column>
+
+                    <e-grid-column field="issueDate" headerText="Issue Date" allowFiltering="false" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="110"></e-grid-column>
+                    <e-grid-column field="issueBy" foreignKeyField="UniUserId" allowFiltering="false" validationRules="@(new { required=true})" headerText="Issued By" foreignKeyValue="UniUserName"
+                                   dataSource="ViewBag.UserSource" editType="dropdownedit" textAlign="Left" width="200" edit="new {@params = drpUserUniItems }"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
 
     </div>
 
@@ -340,20 +340,29 @@
         function Changstock(args) {
             var grid = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
             var arr = args.itemData.StockItem.split(",");
-            balance2 = arr[3];
+            balance2 = arr[4];
             balance = balance2.split("=")[1].trim();
             var regExp = /\(([^)]+)\)/;
-            var batno = regExp.exec(arr[0]);                           //export the number by using regular expression
+            var batno = regExp.exec(arr[1]);                           //export the number by using regular expression
             var batno2 = batno[1].split("=")[1];;
             grid.editModule.formObj.element[2].value = batno2.trim();          //Update the value to grid form
+            grid.editModule.formObj.element[5].value = balance.trim();
         }
 
         function loaddata(args) {
-            this.columns[4].validationRules = { required: true, minLength: [customFn, 'Quantity is greater than balance'] };
+            this.columns[5].validationRules = { required: false, minLength: [customFn, 'Quantity is greater than balance or greater than requested'] };
         }
 
         function customFn(args) {
-            return args['value'] < balance + 1;
+            //var issuebalance = grid.editModule.formObj.element[5].value
+            //var qtyrequested = grid.editModule.formObj.element[3].value
+            //var issued = grid.editModule.formObj.element[4].value
+            //if (issued > qtyrequested) {
+            //    return args['value'] < balance + 1;
+            //}
+            //if (issued > balance) {
+                    return args['value'] <0;
+            //}  
         };
 
         function actionBegin(args) {

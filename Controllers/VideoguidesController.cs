@@ -40,9 +40,15 @@ namespace DataSystem.Controllers
             return View();
         }
 
-        public IActionResult UrlDatasource([FromBody]DataManagerRequest dm)
+        public async Task<IActionResult> UrlDatasource([FromBody]DataManagerRequest dm)
         {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var data = _context.Videoguides.ToList();
+
+            if (User.Identity.IsAuthenticated & (User.IsInRole("administrator")|| User.IsInRole("dataentry")) && (user.Unicef==0 || user.Pnd==0))
+            {
+                data = data.Where(m => m.userreads == true).ToList();
+            }
 
             IEnumerable DataSource = data;
             DataOperations operation = new DataOperations();

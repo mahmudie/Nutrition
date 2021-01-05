@@ -1,0 +1,36 @@
+﻿@model DataSystem.Models.GLM.ViewModels.ReportDownloadViewModel
+@{
+    ViewData["Title"] = "Key Findings Report To Excel";
+}
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("KeyFindings", "ExcelReports"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ProvinceId, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.ProvinceId, new MultiSelectList(Model.Provinces, "Id", "Name"), "Select Province", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ProvinceId)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Year, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.Year, new MultiSelectList(Model.Years), "Select Year", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Year)
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-download"></span> Download Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

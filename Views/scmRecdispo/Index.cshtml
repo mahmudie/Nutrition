@@ -16,7 +16,7 @@
 
             <ejs-grid id="scmRecalDispoGrid" allowFiltering="true" actionComplete="actionComplete" actionBegin="Begin" allowTextWrap="true" allowSorting="true"  toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" allowPaging="true">
                 <e-data-manager url="/scmRecdispo/UrlDataSource" adaptor="UrlAdaptor"></e-data-manager>
-                <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-editSettings allowAdding="false" allowDeleting="false"  allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
                 <e-grid-columns>
                     <e-grid-column field="id" headerText="ID" isPrimaryKey="true" visible="false" textAlign="Left" width="80"></e-grid-column>

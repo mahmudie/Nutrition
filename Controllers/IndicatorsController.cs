@@ -86,6 +86,7 @@ namespace DataSystem.Controllers
                 DistCode = "0" + District;
             }
 
+            _context.Database.SetCommandTimeout(9000);
             var data =_context.statReports.ToList();
 
             if (!Province.Equals(0) & District.Equals(0))
@@ -742,6 +743,7 @@ namespace DataSystem.Controllers
             {
                 DistCode = "0" + District;
             }
+            _context.Database.SetCommandTimeout(9000);
 
             var data = _context.statReports.ToList();
 

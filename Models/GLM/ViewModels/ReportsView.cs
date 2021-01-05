@@ -14,6 +14,7 @@ namespace DataSystem.Models.GLM
         [Key]
         public string Id { get; set; }
         public string Province { get; set; }
+        public string ProvinceId { get; set; }
         public string District { get; set; }
         public int FacilityID { get; set; }
         public string Facility { get; set; }
@@ -23,6 +24,8 @@ namespace DataSystem.Models.GLM
         public string ReportedBy { get; set; }
         public DateTime? ReportPreparedDate { get; set; }
         public DateTime? ReportReceivedDate { get; set; }
+        public int? Year { get; set; }
+        public int? Month { get; set; }
         public int TenantId { get; set; }
 
         public string UserName { get; set; }

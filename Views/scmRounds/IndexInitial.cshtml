@@ -4,17 +4,17 @@
 }
 @{
     var drpRequesttypes = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.RequestTypes, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "RequesttypeId", Text = "Requesttypename" } };
-    //var drpYearFroms = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.YearFroms, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "YearId", Text = "YearName" } };
-    //var drpYearTos = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.YearTos, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "YearId", Text = "YearName" } };
-    //var drpMonths = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.MonthsFrom, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonthId", Text = "MonthName" } };
-    //var drpMonthsTo = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.MonthsTo, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonthId", Text = "MonthName" } };
+    var drpYearFroms = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.YearFroms, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "YearId", Text = "YearName" } };
+    var drpYearTos = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.YearTos, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "YearId", Text = "YearName" } };
+    var drpMonths = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.MonthsFrom, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonthId", Text = "MonthName" } };
+    var drpMonthsTo = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.MonthsTo, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "MonthId", Text = "MonthName" } };
 }
 <div class="container-fluid">
 
     <div class="row">
         <div class="col-md-12">
             <h3>Request/Distribution Quarters</h3>
-            <ejs-grid id="RoundsGrid" allowSorting="true" allowTextWrap="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
+            <ejs-grid id="RoundsGrid" allowSorting="true" load="load"  allowTextWrap="true" actionComplete="actionComplete" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","Search" })" allowPaging="true">
                 <e-data-manager url="/scmRounds/UrlDataSource" adaptor="UrlAdaptor" insertUrl="/scmRounds/Insert" updateUrl="/scmRounds/Update" removeUrl="/scmRounds/Remove"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
@@ -25,10 +25,14 @@
                                    dataSource="ViewBag.RequestTypes" editType="dropdownedit" edit="new {@params = drpRequesttypes }" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
                     <e-grid-column field="periodFrom" headerText="Period From" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="100"></e-grid-column>
                     <e-grid-column field="periodTo" headerText="Period To" editType="datepickeredit" customFormat="@(new {type = "datetime", format = "M/d/y" })" validationRules="@(new { required=true})" textAlign="Left" width="100"></e-grid-column>                    \
-                    <e-grid-column field="yearFrom" headerText="Year From"  validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
-                    <e-grid-column field="monthFrom" headerText="Month From" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
-                    <e-grid-column field="yearTo"  headerText="Year To" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
-                    <e-grid-column field="monthTo"  headerText="Month To"  validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="yearFrom" foreignKeyField="YearId" headerText="Year From" foreignKeyValue="YearName"
+                                   dataSource="ViewBag.YearFroms" editType="dropdownedit" edit="new {@params = drpYearFroms }" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="monthFrom" foreignKeyField="MonthId" headerText="Month From" foreignKeyValue="MonthName"
+                                   dataSource="ViewBag.MonthsFrom" editType="dropdownedit" edit="new {@params = drpMonths }" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="yearTo" foreignKeyField="YearId" headerText="Year To" foreignKeyValue="YearName"
+                                   dataSource="ViewBag.YearFroms" editType="dropdownedit" edit="new {@params = drpYearTos }" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
+                    <e-grid-column field="monthTo" foreignKeyField="MonthId" headerText="Month To" foreignKeyValue="MonthName"
+                                   dataSource="ViewBag.MonthsTo" editType="dropdownedit" edit="new {@params = drpMonthsTo }" validationRules="@(new { required=true})" textAlign="Left" width="130"></e-grid-column>
                     <e-grid-column field="isActive" defaultValue="1" template="#activetemplate" headerText="Is Active" textAlign="Left" editType="booleanedit" type="Boolean" width="100"></e-grid-column>
 
                 </e-grid-columns>

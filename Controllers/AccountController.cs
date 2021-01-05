@@ -126,23 +126,32 @@ namespace DataSystem.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: true);
-                if (result.Succeeded)
+                try
                 {
-                    _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: true);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation(1, "User logged in.");
+                        return RedirectToLocal(returnUrl);
+                    }
+
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning(2, "User account locked out.");
+                        return View("Lockout");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
                 }
 
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -221,6 +230,7 @@ namespace DataSystem.Controllers
                 user.Unicef = model.Unicef;
                 user.ImpId = model.ImpId;
 
+
                 string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
                 IdentityResult passwordChangeResult = await _userManager.ResetPasswordAsync(user, resetToken, model.Password);
                 var result = await _userManager.UpdateAsync(user);
@@ -244,6 +254,85 @@ namespace DataSystem.Controllers
             ViewBag.Role = new SelectList(_db.Roles.ToList(), "Name", "Name");
             return View(model);
         }
+
+        public async Task<IActionResult> PEdit(string name, string returnUrl = null)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByNameAsync(name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var role = await _userManager.GetRolesAsync(user);
+
+            RegisterViewModel info = new RegisterViewModel
+            {
+                UserName = user.UserName,
+                Name = user.FirstName,
+                LastName = user.LastName,
+                Role = role.FirstOrDefault(),
+                Position = user.Position,
+                Number = user.PhoneNumber,
+                Email = user.Email,
+                TenantId = user.TenantId,
+                Pnd = user.Pnd,
+                Unicef = user.Unicef,
+                ImpId = user.ImpId
+            };
+            ViewBag.Role = new SelectList(_db.Roles.ToList(), "Name", "Name");
+            ViewBag.Tenant = new SelectList(_context.Tenants.ToList(), "Id", "Name");
+            ViewBag.Imps = new SelectList(_context.Implementers.ToList(), "ImpCode", "ImpAcronym");
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(info);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "admin")]
+        public async Task<IActionResult> PEdit(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+                user.FirstName = model.Name;
+                user.LastName = model.LastName;
+                user.Email = model.Email;
+                user.Position = model.Position;
+                user.PhoneNumber = model.Number;
+                user.TenantId = model.TenantId;
+                user.Pnd = model.Pnd;
+                user.Unicef = model.Unicef;
+                user.ImpId = model.ImpId;
+
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                IdentityResult passwordChangeResult = await _userManager.ResetPasswordAsync(user, resetToken, model.Password);
+                var result = await _userManager.UpdateAsync(user);
+                var Roles = await _userManager.GetRolesAsync(user);
+                if (result.Succeeded)
+                {
+                    if (Roles != null)
+                    {
+                        foreach (var role in Roles)
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, role);
+                        }
+                    }
+                    await _userManager.AddToRoleAsync(user, model.Role);
+                    _logger.LogInformation(3, "User created a new account with password.");
+                    return RedirectToAction("userslist");
+                }
+                AddErrors(result);
+            }
+
+            ViewBag.Role = new SelectList(_db.Roles.ToList(), "Name", "Name");
+            return View(model);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -112,15 +112,15 @@ namespace DataSystem.Controllers.SCM
             scmIpReq.requestId = value.Value.requestId;
             scmIpReq.supplyId = value.Value.supplyId;
             scmIpReq.children = value.Value.children;
-            scmIpReq.currentBalance = value.Value.currentBalance;
+            scmIpReq.currentBalance = 0;
             scmIpReq.adjustment = value.Value.adjustment;
             scmIpReq.adjustmentReason = value.Value.adjustmentReason;
             scmIpReq.stockForChildren = value.Value.stockForChildren;
-            scmIpReq.emergency = value.Value.emergency;
-            scmIpReq.emergencyReason = value.Value.emergencyReason;
+            scmIpReq.emergency = 0;
+            scmIpReq.emergencyReason = "0";
             scmIpReq.userName = User.Identity.Name;
             scmIpReq.updateDate = DateTime.Now;
-            scmIpReq.winterization = value.Value.winterization;
+            scmIpReq.winterization = 0;
             scmIpReq.ipbalance = value.Value.ipbalance;
             try
             {
@@ -151,16 +151,16 @@ namespace DataSystem.Controllers.SCM
                         scmIpReq.requestId = value.Value.requestId;
                         scmIpReq.supplyId = value.Value.supplyId;
                         scmIpReq.children = value.Value.children;
-                        scmIpReq.currentBalance = value.Value.currentBalance;
+                        scmIpReq.currentBalance = 0;
                         scmIpReq.adjustment = value.Value.adjustment;
                         scmIpReq.adjustmentReason = value.Value.adjustmentReason;
                         scmIpReq.stockForChildren = value.Value.stockForChildren;
-                        scmIpReq.emergency = value.Value.emergency;
-                        scmIpReq.emergencyReason = value.Value.emergencyReason;
+                        scmIpReq.emergency = 0;
+                        scmIpReq.emergencyReason = "0";
                         scmIpReq.userName = user.UserName;
                         scmIpReq.updateDate = DateTime.Now;
                         scmIpReq.commentByIp = value.Value.commentByIp;
-                        scmIpReq.winterization = value.Value.winterization;
+                        scmIpReq.winterization = 0;
                         scmIpReq.ipbalance = value.Value.ipbalance;
                     }
                 }

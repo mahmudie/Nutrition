@@ -55,7 +55,6 @@ namespace DataSystem.Controllers.SCM
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
 
-
         public async Task<IActionResult> Insert([FromBody]CRUDModel<scmContacts> value)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -92,8 +91,7 @@ namespace DataSystem.Controllers.SCM
 
             return NoContent();
         }
-
-        public async Task<IActionResult> Update([FromBody]CRUDModel<scmContacts> value)
+        public async Task<IActionResult> Update([FromBody] CRUDModel<scmContacts> value)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
@@ -130,7 +128,7 @@ namespace DataSystem.Controllers.SCM
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(value.Value.id))
+                if (!ContactsExists(value.Value.id))
                 {
                     return NotFound();
                 }
@@ -141,6 +139,11 @@ namespace DataSystem.Controllers.SCM
             }
 
             return NoContent();
+        }
+
+        private bool ContactsExists(int id)
+        {
+            return _context.scmContacts.Any(e => e.id == id);
         }
 
         public IActionResult Remove([FromBody]CRUDModel<scmContacts> Value)
